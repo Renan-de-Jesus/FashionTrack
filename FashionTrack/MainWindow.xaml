@@ -5,13 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FashionTrack"
         mc:Ignorable="d"
-        Title="MainWindow" Height="433" Width="403">
-    <Grid Margin="0,0,0,-6">
-        <TextBlock HorizontalAlignment="Center" Margin="0,75,0,0" TextWrapping="Wrap" Text="FashionTrack" VerticalAlignment="Top" Width="123" RenderTransformOrigin="0.804,0.804" Height="31" FontSize="20" FontWeight="Bold"/>
-        <TextBox HorizontalAlignment="Center" Margin="0,175,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="123" TextChanged="TextBox_TextChanged"/>
-        <TextBox HorizontalAlignment="Center" Margin="0,227,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="123" TextChanged="TextBox_TextChanged"/>
-        <Label Content="Login" HorizontalAlignment="Left" Margin="136,158,0,0" VerticalAlignment="Top" Width="113" FontSize="9"/>
-        <Label Content="Password" HorizontalAlignment="Left" Margin="136,209,0,0" VerticalAlignment="Top" Width="113" FontSize="9"/>
-        <Button x:Name="loginButton" Content="Login" HorizontalAlignment="Center" Margin="0,289,0,0" VerticalAlignment="Top" Width="123" FontSize="14" RenderTransformOrigin="0.5,0.5"/>
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        
     </Grid>
 </Window>
