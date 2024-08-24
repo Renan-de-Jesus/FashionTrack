@@ -30,16 +30,17 @@ namespace FashionTrack
                 string username = lblUser.Text;
                 string password = passwordText.Password;
 
-                string connectionString = ConfigurationManager.ConnectionStrings["MinhaConexao"].ConnectionString;
+                string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
 
-                using (SqlConnection conexao = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     try
                     {
-                        conexao.Open(); // Pode lançar uma exceção
-                        string query = "SELECT COUNT(1) FROM Usuarios WHERE Usuarios = @username AND Senha = @password";
+                        //Abre uma conexão
+                        connection.Open();
+                        string query = "SELECT COUNT(1) FROM Usuarios WHERE Usuario = @username AND Senha = @password";
 
-                        SqlCommand comando = new SqlCommand(query, conexao);
+                        SqlCommand comando = new SqlCommand(query, connection);
                         comando.Parameters.AddWithValue("@username", username);
                         comando.Parameters.AddWithValue("@password", password);
 
@@ -62,10 +63,6 @@ namespace FashionTrack
                     catch (SqlException ex)
                     {
                         MessageBox.Show($"Erro de SQL: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Erro: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
