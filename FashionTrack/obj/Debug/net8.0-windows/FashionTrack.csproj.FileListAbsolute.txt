@@ -69,3 +69,5 @@ A:\C++\FashionTrack\FashionTrack\bin\Debug\net8.0-windows\runtimes\win-x64\nativ
 A:\C++\FashionTrack\FashionTrack\bin\Debug\net8.0-windows\runtimes\win-x86\native\WebView2Loader.dll
 A:\C++\FashionTrack\FashionTrack\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Runtime.Caching.dll
 A:\C++\FashionTrack\FashionTrack\obj\Debug\net8.0-windows\FashionT.AD88E361.Up2Date
+A:\C++\FashionTrack\FashionTrack\obj\Debug\net8.0-windows\UserRegister.baml
+A:\C++\FashionTrack\FashionTrack\obj\Debug\net8.0-windows\UserRegister.g.cs

@@ -21,10 +21,6 @@ namespace FashionTrack
             lblUser.Focus();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-        }
-
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
                 string username = lblUser.Text;
@@ -36,7 +32,6 @@ namespace FashionTrack
                 {
                     try
                     {
-                        //Abre uma conexão
                         connection.Open();
                         string query = "SELECT COUNT(1) FROM Usuarios WHERE Usuario = @username AND Senha = @password";
 
@@ -48,9 +43,10 @@ namespace FashionTrack
 
                         if (count == 1)
                         {
-                            MainWindow mainWindow = new MainWindow();
-                            mainWindow.Show();
-                            Close();
+                        RegisterWindow registerUser = new RegisterWindow();
+
+                        registerUser.Show();
+                        Close();
                         }
                         else
                         {
@@ -67,7 +63,10 @@ namespace FashionTrack
                 }
             }
 
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
 
         }
+    }
 
     }
