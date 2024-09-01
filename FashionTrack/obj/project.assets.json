@@ -1829,19 +1829,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Renan\\.nuget\\packages\\": {}
+    "C:\\Users\\lastf\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "A:\\C++\\FashionTrack\\FashionTrack\\FashionTrack.csproj",
+      "projectUniqueName": "C:\\Users\\lastf\\OneDrive\\Área de Trabalho\\Me_To_De_Devs\\PI\\FashionTrack\\FashionTrack.csproj",
       "projectName": "FashionTrack",
-      "projectPath": "A:\\C++\\FashionTrack\\FashionTrack\\FashionTrack.csproj",
-      "packagesPath": "C:\\Users\\Renan\\.nuget\\packages\\",
-      "outputPath": "A:\\C++\\FashionTrack\\FashionTrack\\obj\\",
+      "projectPath": "C:\\Users\\lastf\\OneDrive\\Área de Trabalho\\Me_To_De_Devs\\PI\\FashionTrack\\FashionTrack.csproj",
+      "packagesPath": "C:\\Users\\lastf\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\lastf\\OneDrive\\Área de Trabalho\\Me_To_De_Devs\\PI\\FashionTrack\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Renan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\lastf\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1849,6 +1849,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

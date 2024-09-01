@@ -12,8 +12,8 @@
       }
     ],
     "additionalProbingPaths": [
-      "C:\\Users\\Renan\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\Renan\\.nuget\\packages"
+      "C:\\Users\\lastf\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\lastf\\.nuget\\packages"
     ],
     "configProperties": {
       "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": true,

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FashionTrack")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6a329460b919e8bf5d9bc824720061c56dfb8950")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+253055bfc6176f2ff26f5ee946696d6a23ec45e0")]
 [assembly: System.Reflection.AssemblyProductAttribute("FashionTrack")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FashionTrack")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
