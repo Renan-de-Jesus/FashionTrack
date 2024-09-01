@@ -1,0 +1,236 @@
+﻿<Window x:Class="FashionTrack.RegisterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Cadastro de Usuário" Height="768" Width="1366"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Rectangle 
+            HorizontalAlignment="Center"
+            Height="644"
+            Width="550"
+            Stroke="Black"
+            VerticalAlignment="Stretch"
+            RadiusX="10"
+            RadiusY="10"
+            Margin="0,59,0,0">
+        </Rectangle>
+
+        <TextBlock
+            Text="NOVO CADASTRO"
+            x:Name="txtNewUser"
+            VerticalAlignment="Top"
+            Height="44"
+            Width="317"
+            FontSize="35"
+            FontFamily="Merriweather Sans" 
+            Margin="524,104,524,0">
+        </TextBlock>
+
+        <TextBlock
+            x:Name="txtName"
+            Text="Nome"
+            FontFamily="Merriweather Sans"
+            FontSize="16"
+            Height="20"
+            Width="48"
+            Margin="432,204,886,528">
+        </TextBlock>
+
+        <TextBox
+            x:Name="txtBoxName"
+            Text=""
+            Height="42"
+            Width="500"
+            FontSize="24"
+            Margin="432,224,434,486"
+            TabIndex="0"
+            Panel.ZIndex="1">
+            <TextBox.Template>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border Background="White" 
+                        BorderBrush="Gray" 
+                        BorderThickness="1" 
+                        CornerRadius="10">
+                        <ScrollViewer x:Name="PART_ContentHost"/>
+                    </Border>
+                </ControlTemplate>
+            </TextBox.Template>
+        </TextBox>
+
+        <TextBlock
+            x:Name="txtUser"
+            Text="Usuário"
+            FontFamily="Merriweather Sans"
+            FontSize="16"
+            Height="20"
+            Width="59"
+            Margin="432,297,875,435">
+        </TextBlock>
+
+        <TextBox
+            x:Name="txtBoxUser"
+            Height="42"
+            Width="500"
+            Margin="432,317,434,393"
+            FontSize="24"
+            TabIndex="1" 
+            TextChanged="txtBoxUser_TextChanged"
+            IsEnabled="True" 
+            UndoLimit="50"
+            Padding="5">
+            <TextBox.Template>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border Background="White" 
+                        BorderBrush="Gray" 
+                        BorderThickness="1" 
+                        CornerRadius="10">
+                        <ScrollViewer x:Name="PART_ContentHost"/>
+                    </Border>
+                </ControlTemplate>
+            </TextBox.Template>
+        </TextBox>
+
+        <TextBlock
+            x:Name="txtPassword"
+            Text="Senha"
+            Height="20"
+            Width="48"
+            FontFamily="Merriweather Sans"
+            FontSize="16"
+            Margin="432,386,886,346">
+        </TextBlock>
+
+        <PasswordBox
+            x:Name="pwdPassword"
+            Height="42"
+            Width="500"
+            Margin="432,406,434,304"
+            FontSize="24"
+            TabIndex="2">
+            <PasswordBox.Template>
+                <ControlTemplate>
+                    <Border
+                        Background="White"
+                        BorderBrush="Gray"
+                        BorderThickness="1"
+                        CornerRadius="10">
+                        <ScrollViewer x:Name="PART_ContentHost"/>
+                    </Border>
+                </ControlTemplate>
+            </PasswordBox.Template>
+        </PasswordBox>
+
+        <TextBlock
+            x:Name="txtConfirmPassword"
+            Text="Confirme a senha"
+            Height="20"
+            Width="134"
+            FontFamily="Merriweather Sans"
+            FontSize="16" 
+            Margin="432,476,800,256">
+        </TextBlock>
+
+        <PasswordBox
+            x:Name="pwdConfirmPassword"
+            Height="42"
+            Width="500"
+            Margin="432,496,434,214"
+            FontSize="24"
+            TabIndex="3" 
+            Panel.ZIndex="1">
+            <PasswordBox.Template>
+                <ControlTemplate>
+                    <Border
+                        Background="White"
+                        BorderBrush="Gray"
+                        BorderThickness="1"
+                        CornerRadius="10">
+                        <ScrollViewer x:Name="PART_ContentHost"/>
+                    </Border>
+                </ControlTemplate>
+            </PasswordBox.Template>
+        </PasswordBox>
+
+        <ToggleButton 
+            x:Name="toggleAdmin" 
+             Width="60" 
+             Height="30" 
+             HorizontalAlignment="Left" 
+             VerticalAlignment="Top" 
+             Margin="432,584,0,0"
+             Checked="toggleAdmin_Checked" 
+             Unchecked="toggleAdmin_Unchecked" 
+            TabIndex="4">
+            <ToggleButton.Template>
+                <ControlTemplate 
+                    TargetType="ToggleButton">
+                    <Border 
+                        Width="60"
+                        Height="30" 
+                        CornerRadius="15" 
+                        Background="LightGray"
+                        BorderBrush="DarkGray"
+                        BorderThickness="1">
+                        <Grid>
+                            <Ellipse 
+                                x:Name="ellipse" 
+                                Fill="White" 
+                                Width="26" 
+                                Height="26" 
+                                HorizontalAlignment="Left" 
+                                Margin="2"/>
+                            <ContentPresenter 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger 
+                            Property="IsChecked" 
+                            Value="True">
+                            <Setter 
+                                TargetName="ellipse" 
+                                Property="HorizontalAlignment" 
+                                Value="Right"/>
+                            <Setter 
+                                Property="Background" 
+                                Value="DeepSkyBlue"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ToggleButton.Template>
+        </ToggleButton>
+
+        <Button
+    x:Name="btnCadastrar"
+    Content="CADASTRAR"
+    FontFamily="Merriweather Sans"
+    FontSize="30"
+    Height="50"
+    Width="250"
+    Background="DeepSkyBlue"
+    BorderBrush="#FF287994"
+    Foreground="#FFFFF7F7"
+    Margin="558,644,558,58" 
+    TabIndex="5" Click="btnCadastrar_Click" Cursor="Hand">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</Window>

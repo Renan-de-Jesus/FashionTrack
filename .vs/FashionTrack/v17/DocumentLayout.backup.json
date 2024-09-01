@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "A:\\C\u002B\u002B\\FashionTrack\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D241B02A-587A-40BE-8024-B57DF927F0F1}|FashionTrack\\FashionTrack.csproj|a:\\c\u002B\u002B\\fashiontrack\\fashiontrack\\userregister.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D241B02A-587A-40BE-8024-B57DF927F0F1}|FashionTrack\\FashionTrack.csproj|solutionrelative:fashiontrack\\userregister.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D241B02A-587A-40BE-8024-B57DF927F0F1}|FashionTrack\\FashionTrack.csproj|a:\\c\u002B\u002B\\fashiontrack\\fashiontrack\\userregister.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{D241B02A-587A-40BE-8024-B57DF927F0F1}|FashionTrack\\FashionTrack.csproj|solutionrelative:fashiontrack\\userregister.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 299,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UserRegister.xaml",
+              "DocumentMoniker": "A:\\C\u002B\u002B\\FashionTrack\\FashionTrack\\UserRegister.xaml",
+              "RelativeDocumentMoniker": "FashionTrack\\UserRegister.xaml",
+              "ToolTip": "A:\\C\u002B\u002B\\FashionTrack\\FashionTrack\\UserRegister.xaml",
+              "RelativeToolTip": "FashionTrack\\UserRegister.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-09-01T20:31:52.287Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserRegister.xaml.cs",
+              "DocumentMoniker": "A:\\C\u002B\u002B\\FashionTrack\\FashionTrack\\UserRegister.xaml.cs",
+              "RelativeDocumentMoniker": "FashionTrack\\UserRegister.xaml.cs",
+              "ToolTip": "A:\\C\u002B\u002B\\FashionTrack\\FashionTrack\\UserRegister.xaml.cs*",
+              "RelativeToolTip": "FashionTrack\\UserRegister.xaml.cs*",
+              "ViewState": "AgIAAA0AAAAAAAAAAADwvygAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-01T05:18:37.44Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
