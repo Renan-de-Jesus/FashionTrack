@@ -9,18 +9,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{D241B02A-587A-40BE-8024-B57DF927F0F1}|FashionTrack\\FashionTrack.csproj|a:\\c\u002B\u002B\\fashiontrack\\fashiontrack\\userregister.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{D241B02A-587A-40BE-8024-B57DF927F0F1}|FashionTrack\\FashionTrack.csproj|solutionrelative:fashiontrack\\userregister.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D241B02A-587A-40BE-8024-B57DF927F0F1}|FashionTrack\\FashionTrack.csproj|a:\\c\u002B\u002B\\fashiontrack\\fashiontrack\\userregister.xaml||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{D241B02A-587A-40BE-8024-B57DF927F0F1}|FashionTrack\\FashionTrack.csproj|solutionrelative:fashiontrack\\userregister.xaml||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D241B02A-587A-40BE-8024-B57DF927F0F1}|FashionTrack\\FashionTrack.csproj|a:\\c\u002B\u002B\\fashiontrack\\fashiontrack\\loginwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{D241B02A-587A-40BE-8024-B57DF927F0F1}|FashionTrack\\FashionTrack.csproj|solutionrelative:fashiontrack\\loginwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D241B02A-587A-40BE-8024-B57DF927F0F1}|FashionTrack\\FashionTrack.csproj|a:\\c\u002B\u002B\\fashiontrack\\fashiontrack\\loginwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D241B02A-587A-40BE-8024-B57DF927F0F1}|FashionTrack\\FashionTrack.csproj|solutionrelative:fashiontrack\\loginwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -29,44 +17,19 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedHeight": 200,
-          "SelectedChildIndex": 4,
+          "DockedHeight": 299,
+          "SelectedChildIndex": 1,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "LoginWindow.xaml",
-              "DocumentMoniker": "A:\\C\u002B\u002B\\FashionTrack\\FashionTrack\\LoginWindow.xaml",
-              "RelativeDocumentMoniker": "FashionTrack\\LoginWindow.xaml",
-              "ToolTip": "A:\\C\u002B\u002B\\FashionTrack\\FashionTrack\\LoginWindow.xaml",
-              "RelativeToolTip": "FashionTrack\\LoginWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2024-09-01T18:55:08.354Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "LoginWindow.xaml.cs",
-              "DocumentMoniker": "A:\\C\u002B\u002B\\FashionTrack\\FashionTrack\\LoginWindow.xaml.cs",
-              "RelativeDocumentMoniker": "FashionTrack\\LoginWindow.xaml.cs",
-              "ToolTip": "A:\\C\u002B\u002B\\FashionTrack\\FashionTrack\\LoginWindow.xaml.cs",
-              "RelativeToolTip": "FashionTrack\\LoginWindow.xaml.cs",
-              "ViewState": "AgIAACsAAAAAAAAAAAAqwEMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-01T18:44:29.152Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "UserRegister.xaml",
               "DocumentMoniker": "A:\\C\u002B\u002B\\FashionTrack\\FashionTrack\\UserRegister.xaml",
               "RelativeDocumentMoniker": "FashionTrack\\UserRegister.xaml",
-              "ToolTip": "A:\\C\u002B\u002B\\FashionTrack\\FashionTrack\\UserRegister.xaml*",
-              "RelativeToolTip": "FashionTrack\\UserRegister.xaml*",
+              "ToolTip": "A:\\C\u002B\u002B\\FashionTrack\\FashionTrack\\UserRegister.xaml",
+              "RelativeToolTip": "FashionTrack\\UserRegister.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2024-09-01T18:19:47.268Z",
+              "WhenOpened": "2024-09-01T20:31:52.287Z",
               "EditorCaption": ""
             },
             {
@@ -77,43 +40,9 @@
               "RelativeDocumentMoniker": "FashionTrack\\UserRegister.xaml.cs",
               "ToolTip": "A:\\C\u002B\u002B\\FashionTrack\\FashionTrack\\UserRegister.xaml.cs*",
               "RelativeToolTip": "FashionTrack\\UserRegister.xaml.cs*",
-              "ViewState": "AgIAAA0AAAAAAAAAAADwvycAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAADwvygAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-01T05:18:37.44Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "Orientation": 0,
-      "VerticalTabListWidth": 256,
-      "FloatingWindowState": {
-        "Id": "821a026e-130c-4ebf-9522-f3f5ee58322e",
-        "Display": 1,
-        "X": 20,
-        "Y": 85,
-        "Width": 800,
-        "Height": 600,
-        "WindowState": 2
-      },
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "UserRegister.xaml",
-              "DocumentMoniker": "A:\\C\u002B\u002B\\FashionTrack\\FashionTrack\\UserRegister.xaml",
-              "RelativeDocumentMoniker": "FashionTrack\\UserRegister.xaml",
-              "ToolTip": "A:\\C\u002B\u002B\\FashionTrack\\FashionTrack\\UserRegister.xaml*",
-              "RelativeToolTip": "FashionTrack\\UserRegister.xaml*",
-              "ViewState": "AgIAAEIAAAAAAAAAAAAAANMAAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2024-09-01T18:26:21.14Z",
               "EditorCaption": ""
             }
           ]

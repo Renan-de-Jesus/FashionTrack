@@ -32,13 +32,6 @@ namespace FashionTrack
 
         private void btnCadastrar_Click(object sender, RoutedEventArgs e)
         {
-            if((txtBoxUser.Text != null) && (txtBoxUser.Text != null) && (txtPassword.Text != null) && (txtConfirmPassword.Text != null))
-            {
-                if(txtPassword.Text == txtConfirmPassword.Text)
-                {
-                    MessageBox.Show("Usuário cadastrado com sucesso");
-                }
-            }
         }
     }
 }

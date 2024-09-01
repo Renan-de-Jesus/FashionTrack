@@ -109,7 +109,7 @@
         </TextBlock>
 
         <PasswordBox
-            x:Name="pwdPassord"
+            x:Name="pwdPassword"
             Height="42"
             Width="500"
             Margin="432,406,434,304"
@@ -220,7 +220,7 @@
     BorderBrush="#FF287994"
     Foreground="#FFFFF7F7"
     Margin="558,644,558,58" 
-    TabIndex="5" Click="btnCadastrar_Click">
+    TabIndex="5" Click="btnCadastrar_Click" Cursor="Hand">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}"
