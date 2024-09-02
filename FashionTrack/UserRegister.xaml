@@ -253,7 +253,7 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Background="#2888E3"
-            Click="btnLogin_Click"
+            Click="btnCadastrar_Click"
             Content="Cadastrar"
             FontSize="16"
             Foreground="White"

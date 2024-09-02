@@ -110,23 +110,20 @@
                 </ControlTemplate>
             </TextBox.Template>
         </TextBox>
-        <TextBlock
-            x:Name="txtUser"
-            Height="20"
-            Margin="465,236,832,502"
-            FontFamily="Merriweather Sans"
-            FontSize="16"
-            RenderTransformOrigin="0.5,-1.848"
-            Text="Usuário" />
-        <TextBlock
-            x:Name="txtPassword"
-            Width="48"
-            Height="20"
-            Margin="465,354,843,384"
-            FontFamily="Merriweather Sans"
-            FontSize="16"
-            RenderTransformOrigin="0.5,-1.848"
-            Text="Senha" />
+        <Label
+            Width="71"
+            Margin="450,225,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Usuário"
+            FontSize="16" />
+        <Label
+            Width="59"
+            Margin="450,343,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Senha"
+            FontSize="16" />
 
         <TextBox
             x:Name="passwordPlaceholder"
