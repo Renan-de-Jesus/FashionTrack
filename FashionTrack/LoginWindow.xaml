@@ -135,7 +135,7 @@
             VerticalAlignment="Top"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
-            FontSize="16"
+            FontSize="14"
             GotFocus="PasswordPlaceholder_GotFocus"
             Opacity=".6"
             Text="Senha">

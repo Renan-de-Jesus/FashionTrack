@@ -54,6 +54,14 @@
     </Window.Resources>
 
     <Grid x:Name="registerScreen">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
         <Rectangle
             Width="550"
             Height="644"
@@ -218,9 +226,10 @@
             <ToggleButton.Template>
                 <ControlTemplate TargetType="ToggleButton">
                     <Border
+                        x:Name="toggleBorder"
                         Width="60"
                         Height="30"
-                        Background="LightGray"
+                        Background="DarkGray"
                         BorderBrush="DarkGray"
                         BorderThickness="1"
                         CornerRadius="15">
@@ -229,7 +238,7 @@
                                 x:Name="ellipse"
                                 Width="26"
                                 Height="26"
-                                Margin="2"
+                                Margin="0,1,0,1"
                                 HorizontalAlignment="Left"
                                 Fill="White" />
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -238,7 +247,8 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="ellipse" Property="HorizontalAlignment" Value="Right" />
-                            <Setter Property="Background" Value="DeepSkyBlue" />
+                            <Setter TargetName="toggleBorder" Property="Background" Value="DeepSkyBlue" />
+                            <Setter TargetName="toggleBorder" Property="BorderBrush" Value="DodgerBlue" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -253,7 +263,7 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Background="#2888E3"
-            Click="btnCadastrar_Click"
+            Click="btnLogin_Click"
             Content="Cadastrar"
             FontSize="16"
             Foreground="White"
