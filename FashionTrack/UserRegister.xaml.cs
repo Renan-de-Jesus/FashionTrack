@@ -38,6 +38,41 @@ namespace FashionTrack
             string confirmPassword = pwdConfirmPassword.Password;
             bool isAdmin = toggleAdmin.IsChecked == true;
 
+            if (string.IsNullOrWhiteSpace(name))
+    {
+        MessageBox.Show("O campo Nome está vazio.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+        txtBoxName.Focus();
+        return;
+    }
+
+    if (string.IsNullOrWhiteSpace(username))
+    {
+        MessageBox.Show("O campo Usuário está vazio.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+        txtBoxUser.Focus();
+        return;
+    }
+
+    if (string.IsNullOrWhiteSpace(password))
+    {
+        MessageBox.Show("O campo Senha está vazio.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+        pwdPassword.Focus();
+        return;
+    }
+
+    if (string.IsNullOrWhiteSpace(confirmPassword))
+    {
+        MessageBox.Show("O campo Confirme a senha está vazio.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+        pwdConfirmPassword.Focus();
+        return;
+    }
+
+    if (password != confirmPassword)
+    {
+        MessageBox.Show("As senhas não coincidem.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+        return;
+    }
+
+
             string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -51,26 +86,19 @@ namespace FashionTrack
                     command.Parameters.AddWithValue("@username", username);
                     command.Parameters.AddWithValue("@Password", password);
                     command.Parameters.AddWithValue("@IsAdmin", isAdmin);
+                            int result = command.ExecuteNonQuery();
 
-                    if (password == confirmPassword)
-                    {
-                        int result = command.ExecuteNonQuery();
+                            if ((result > 0))
+                            {
 
-                        if ((result > 0))
-                        {
+                                MessageBox.Show("Usuário cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Falha ao cadastrar o usuário.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
 
-                            MessageBox.Show("Usuário cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Falha ao cadastrar o usuário.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
 
-                    }
-                    else
-                    {
-                        MessageBox.Show("As senhas não coincidem.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
                 }
                 catch (SqlException ex)
                 {
