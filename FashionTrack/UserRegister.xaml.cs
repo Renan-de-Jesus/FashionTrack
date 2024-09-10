@@ -13,6 +13,7 @@ namespace FashionTrack
         {
             InitializeComponent();
             toggleAdmin.IsChecked = false;
+            txtBoxName.Focus();
         }
 
         private void toggleAdmin_Checked(object sender, RoutedEventArgs e)

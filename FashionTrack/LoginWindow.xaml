@@ -56,7 +56,7 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    <Grid x:Name="loginScreen" Margin="0,0,10,-6">
+    <Grid x:Name="loginScreen" Margin="0,0,10,-6" KeyDown="loginScreen_KeyDown">
 
         <Rectangle
             Width="550"

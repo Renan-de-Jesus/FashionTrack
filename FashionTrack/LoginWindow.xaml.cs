@@ -93,8 +93,8 @@ namespace FashionTrack
 
                         if (count == 1)
                         {
-                        RegisterWindow registerUser = new RegisterWindow();
-                        registerUser.Show();
+                        MainWindow home = new MainWindow();
+                        home.Show();
                         Close();
                         }
                         else
@@ -112,6 +112,13 @@ namespace FashionTrack
                 }
             }
 
+        private void loginScreen_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                btnLogin_Click(sender, e);
+            }
+        }
     }
 
 }

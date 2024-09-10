@@ -1,0 +1,54 @@
+﻿<Window x:Class="FashionTrack.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FashionTrack"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Home" Height="768" Width="1366">
+    <Grid x:Name="Home">
+        <Rectangle HorizontalAlignment="Left"
+                   Height="768"
+                   Width="72"
+                   Stroke="Black"
+                   Panel.ZIndex="0"
+                   VerticalAlignment="Top" Margin="-1,-13,0,0">
+            <Rectangle.Fill>
+                <ImageBrush/>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle x:Name="rtgLogo" 
+                   HorizontalAlignment="Left" 
+                   Height="60"
+                    Width="71"
+                   Margin="0,26,0,0"
+                   VerticalAlignment="Top"
+                   Panel.ZIndex="-1">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/images/Logo.jpeg" Stretch="UniformToFill"/>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle HorizontalAlignment="Left" Height="51" Margin="-11,682,0,0" VerticalAlignment="Top" Width="82" Panel.ZIndex="-1" Cursor="Hand">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/images/pontos-de-menu.png" Stretch="Uniform"/>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle x:Name="btnSale" HorizontalAlignment="Left" Height="44" Margin="5,252,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="-0.02,0.66" Cursor="Hand">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/images/bolsa-de-compras.png" Stretch="Uniform"/>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle x:Name="btnAddNewUser" HorizontalAlignment="Left" Height="44" Margin="10,320,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="0.492,0.614" MouseLeftButtonDown="btnAddNewUser_MouseLeftButtonDown" Cursor="Hand" MouseEnter="btnAddNewUser_MouseEnter">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/images/adicionar-usuario.png" Stretch="Uniform"/>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle x:Name="btnStorage" HorizontalAlignment="Left" Height="44" Margin="5,191,0,0" VerticalAlignment="Top" Width="50" Cursor="Hand">
+            <Rectangle.Fill>
+                <ImageBrush Stretch="Uniform" ImageSource="/images/caixa.png"/>
+            </Rectangle.Fill>
+        </Rectangle>
+
+    </Grid>
+</Window>

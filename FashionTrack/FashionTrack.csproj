@@ -10,7 +10,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="adicionar-usuario.png" />
+    <None Remove="bolsa-de-compras.png" />
+    <None Remove="caixa.png" />
+    <None Remove="pontos-de-menu.png" />
+    <None Remove="WhatsApp Image 2024-09-09 at 7.55.18 PM.jpeg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="images\adicionar-usuario.png" />
+    <Resource Include="images\bolsa-de-compras.png" />
+    <Resource Include="images\caixa.png" />
     <Resource Include="images\fav.ico" />
+    <Resource Include="images\pontos-de-menu.png" />
+    <Resource Include="images\Logo.jpeg" />
   </ItemGroup>
 
   <ItemGroup>

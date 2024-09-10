@@ -20,5 +20,16 @@ namespace FashionTrack
         {
             InitializeComponent();
         }
+
+        private void btnAddNewUser_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            RegisterWindow registerNewuser = new RegisterWindow();
+            registerNewuser.Show();
+        }
+
+        private void btnAddNewUser_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 }
