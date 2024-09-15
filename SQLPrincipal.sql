@@ -73,7 +73,7 @@ VALUES
 		('Curitiba', 'PR'),
 		('Florianópolis', 'SC'),
 		('Belo Horizonte', 'MG'),
-		('Brasília', 'DF'),
+		('Brasilia', 'DF'),
 		('Salvador', 'BA'),
 		('Fortaleza', 'CE');
 
@@ -84,13 +84,13 @@ VALUES
 
 INSERT INTO Cliente (Nome, Sobrenome, CPF, Telefone, Endereco, ID_Cidade)
 VALUES
-		('João', 'Silva', '12345678901', '51999991111', 'Rua Verde, 50', 3),    -- São Paulo
+		('Joao', 'Silva', '12345678901', '51999991111', 'Rua Verde, 50', 3),    -- São Paulo
 		('Maria', 'Oliveira', '98765432100', '51999992222', 'Av. Paulista, 101', 4);  -- Rio de Janeiro
 
 INSERT INTO Produto (CodigoMarca, Cor, Descricao, Tamanho, Genero)
 VALUES
-		(NULL, 'Azul', 'Camiseta Básica', 'M', 'Masculino'),  -- Produto sem Código de Marca
-		('001', 'Preto', 'Calça Jeans', 'G', 'Feminino'),
+		(NULL, 'Azul', 'Camiseta Basica', 'M', 'Masculino'),  -- Produto sem Código de Marca
+		('001', 'Preto', 'Calca Jeans', 'G', 'Feminino'),
 		('002', 'Vermelho', 'Vestido Longo', 'P', 'Feminino'),
-		('003', 'Branco', 'Tênis Esportivo', '42', 'Masculino'),
+		('003', 'Branco', 'Tenis Esportivo', '42', 'Masculino'),
 		(NULL, 'Verde', 'Jaqueta de Couro', 'GG', 'Unissex');  -- Produto sem Código de Marca
