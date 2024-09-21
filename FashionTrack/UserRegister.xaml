@@ -18,15 +18,15 @@
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
                                     To="#1B8FFC"
-                                    Duration="0:0:0.3" />
+                                    Duration="0:0:0.1" />
                                 <DoubleAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Opacity)"
                                     To="0.69"
-                                    Duration="0:0:0.3" />
+                                    Duration="0:0:0.1" />
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"
                                     To="White"
-                                    Duration="0:0:0.3" />
+                                    Duration="0:0:0.1" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.EnterActions>
@@ -36,15 +36,15 @@
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
                                     To="#2888E3"
-                                    Duration="0:0:0.3" />
+                                    Duration="0:0:0.1" />
                                 <DoubleAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Opacity)"
                                     To="1.0"
-                                    Duration="0:0:0.3" />
+                                    Duration="0:0:0.1" />
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"
                                     To="White"
-                                    Duration="0:0:0.3" />
+                                    Duration="0:0:0.1" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.ExitActions>
@@ -98,8 +98,13 @@
             Width="500"
             Height="42"
             Margin="432,196,434,514"
+            Padding="5"
+            HorizontalAlignment="Center"
+            VerticalAlignment="top"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
             Panel.ZIndex="1"
-            FontSize="24"
+            FontSize="16"
             TabIndex="0"
             Text="">
             <TextBox.Template>
@@ -132,7 +137,11 @@
             Height="42"
             Margin="433,295,433,415"
             Padding="5"
-            FontSize="24"
+            HorizontalAlignment="Center"
+            VerticalAlignment="top"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            FontSize="16"
             IsEnabled="True"
             TabIndex="1"
             TextChanged="txtBoxUser_TextChanged"
@@ -166,7 +175,12 @@
             Width="500"
             Height="42"
             Margin="432,391,434,319"
-            FontSize="24"
+            Padding="5"
+            HorizontalAlignment="Center"
+            VerticalAlignment="top"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            FontSize="16"
             TabIndex="2">
             <PasswordBox.Template>
                 <ControlTemplate>
@@ -197,8 +211,13 @@
             Width="500"
             Height="42"
             Margin="433,486,433,224"
+            Padding="5"
+            HorizontalAlignment="Center"
+            VerticalAlignment="top"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
             Panel.ZIndex="1"
-            FontSize="24"
+            FontSize="16"
             TabIndex="3">
             <PasswordBox.Template>
                 <ControlTemplate>
@@ -213,11 +232,21 @@
             </PasswordBox.Template>
         </PasswordBox>
 
+        <TextBlock
+            Width="61"
+            Height="22"
+            Margin="438,558,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            FontFamily="Merriweather Sans"
+            FontSize="16"
+            Text="Admin"
+            TextWrapping="Wrap" />
         <ToggleButton
             x:Name="toggleAdmin"
             Width="60"
             Height="30"
-            Margin="440,555,0,0"
+            Margin="499,554,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Checked="toggleAdmin_Checked"
@@ -231,35 +260,76 @@
                         Height="30"
                         Background="DarkGray"
                         BorderBrush="DarkGray"
-                        BorderThickness="1"
+                        BorderThickness="2"
                         CornerRadius="15">
                         <Grid>
                             <Ellipse
                                 x:Name="ellipse"
-                                Width="26"
-                                Height="26"
-                                Margin="0,1,0,1"
-                                HorizontalAlignment="Left"
-                                Fill="White" />
+                                Width="20"
+                                Height="20"
+                                Margin="3,3,33,3"
+                                Fill="White">
+                                <Ellipse.RenderTransform>
+                                    <TranslateTransform />
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="ellipse" Property="HorizontalAlignment" Value="Right" />
-                            <Setter TargetName="toggleBorder" Property="Background" Value="DeepSkyBlue" />
-                            <Setter TargetName="toggleBorder" Property="BorderBrush" Value="DodgerBlue" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ellipse"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                            To="30"
+                                            Duration="0:0:0.1" />
+                                        <ColorAnimation
+                                            Storyboard.TargetName="toggleBorder"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                            To="#2888E3"
+                                            Duration="0:0:0.1" />
+                                        <ColorAnimation
+                                            Storyboard.TargetName="toggleBorder"
+                                            Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                            To="DodgerBlue"
+                                            Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ellipse"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                            To="0"
+                                            Duration="0:0:0.1" />
+                                        <ColorAnimation
+                                            Storyboard.TargetName="toggleBorder"
+                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                            To="DarkGray"
+                                            Duration="0:0:0.1" />
+                                        <ColorAnimation
+                                            Storyboard.TargetName="toggleBorder"
+                                            Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                            To="DarkGray"
+                                            Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </ToggleButton.Template>
         </ToggleButton>
-
         <Button
             x:Name="btnCadastrar"
             Width="250"
             Height="50"
-            Margin="0,595,0,0"
+            Margin="0,613,0,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Background="#2888E3"

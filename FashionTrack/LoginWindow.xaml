@@ -93,7 +93,7 @@
             VerticalAlignment="top"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
-            FontSize="14"
+            FontSize="16"
             GotFocus="RemoveText"
             LostFocus="AddText"
             Text="Usuário"
