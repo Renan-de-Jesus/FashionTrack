@@ -82,7 +82,6 @@ namespace FashionTrack
             {
                 try
                 {
-                    //Abre uma conexão
                     connection.Open();
                     string query = "SELECT COUNT(1) FROM Usuarios WHERE Usuario = @username AND Senha = HASHBYTES('SHA2_256', @password)";
 
@@ -95,7 +94,6 @@ namespace FashionTrack
                         if (count == 1)
                         {
                         RegisterWindow registerUser = new RegisterWindow();
-
                         registerUser.Show();
                         Close();
                         }

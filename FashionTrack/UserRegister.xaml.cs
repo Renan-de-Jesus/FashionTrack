@@ -17,12 +17,12 @@ namespace FashionTrack
 
         private void toggleAdmin_Checked(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void toggleAdmin_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void txtBoxUser_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
