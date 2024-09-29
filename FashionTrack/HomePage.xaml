@@ -1,0 +1,114 @@
+﻿<Window
+    x:Class="FashionTrack.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:FashionTrack"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="HomePage"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Grid
+        x:Name="HomeScreen"
+        Margin="0,0,10,10"
+        Background="White">
+        <Rectangle
+            Width="71"
+            Height="768"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Stroke="Black" />
+        <TextBox
+            x:Name="MyTextBox1"
+            Width="210"
+            Height="56"
+            Margin="113,56,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text="Numero do comprador"
+            TextWrapping="Wrap" />
+        <TextBox
+            Width="210"
+            Height="56"
+            Margin="347,56,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text="TextBox"
+            TextWrapping="Wrap" />
+        <TextBox
+            Width="956"
+            Height="40"
+            Margin="113,153,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text="Numero do comprador"
+            TextChanged="TextBox_TextChanged"
+            TextWrapping="Wrap" />
+        <Image
+            Width="24"
+            Height="24"
+            Margin="24,153,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Source="images/icons/package.png" />
+        <Image
+            Width="24"
+            Height="24"
+            Margin="24,219,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Source="images/icons/shopping-bag.png" />
+        <Image
+            Width="24"
+            Height="24"
+            Margin="24,278,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Source="images/icons/users.png" />
+        <Image
+            Width="24"
+            Height="24"
+            Margin="359,78,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Source="images/icons/person.png" />
+        <Image
+            Width="24"
+            Height="24"
+            Margin="123,78,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            RenderTransformOrigin="-0.354,-7.312"
+            Source="images/icons/truck.png" />
+
+        <TextBlock
+            Margin="142,509,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text="Selecionados"
+            TextWrapping="Wrap" />
+        <Image
+            Width="47"
+            Height="48"
+            Margin="97,509,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            RenderTransformOrigin="-0.354,-7.312"
+            Source="images/icons/lightBox.png" />
+        <Rectangle
+            Width="256"
+            Height="736"
+            Margin="1090,0,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Stroke="Black" />
+        <Rectangle
+            Width="100"
+            Height="100"
+            Margin="1431,228,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Stroke="Black" />
+
+    </Grid>
+</Window>

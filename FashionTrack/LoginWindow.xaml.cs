@@ -91,26 +91,26 @@ namespace FashionTrack
 
                     int count = Convert.ToInt32(comando.ExecuteScalar());
 
-                        if (count == 1)
-                        {
-                        RegisterWindow registerUser = new RegisterWindow();
-                        registerUser.Show();
-                        Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Usuário ou senha incorretos. Tente novamente!", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                            lblUser.Text = "";
-                            passwordText.Password = "";
-                            lblUser.Focus();
-                        }
-                    }
-                    catch (SqlException ex)
+                    if (count == 1)
                     {
-                        MessageBox.Show($"Erro de SQL: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                        HomePage homePage = new HomePage();
+                        homePage.Show();
+                        Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Usuário ou senha incorretos. Tente novamente!", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                        lblUser.Text = "";
+                        passwordText.Password = "";
+                        lblUser.Focus();
                     }
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao conectar ao banco de dados: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
+        }
 
     }
 
