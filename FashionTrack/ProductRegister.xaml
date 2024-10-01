@@ -1,0 +1,25 @@
+﻿<Window x:Class="FashionTrack.ProductRegister"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Cadastro de Produtos" Height="350" Width="400">
+    <Grid>
+        <StackPanel Margin="10">
+            <TextBox x:Name="CodigoMarcaTextBox" Text="Código da Marca" Margin="0,5" TextChanged="CodigoMarcaTextBox_TextChanged"/>
+            <TextBox x:Name="CorTextBox" Text="Cor" Margin="0,5" TextChanged="CorTextBox_TextChanged"/>
+            <TextBox x:Name="DescricaoTextBox" Text="Descrição" Margin="0,5" TextChanged="DescricaoTextBox_TextChanged"/>
+            <ComboBox x:Name="TamanhoComboBox" Margin="0,5" SelectionChanged="TamanhoComboBox_SelectionChanged">
+                <ComboBoxItem Content="P"/>
+                <ComboBoxItem Content="M"/>
+                <ComboBoxItem Content="G"/>
+                <ComboBoxItem Content="GG"/>
+            </ComboBox>
+            <ComboBox x:Name="GeneroComboBox" Margin="0,5" SelectionChanged="GeneroComboBox_SelectionChanged">
+                <ComboBoxItem Content="Masculino"/>
+                <ComboBoxItem Content="Feminino"/>
+                <ComboBoxItem Content="Unissex"/>
+            </ComboBox>
+            <TextBox x:Name="PrecoTextBox" Text="Preço" Margin="0,5" TextChanged="PrecoTextBox_TextChanged"/>
+            <Button Content="Salvar" Click="SalvarButton_Click" Margin="0,5"/>
+        </StackPanel>
+    </Grid>
+</Window>
