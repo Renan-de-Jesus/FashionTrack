@@ -9,7 +9,7 @@ CREATE TABLE Usuarios (
     NomeCompleto VARCHAR(100) NOT NULL,
     Usuario VARCHAR(50) NOT NULL UNIQUE,
     Senha VARCHAR(255) NOT NULL,
-    Adm BIT NOT NULL,  -- 0 para n�o, 1 para sim
+    Adm BIT NOT NULL,  -- 0 para nao, 1 para sim
     CONSTRAINT PK_Usuario PRIMARY KEY (ID_Usuario)
 );
 
@@ -63,7 +63,7 @@ CREATE TABLE FornecedorProduto (
     CONSTRAINT FK_FornecedorProduto_Produto FOREIGN KEY (ID_Produto) REFERENCES Produto(ID_Produto)
 );
 
-INSERT Usuarios (NomeCompleto, Usuario, Senha, Adm)
+INSERT INTO Usuarios(NomeCompleto, Usuario, Senha, Adm)
 VALUES
 		('admin', 'admin', 'admin', 1),
 		('Guilherme Cella', 'GuiCella', '1234', 1),
@@ -73,10 +73,10 @@ INSERT INTO Cidade (Descricao, UF)
 VALUES 
 		('Erechim', 'RS'),
 		('Porto Alegre', 'RS'),
-		('S�o Paulo', 'SP'),
+		('Sao Paulo', 'SP'),
 		('Rio de Janeiro', 'RJ'),
 		('Curitiba', 'PR'),
-		('Florian�polis', 'SC'),
+		('Florianopolis', 'SC'),
 		('Belo Horizonte', 'MG'),
 		('Brasilia', 'DF'),
 		('Salvador', 'BA'),
@@ -89,13 +89,13 @@ VALUES
 
 INSERT INTO Cliente (Nome, Sobrenome, CPF, Telefone, Endereco, ID_Cidade)
 VALUES
-		('Joao', 'Silva', '12345678901', '51999991111', 'Rua Verde, 50', 3),    -- S�o Paulo
+		('Joao', 'Silva', '12345678901', '51999991111', 'Rua Verde, 50', 3),    -- Sao Paulo
 		('Maria', 'Oliveira', '98765432100', '51999992222', 'Av. Paulista, 101', 4);  -- Rio de Janeiro
 
-INSERT INTO Produto (CodigoMarca, Cor, Descricao, Tamanho, Genero, Preco)
+INSERT INTO Produto(CodigoMarca, Cor, Descricao, Tamanho, Genero, Preco)
 VALUES
-		(NULL, 'Azul', 'Camiseta Basica', 'M', 'Masculino',85.00),  -- Produto sem C�digo de Marca
+		(NULL, 'Azul', 'Camiseta Basica', 'M', 'Masculino',85.00),  -- Produto sem Codigo de Marca
 		('001', 'Preto', 'Calca Jeans', 'G', 'Feminino', 95.00),
 		('002', 'Vermelho', 'Vestido Longo', 'P', 'Feminino',96.00),
 		('003', 'Branco', 'Tenis Esportivo', '42', 'Masculino',85.52),
-		(NULL, 'Verde', 'Jaqueta de Couro', 'GG', 'Unissex',96.52);  -- Produto sem C�digo de Marca
+		(NULL, 'Verde', 'Jaqueta de Couro', 'GG', 'Unissex',96.52);  -- Produto sem Codigo de Marca
