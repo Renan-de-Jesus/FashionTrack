@@ -1,6 +1,9 @@
 CREATE DATABASE FashionTrack
 GO
 
+USE FashionTrack
+GO
+
 CREATE TABLE Usuarios (
     ID_Usuario INT IDENTITY(1,1),
     NomeCompleto VARCHAR(100) NOT NULL,
@@ -60,10 +63,11 @@ CREATE TABLE FornecedorProduto (
     CONSTRAINT FK_FornecedorProduto_Produto FOREIGN KEY (ID_Produto) REFERENCES Produto(ID_Produto)
 );
 
-INSERT Usuario (NomeCompleto, Usuario, Senha, Adm)
+INSERT Usuarios (NomeCompleto, Usuario, Senha, Adm)
 VALUES
 		('admin', 'admin', 'admin', 1),
-		('Guilherme Cella', 'GuiCella', '1234', 1)
+		('Guilherme Cella', 'GuiCella', '1234', 1),
+		('gui', 'gui', 'gui', 1)
 
 INSERT INTO Cidade (Descricao, UF)
 VALUES 
@@ -88,7 +92,7 @@ VALUES
 		('Joao', 'Silva', '12345678901', '51999991111', 'Rua Verde, 50', 3),    -- S�o Paulo
 		('Maria', 'Oliveira', '98765432100', '51999992222', 'Av. Paulista, 101', 4);  -- Rio de Janeiro
 
-INSERT INTO Produto (CodigoMarca, Cor, Descricao, Tamanho, Genero)
+INSERT INTO Produto (CodigoMarca, Cor, Descricao, Tamanho, Genero, Preco)
 VALUES
 		(NULL, 'Azul', 'Camiseta Basica', 'M', 'Masculino',85.00),  -- Produto sem C�digo de Marca
 		('001', 'Preto', 'Calca Jeans', 'G', 'Feminino', 95.00),

@@ -21,4 +21,10 @@
     <Using Include="System.Data.SqlClient" />
   </ItemGroup>
 
+<ItemGroup>
+  <Resource Include="images\package.png" />
+  <Resource Include="images\shopping-bag.png" />
+  <Resource Include="images\users.png" />
+  <Resource Include="images\lightbox.png" />
+</ItemGroup>
 </Project>
