@@ -1,7 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,99 +18,148 @@ using System.Windows.Shapes;
 
 namespace FashionTrack
 {
-    /// <summary>
-    /// Interaction logic for CustomerRegistration.xaml
-    /// </summary>
     public partial class CustomerRegistration : Window
     {
         public CustomerRegistration()
         {
             InitializeComponent();
+            fillComboBox();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void fillComboBox()
         {
-
-        }
-
-        private void secundNameTxtBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void cpfTxtBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void phoneTxtBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void addressTxtBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void saveBtn_Click(object sender, RoutedEventArgs e)
-        {
-            string firstName = firstNameTxtBox.Text;
-            string secundName = secundNameTxtBox.Text;
-            string cpf = cpfTxtBox.Text;
-            string phone = phoneTxtBox.Text;
-            string address = addressTxtBox.Text;
-
-            if (string.IsNullOrEmpty(firstName))
-            {
-                MessageBox.Show("Por favor, preencha o nome do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                firstNameTxtBox.Focus();
-                return;
-            }
-
-            if (string.IsNullOrEmpty(secundName))
-            {
-                MessageBox.Show("Por favor, preencha o sobrenome do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                secundNameTxtBox.Focus();
-                return;
-            }
-
-            if (string.IsNullOrEmpty(cpf))
-            {
-                MessageBox.Show("Por favor, preencha o CPF do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                cpfTxtBox.Focus();
-                return;
-            }
-
-            if (string.IsNullOrEmpty(phone))
-            {
-                MessageBox.Show("Por favor, preencha o telefone do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                phoneTxtBox.Focus();
-                return;
-            }
-
-            if (string.IsNullOrEmpty(address))
-            {
-                MessageBox.Show("Por favor, preencha o endereço do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                addressTxtBox.Focus();
-                return;
-            }
-
             string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
             using (SqlConnection connection = new SqlConnection(connectionString))
                 try
                 {
                     connection.Open();
-
-                    string checkCustomerQuerry = "SELECT * FROM Produto WHERE CPF = @cpf";
-                    SqlCommand checkCustomerCommand = new SqlCommand(checkCustomerQuerry,connection);
-                    checkCustomerCommand.Parameters.AddWithValue("@cpf", cpf);
+                    string cityQuery = "SELECT ID_Cidade, Descricao FROM Cidade";
+                    SqlCommand cityCommand = new SqlCommand(cityQuery, connection);
+                    DataTable dt = new DataTable();
+                    SqlDataAdapter adapter = new SqlDataAdapter(cityCommand);
+                    adapter.Fill(dt);
+                    cityCbx.ItemsSource = dt.DefaultView;
+                    cityCbx.DisplayMemberPath = "Descricao";
+                    cityCbx.SelectedValuePath = "ID_Cidade";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
         }
+
+        private void saveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string firstName = firstNameTxtBox.Text;
+                string secundName = secundNameTxtBox.Text;
+                string cpf = cpfTxtBox.Text;
+                string phone = phoneTxt.Text;
+                string address = addressTxtBox.Text;
+
+                cpf = cpf.Replace(".", "").Replace("-", "");
+
+                if (string.IsNullOrEmpty(firstName))
+                {
+                    MessageBox.Show("Por favor, preencha o nome do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    firstNameTxtBox.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(secundName))
+                {
+                    MessageBox.Show("Por favor, preencha o sobrenome do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    secundNameTxtBox.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(cpf))
+                {
+                    MessageBox.Show("Por favor, preencha o CPF do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    cpfTxtBox.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(phone))
+                {
+                    MessageBox.Show("Por favor, preencha o telefone do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    phoneTxt.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(address))
+                {
+                    MessageBox.Show("Por favor, preencha o endereço do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    addressTxtBox.Focus();
+                    return;
+                }
+
+                if (cityCbx.SelectedValue == null)
+                {
+                    MessageBox.Show("Por favor, selecione uma cidade!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    cityCbx.Focus();
+                    return;
+                }
+
+                int selectCityId = (int)cityCbx.SelectedValue;
+
+                string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    try
+                    {
+                        connection.Open();
+
+                        string checkCustomerQuery = "SELECT COUNT(*) FROM Cliente WHERE CPF = @CPF";
+                        SqlCommand checkCustomerCommand = new SqlCommand(checkCustomerQuery, connection);
+                        checkCustomerCommand.Parameters.AddWithValue("@CPF", cpf);
+
+                        object result = checkCustomerCommand.ExecuteScalar();
+                        int customerCount = result != null ? Convert.ToInt32(result) : 0;
+
+                        if (customerCount > 0)
+                        {
+                            MessageBox.Show("Cliente já cadastrado com este CPF.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        else
+                        {
+                            string saveCustomerQuery = "INSERT INTO Cliente (Nome, Sobrenome, CPF, Telefone, Endereco, ID_Cidade) " +
+                                                        "VALUES (@firstName, @secundName, @CPF, @phone, @address, @selectCityId)";
+
+                            SqlCommand saveCustomerCommand = new SqlCommand(saveCustomerQuery, connection);
+
+                            saveCustomerCommand.Parameters.AddWithValue("@firstName", firstName);
+                            saveCustomerCommand.Parameters.AddWithValue("@secundName", secundName);
+                            saveCustomerCommand.Parameters.AddWithValue("@CPF", cpf);
+                            saveCustomerCommand.Parameters.AddWithValue("@phone", phone);
+                            saveCustomerCommand.Parameters.AddWithValue("@address", address);
+                            saveCustomerCommand.Parameters.AddWithValue("@selectCityId", selectCityId);
+
+                            int rowsAffected = saveCustomerCommand.ExecuteNonQuery();
+
+                            if (rowsAffected > 0)
+                            {
+                                MessageBox.Show("Cliente cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Erro ao cadastrar o cliente.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
+                    }
+                    catch (SqlException sqlEx)
+                    {
+                        MessageBox.Show($"Erro de SQL: {sqlEx.Message}", "SQL Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro geral: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
     }
 }
