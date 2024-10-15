@@ -10,6 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="add.png" />
+    <None Remove="images\add.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="images\add.png" />
     <Resource Include="images\fav.ico" />
   </ItemGroup>
 

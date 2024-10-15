@@ -1,0 +1,71 @@
+﻿<Window
+    x:Class="FashionTrack.CityRegister"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:FashionTrack"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Cadastro de Cidades"
+    Width="1280"
+    Height="766"
+    mc:Ignorable="d">
+    <Grid>
+        <Button
+            x:Name="saveBtn"
+            Width="196"
+            Height="94"
+            Margin="156,510,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Salvar" Click="saveBtn_Click" />
+        <Button
+            x:Name="deleteBtn"
+            Width="196"
+            Height="94"
+            Margin="806,510,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Deletar" Click="deleteBtn_Click" />
+        <TextBox
+            x:Name="idTxt"
+            Width="120"
+            Height="50"
+            Margin="784,248,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            VerticalContentAlignment="Center"
+            HorizontalContentAlignment="Center"
+            FontSize="16"
+            Text="ID CIDADE"
+            TextWrapping="Wrap" />
+        <TextBox
+            x:Name="cityTxt"
+            Width="162"
+            Height="50"
+            Margin="394,248,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            FontSize="16"
+            Text="NOME DA CIDADE"
+            TextWrapping="Wrap" />
+        <TextBox
+            x:Name="ufTxt"
+            Width="120"
+            Height="50"
+            Margin="622,248,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            FontSize="16"
+            Text="UF"
+            TextWrapping="Wrap" />
+        <Button
+            x:Name="searchCityBtn"
+            Width="126"
+            Height="66"
+            Margin="128,303,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="searchCityBtn_Click"
+            Content="Consultar" />
+    </Grid>
+</Window>

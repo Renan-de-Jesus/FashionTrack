@@ -47,6 +47,108 @@ namespace FashionTrack
                     MessageBox.Show(ex.Message);
                 }
         }
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+        private void RemoveTextFirstName(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text == "NOME DO CLIENTE")
+            {
+                textBox.Text = "";
+                textBox.Opacity = 1;
+            }
+        }
+
+        private void AddTextFirstName(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                textBox.Text = "NOME DO CLIENTE";
+                textBox.Opacity = 0.6;
+            }
+        }
+        private void RemoveTextSecundName(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text == "SOBRENOME DO CLIENTE")
+            {
+                textBox.Text = "";
+                textBox.Opacity = 1;
+            }
+        }
+
+        private void AddTextSecundName(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                textBox.Text = "SOBRENOME DO CLIENTE";
+                textBox.Opacity = 0.6;
+            }
+        }
+
+        private void RemoveTextCPF(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text == "000.000.000-00")
+            {
+                textBox.Text = "";
+                textBox.Opacity = 1;
+            }
+        }
+
+        private void AddTextCPF(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                textBox.Text = "000.000.000-00";
+                textBox.Opacity = 0.6;
+            }
+        }
+
+        private void RemoveTextPhone(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text == "(99)99999-9999")
+            {
+                textBox.Text = "";
+                textBox.Opacity = 1;
+            }
+        }
+
+        private void AddTextPhone(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                textBox.Text = "(99)99999-9999";
+                textBox.Opacity = 0.6;
+            }
+        }
+
+        private void RemoveTextAddress(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text == "ENDEREÇO DO CLIENTE")
+            {
+                textBox.Text = "";
+                textBox.Opacity = 1;
+            }
+        }
+
+        private void AddTextAddress(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                textBox.Text = "ENDEREÇO DO CLIENTE";
+                textBox.Opacity = 0.6;
+            }
+        }
 
         private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -59,6 +161,7 @@ namespace FashionTrack
                 string address = addressTxtBox.Text;
 
                 cpf = cpf.Replace(".", "").Replace("-", "");
+                phone = phone.Replace("(", "").Replace(")", "").Replace("-", "");
 
                 if (string.IsNullOrEmpty(firstName))
                 {
@@ -160,6 +263,10 @@ namespace FashionTrack
             }
         }
 
-
+        private void addCityBtn_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            CityRegister cityRegister = new CityRegister();
+            cityRegister.Show();
+        }
     }
 }
