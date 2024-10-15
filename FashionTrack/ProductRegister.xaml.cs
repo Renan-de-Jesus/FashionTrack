@@ -18,7 +18,7 @@ namespace FashionTrack
         private void SalvarButton_Click(object sender, RoutedEventArgs e)
         {
             string codigoMarca = CodigoMarcaTextBox.Text;
-            string cor = CorTextBox.Text;
+            string cor = CorComboBox.Text;
             string descricao = DescricaoTextBox.Text;
             string tamanho = (TamanhoComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
             string genero = (GeneroComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
@@ -35,7 +35,7 @@ namespace FashionTrack
             if (string.IsNullOrWhiteSpace(cor))
             {
                 MessageBox.Show("O campo Cor está vazio.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                CorTextBox.Focus();
+                CorComboBox.Focus();
                 return;
             }
 
@@ -111,10 +111,7 @@ namespace FashionTrack
         {
             //text
         }
-        private void CorTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //tetx
-        }
+
         private void TamanhoComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //text
@@ -133,6 +130,33 @@ namespace FashionTrack
         private void DescricaoTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             //text
+        }
+
+        private void OpenColorRegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+            ColorRegister colorRegister = new ColorRegister();
+            colorRegister.Show();
+        }
+
+        private void MarcaComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //aa
+        }
+
+        private void CorComboBox_TextChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //aa
+        }
+
+        private void OpenMarcaRegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+            MarcaRegister marcaRegister = new MarcaRegister();
+            marcaRegister.ShowDialog();
+        }
+        private void OpenTamanhoRegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+            TamanhoRegister tamanhoRegister = new TamanhoRegister();
+            tamanhoRegister.ShowDialog();
         }
     }
 }

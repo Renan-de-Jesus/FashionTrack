@@ -1,6 +1,9 @@
 CREATE DATABASE FashionTrack
 GO
 
+USE FashionTrack
+GO
+
 CREATE TABLE Usuarios (
     ID_Usuario INT IDENTITY(1,1),
     NomeCompleto VARCHAR(100) NOT NULL,
@@ -40,16 +43,40 @@ CREATE TABLE Fornecedor (
     CONSTRAINT FK_Fornecedor_Cidade FOREIGN KEY (ID_Cidade) REFERENCES Cidade(ID_Cidade)
 );
 
--- Interessante em algum momento criar uma tabela MARCAS, para que possa ser feito relatorios depois, evitando que o usuario digite 2 nomes que seriam iguais, de forma diferente
+-- Cadastro de Marca
+CREATE TABLE Marca (
+    MarcaId INT PRIMARY KEY IDENTITY(1,1),
+    MarcaNome NVARCHAR(100) NOT NULL
+);
+
+-- Cadastro de Cor
+CREATE TABLE Cor (
+    CorId INT PRIMARY KEY IDENTITY(1,1),
+    CorNome NVARCHAR(50) NOT NULL
+);
+
+-- Cadastro de Tamanho
+CREATE TABLE Tamanho (
+    TamanhoId INT PRIMARY KEY IDENTITY(1,1),
+    TamanhoDescricao NVARCHAR(3) NOT NULL
+);
+
+-- Cadastro de Produto com as Relações
 CREATE TABLE Produto (
     ID_Produto INT IDENTITY(1,1),
     CodigoMarca VARCHAR(50),
+    MarcaId INT,
+    ColorId INT,
     Cor VARCHAR(30),
     Descricao VARCHAR(255) NOT NULL,
+    TamanhoId INT,
     Tamanho VARCHAR(10) NOT NULL,
     Genero VARCHAR(10) NOT NULL,
     Preco FLOAT(30) NOT NULL,
-    CONSTRAINT PK_Produto PRIMARY KEY (ID_Produto)
+    CONSTRAINT PK_Produto PRIMARY KEY (ID_Produto),
+    CONSTRAINT FK_Produto_Marca FOREIGN KEY (MarcaId) REFERENCES Marca(MarcaId),
+    CONSTRAINT FK_Produto_Cor FOREIGN KEY (ColorId) REFERENCES Cor(CorId),
+    CONSTRAINT FK_Produto_Tamanho FOREIGN KEY (TamanhoId) REFERENCES Tamanho(TamanhoId)
 );
 
 CREATE TABLE FornecedorProduto (
@@ -60,10 +87,12 @@ CREATE TABLE FornecedorProduto (
     CONSTRAINT FK_FornecedorProduto_Produto FOREIGN KEY (ID_Produto) REFERENCES Produto(ID_Produto)
 );
 
+
 INSERT INTO Usuarios(NomeCompleto, Usuario, Senha, Adm)
 VALUES
 		('admin', 'admin', 'admin', 1),
-		('Guilherme Cella', 'GuiCella', '1234', 1)
+		('Guilherme Cella', 'GuiCella', '1234', 1),
+		('gui', 'gui', 'gui', 1)
 
 INSERT INTO Cidade (Descricao, UF)
 VALUES 
