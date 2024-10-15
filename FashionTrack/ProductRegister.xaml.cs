@@ -15,6 +15,40 @@ namespace FashionTrack
         {
             InitializeComponent();
         }
+        private void RemoveText(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text == "Código da Marca" || textBox.Text == "Cor" || textBox.Text == "Descrição" || textBox.Text == "Preço")
+            {
+                textBox.Text = "";
+                textBox.Opacity = 1;
+            }
+        }
+
+        private void AddText(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                if (textBox.Name == "CodigoMarcaTextBox")
+                {
+                    textBox.Text = "Código da Marca";
+                }
+                else if (textBox.Name == "CorTextBox")
+                {
+                    textBox.Text = "Cor";
+                }
+                else if (textBox.Name == "DescricaoTextBox")
+                {
+                    textBox.Text = "Descrição";
+                }
+                else if (textBox.Name == "PrecoTextBox")
+                {
+                    textBox.Text = "Preço";
+                }
+                textBox.Opacity = 0.6;
+            }
+        }
         private void SalvarButton_Click(object sender, RoutedEventArgs e)
         {
             string codigoMarca = CodigoMarcaTextBox.Text;
@@ -107,14 +141,7 @@ namespace FashionTrack
             }
 
         }
-        private void CodigoMarcaTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //text
-        }
-        private void CorTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //tetx
-        }
+      
         private void TamanhoComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //text
@@ -125,14 +152,9 @@ namespace FashionTrack
             //text
         }
 
-        private void PrecoTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void CodigoMarcaTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //text
-        }
 
-        private void DescricaoTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //text
         }
     }
 }
