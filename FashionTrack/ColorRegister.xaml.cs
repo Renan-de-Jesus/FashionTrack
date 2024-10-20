@@ -116,7 +116,7 @@ namespace FashionTrack
         {
             if (string.IsNullOrWhiteSpace(ColorIdTextBox.Text) && string.IsNullOrWhiteSpace(ColorNameTextBox.Text))
             {
-                MessageBox.Show("Por favor preenche um ou mais parâmetros para busca");
+                MessageBox.Show("Por favor preencha um ou mais parâmetros para busca!");
                 return;
             }
 
