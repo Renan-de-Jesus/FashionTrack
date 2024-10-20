@@ -5,10 +5,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="av"
     x:Class="FashionTrack.ProductRegister"
-    Title="Cadastro de Produtos"
+    Title="Product Registration"
     Width="1366"
     Height="768"
     WindowStartupLocation="CenterScreen">
+
     <Window.Resources>
         <Style x:Key="HoverButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="LightGray" />
@@ -19,17 +20,17 @@
                         <BeginStoryboard>
                             <Storyboard>
                                 <ColorAnimation
-                            Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"
-                            To="#1B8FFC"
-                            Duration="0:0:0.1" />
+                                    Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"
+                                    To="#1B8FFC"
+                                    Duration="0:0:0.1" />
                                 <DoubleAnimation
-                            Storyboard.TargetProperty="(Control.Background).(Brush.Opacity)"
-                            To="0.69"
-                            Duration="0:0:0.1" />
+                                    Storyboard.TargetProperty="(Control.Background).(Brush.Opacity)"
+                                    To="0.69"
+                                    Duration="0:0:0.1" />
                                 <ColorAnimation
-                            Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)"
-                            To="White"
-                            Duration="0:0:0.1" />
+                                    Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)"
+                                    To="White"
+                                    Duration="0:0:0.1" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.EnterActions>
@@ -37,30 +38,31 @@
                         <BeginStoryboard>
                             <Storyboard>
                                 <ColorAnimation
-                            Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"
-                            To="#2888E3"
-                            Duration="0:0:0.1" />
+                                    Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)"
+                                    To="#2888E3"
+                                    Duration="0:0:0.1" />
                                 <DoubleAnimation
-                            Storyboard.TargetProperty="(Control.Background).(Brush.Opacity)"
-                            To="1.0"
-                            Duration="0:0:0.1" />
+                                    Storyboard.TargetProperty="(Control.Background).(Brush.Opacity)"
+                                    To="1.0"
+                                    Duration="0:0:0.1" />
                                 <ColorAnimation
-                            Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)"
-                            To="White"
-                            Duration="0:0:0.1" />
+                                    Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)"
+                                    To="White"
+                                    Duration="0:0:0.1" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.ExitActions>
                 </Trigger>
             </Style.Triggers>
         </Style>
+
         <ControlTemplate x:Key="CustomComboBoxTemplate" TargetType="ComboBox">
             <Grid>
                 <ToggleButton x:Name="ToggleButton"
-              Template="{StaticResource ComboBoxToggleButton}"
-              IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-              Focusable="False"
-              ClickMode="Press">
+                              Template="{StaticResource ComboBoxToggleButton}"
+                              IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                              Focusable="False"
+                              ClickMode="Press">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton">
                             <Setter Property="Background" Value="LightGray" />
@@ -78,31 +80,31 @@
                     </ToggleButton.Style>
                 </ToggleButton>
                 <ContentPresenter x:Name="ContentSite"
-                  IsHitTestVisible="False"
-                  Content="{TemplateBinding SelectionBoxItem}"
-                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                  Margin="3,3,23,3"
-                  VerticalAlignment="Center"
-                  HorizontalAlignment="Left" />
+                                  IsHitTestVisible="False"
+                                  Content="{TemplateBinding SelectionBoxItem}"
+                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                  Margin="3,3,23,3"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Left" />
                 <Popup x:Name="Popup"
-       Placement="Bottom"
-       IsOpen="{TemplateBinding IsDropDownOpen}"
-       AllowsTransparency="True"
-       Focusable="False"
-       PopupAnimation="Slide">
+                       Placement="Bottom"
+                       IsOpen="{TemplateBinding IsDropDownOpen}"
+                       AllowsTransparency="True"
+                       Focusable="False"
+                       PopupAnimation="Slide">
                     <Grid x:Name="DropDown"
-          SnapsToDevicePixels="True"
-          MinWidth="{TemplateBinding ActualWidth}"
-          MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                          SnapsToDevicePixels="True"
+                          MinWidth="{TemplateBinding ActualWidth}"
+                          MaxHeight="{TemplateBinding MaxDropDownHeight}">
                         <Border x:Name="DropDownBorder"
-                Background="White"
-                BorderBrush="Gray"
-                BorderThickness="1" />
+                                Background="White"
+                                BorderBrush="Gray"
+                                BorderThickness="1" />
                         <ScrollViewer Margin="4,6,4,6"
-                      SnapsToDevicePixels="True">
+                                       SnapsToDevicePixels="True">
                             <StackPanel IsItemsHost="True"
-                        KeyboardNavigation.DirectionalNavigation="Contained" />
+                                        KeyboardNavigation.DirectionalNavigation="Contained" />
                         </ScrollViewer>
                     </Grid>
                 </Popup>
@@ -162,52 +164,52 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.Column="0" Margin="10">
-            <Label Content="Marca"/>
+            <Label Content="Brand"/>
             <StackPanel Orientation="Horizontal">
-                <ComboBox x:Name="MarcaComboBox" Width="200" Margin="5" SelectionChanged="MarcaComboBox_SelectionChanged"/>
-                <Button x:Name="OpenMarcaRegisterButton" Content="Cadastrar Marca" Width="120" Height="30" Click="OpenMarcaRegisterButton_Click" Margin="5"/>
+                <ComboBox x:Name="BrandComboBox" Width="200" Margin="5" SelectionChanged="BrandComboBox_SelectionChanged"/>
+                <Button x:Name="OpenBrandRegisterButton" Content="Cadastrar Marca" Width="120" Height="30" Click="OpenBrandRegisterButton_Click" Margin="5"/>
             </StackPanel>
 
-            <Label Content="Código da Marca"/>
+            <Label Content="Brand Code"/>
             <Grid>
-                <TextBox x:Name="CodigoMarcaTextBox" Width="200" Margin="5" TextChanged="CodigoMarcaTextBox_TextChanged"/>
-                <TextBlock Text="Código da Marca" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False" Visibility="{Binding Text, ElementName=CodigoMarcaTextBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
+                <TextBox x:Name="BrandCodeTextBox" Width="200" Margin="5" TextChanged="BrandCodeTextBox_TextChanged"/>
+                <TextBlock Text="Código da Marca" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False" Visibility="{Binding Text, ElementName=BrandCodeTextBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
             </Grid>
 
-            <Label Content="Cor"/>
+            <Label Content="Color"/>
             <StackPanel Orientation="Horizontal">
-                <ComboBox x:Name="CorComboBox" Width="200" Margin="5" SelectionChanged="CorComboBox_TextChanged"/>
+                <ComboBox x:Name="ColorComboBox" Width="200" Margin="5" SelectionChanged="ColorComboBox_TextChanged"/>
                 <Button x:Name="OpenColorRegisterButton" Content="Cadastrar Cor" Width="120" Height="30" Click="OpenColorRegisterButton_Click" Margin="5"/>
             </StackPanel>
 
-            <Label Content="Descrição"/>
+            <Label Content="Description"/>
             <Grid>
-                <TextBox x:Name="DescricaoTextBox" Width="200" Margin="5" TextChanged="DescricaoTextBox_TextChanged"/>
-                <TextBlock Text="Descrição" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False" Visibility="{Binding Text, ElementName=DescricaoTextBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
+                <TextBox x:Name="DescriptionTextBox" Width="200" Margin="5" TextChanged="DescriptionTextBox_TextChanged"/>
+                <TextBlock Text="Descrição" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False" Visibility="{Binding Text, ElementName=DescriptionTextBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
             </Grid>
 
-            <Label Content="Tamanho"/>
+            <Label Content="Size"/>
             <StackPanel Orientation="Horizontal">
-                <ComboBox x:Name="TamanhoComboBox" Width="200" Margin="5" SelectionChanged="TamanhoComboBox_SelectionChanged"/>
-                <Button x:Name="OpenTamanhoRegisterButton" Content="Cadastrar Tamanho" Width="120" Height="30" Click="OpenTamanhoRegisterButton_Click" Margin="5"/>
+                <ComboBox x:Name="SizeComboBox" Width="200" Margin="5" SelectionChanged="SizeComboBox_SelectionChanged"/>
+                <Button x:Name="OpenSizeRegisterButton" Content="Cadastrar Tamanho" Width="120" Height="30" Click="OpenSizeRegisterButton_Click" Margin="5"/>
             </StackPanel>
 
-            <Label Content="Gênero"/>
-            <ComboBox x:Name="GeneroComboBox" Width="200" Margin="5" SelectionChanged="GeneroComboBox_SelectionChanged">
+            <Label Content="Gender"/>
+            <ComboBox x:Name="GenderComboBox" Width="200" Margin="5" SelectionChanged="GenderComboBox_SelectionChanged">
                 <ComboBoxItem Content="Masculino"/>
                 <ComboBoxItem Content="Feminino"/>
                 <ComboBoxItem Content="Unissex"/>
             </ComboBox>
 
-            <Label Content="Preço"/>
+            <Label Content="Price"/>
             <Grid>
-                <TextBox x:Name="PrecoTextBox" Width="200" Margin="5" TextChanged="PrecoTextBox_TextChanged"/>
-                <TextBlock Text="Preço" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False" Visibility="{Binding Text, ElementName=PrecoTextBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
+                <TextBox x:Name="PriceTextBox" Width="200" Margin="5" TextChanged="PriceTextBox_TextChanged" PreviewTextInput="PriceTextBox_PreviewTextInput"/>
+                <TextBlock Text="Preço" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False" Visibility="{Binding Text, ElementName=PriceTextBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
             </Grid>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="10">
-            <Button Content="Salvar" Click="SalvarButton_Click" Height="34" Width="126" Margin="5" HorizontalAlignment="Center" Style="{StaticResource HoverButtonStyle}" IsEnabled="{Binding IsModified}">
+            <Button Content="Save" Click="SaveButton_Click" Height="34" Width="126" Margin="5" HorizontalAlignment="Center" Style="{StaticResource HoverButtonStyle}" IsEnabled="{Binding IsModified}">
                 <Button.Template>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border
