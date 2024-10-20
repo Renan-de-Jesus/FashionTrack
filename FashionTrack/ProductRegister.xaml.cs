@@ -277,14 +277,14 @@ namespace FashionTrack
 
         private void OpenBrandRegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            BrandRegister brandRegister = new BrandRegister();
+            MarcaRegister brandRegister = new MarcaRegister();
             brandRegister.ShowDialog();
             LoadBrandComboBox();
         }
 
         private void OpenSizeRegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            SizeRegister sizeRegister = new SizeRegister();
+            TamanhoRegister sizeRegister = new TamanhoRegister();
             sizeRegister.ShowDialog();
             LoadSizeComboBox();
         }

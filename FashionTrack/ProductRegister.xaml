@@ -164,44 +164,44 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.Column="0" Margin="10">
-            <Label Content="Brand"/>
+            <Label Content="Marca"/>
             <StackPanel Orientation="Horizontal">
                 <ComboBox x:Name="BrandComboBox" Width="200" Margin="5" SelectionChanged="BrandComboBox_SelectionChanged"/>
                 <Button x:Name="OpenBrandRegisterButton" Content="Cadastrar Marca" Width="120" Height="30" Click="OpenBrandRegisterButton_Click" Margin="5"/>
             </StackPanel>
 
-            <Label Content="Brand Code"/>
+            <Label Content="Código da Marca"/>
             <Grid>
                 <TextBox x:Name="BrandCodeTextBox" Width="200" Margin="5" TextChanged="BrandCodeTextBox_TextChanged"/>
                 <TextBlock Text="Código da Marca" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False" Visibility="{Binding Text, ElementName=BrandCodeTextBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
             </Grid>
 
-            <Label Content="Color"/>
+            <Label Content="Cor"/>
             <StackPanel Orientation="Horizontal">
                 <ComboBox x:Name="ColorComboBox" Width="200" Margin="5" SelectionChanged="ColorComboBox_TextChanged"/>
                 <Button x:Name="OpenColorRegisterButton" Content="Cadastrar Cor" Width="120" Height="30" Click="OpenColorRegisterButton_Click" Margin="5"/>
             </StackPanel>
 
-            <Label Content="Description"/>
+            <Label Content="Descrição"/>
             <Grid>
                 <TextBox x:Name="DescriptionTextBox" Width="200" Margin="5" TextChanged="DescriptionTextBox_TextChanged"/>
                 <TextBlock Text="Descrição" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False" Visibility="{Binding Text, ElementName=DescriptionTextBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
             </Grid>
 
-            <Label Content="Size"/>
+            <Label Content="Tamanho"/>
             <StackPanel Orientation="Horizontal">
                 <ComboBox x:Name="SizeComboBox" Width="200" Margin="5" SelectionChanged="SizeComboBox_SelectionChanged"/>
                 <Button x:Name="OpenSizeRegisterButton" Content="Cadastrar Tamanho" Width="120" Height="30" Click="OpenSizeRegisterButton_Click" Margin="5"/>
             </StackPanel>
 
-            <Label Content="Gender"/>
+            <Label Content="Gênero"/>
             <ComboBox x:Name="GenderComboBox" Width="200" Margin="5" SelectionChanged="GenderComboBox_SelectionChanged">
                 <ComboBoxItem Content="Masculino"/>
                 <ComboBoxItem Content="Feminino"/>
                 <ComboBoxItem Content="Unissex"/>
             </ComboBox>
 
-            <Label Content="Price"/>
+            <Label Content="Preço"/>
             <Grid>
                 <TextBox x:Name="PriceTextBox" Width="200" Margin="5" TextChanged="PriceTextBox_TextChanged" PreviewTextInput="PriceTextBox_PreviewTextInput"/>
                 <TextBlock Text="Preço" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False" Visibility="{Binding Text, ElementName=PriceTextBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
@@ -209,7 +209,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" Margin="10">
-            <Button Content="Save" Click="SaveButton_Click" Height="34" Width="126" Margin="5" HorizontalAlignment="Center" Style="{StaticResource HoverButtonStyle}" IsEnabled="{Binding IsModified}">
+            <Button Content="Salvar" Click="SaveButton_Click" Height="34" Width="126" Margin="5" HorizontalAlignment="Center" Style="{StaticResource HoverButtonStyle}" IsEnabled="{Binding IsModified}">
                 <Button.Template>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border
