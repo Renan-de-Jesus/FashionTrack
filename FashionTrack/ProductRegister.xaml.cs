@@ -295,8 +295,8 @@ namespace FashionTrack
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            string searchId = SearchIdTextBox.Text;
-            string searchDescription = SearchDescriptionTextBox.Text;
+            string searchId = SearchIDTextBox.Text;
+            string searchDescription = SearchTextBox.Text;
 
             if (string.IsNullOrWhiteSpace(searchId) && string.IsNullOrWhiteSpace(searchDescription))
             {
@@ -371,6 +371,21 @@ namespace FashionTrack
                     break;
                 }
             }
+        }
+
+        private void SearchIDTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //aa
+        }
+
+        private void SearchIDTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            //aa
+        }   
+
+        private void SearchIDButton_Click(object sender, RoutedEventArgs e)
+        {
+            //aa
         }
     }
 }

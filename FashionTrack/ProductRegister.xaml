@@ -164,7 +164,7 @@
         <StackPanel Grid.Row="1" Grid.Column="0" Margin="10">
             <Label Content="Marca"/>
             <StackPanel Orientation="Horizontal">
-                <ComboBox x:Name="Marca" Width="200" Margin="5" SelectionChanged="MarcaComboBox_SelectionChanged"/>
+                <ComboBox x:Name="MarcaComboBox" Width="200" Margin="5" SelectionChanged="MarcaComboBox_SelectionChanged"/>
                 <Button x:Name="OpenMarcaRegisterButton" Content="Cadastrar Marca" Width="120" Height="30" Click="OpenMarcaRegisterButton_Click" Margin="5"/>
             </StackPanel>
 
