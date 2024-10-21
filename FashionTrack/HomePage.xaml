@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:FashionTrack"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
     Title="HomePage"
     Width="1366"
     Height="768"

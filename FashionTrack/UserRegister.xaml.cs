@@ -79,7 +79,6 @@ try
 {
     connection.Open();
 
-    // Check if the username already exists
     string checkUserQuery = "SELECT COUNT(*) FROM Usuarios WHERE Usuario = @username";
     SqlCommand checkUserCommand = new SqlCommand(checkUserQuery, connection);
     checkUserCommand.Parameters.AddWithValue("@username", username);
@@ -92,7 +91,6 @@ try
     }
     else
     {
-        // Insert new user
         string insertQuery = "INSERT INTO Usuarios(NomeCompleto, Usuario, Senha, Adm) VALUES (@name, @username, @password, @IsAdmin)";
         SqlCommand insertCommand = new SqlCommand(insertQuery, connection);
 
