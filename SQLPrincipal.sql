@@ -44,39 +44,37 @@ CREATE TABLE Fornecedor (
 );
 
 -- Cadastro de Marca
-CREATE TABLE Marca (
-    MarcaId INT PRIMARY KEY IDENTITY(1,1),
-    MarcaNome NVARCHAR(100) NOT NULL
+CREATE TABLE Brand (
+    BrandId INT PRIMARY KEY IDENTITY(1,1),
+    BrandName NVARCHAR(100) NOT NULL
 );
 
 -- Cadastro de Cor
-CREATE TABLE Cor (
-    CorId INT PRIMARY KEY IDENTITY(1,1),
-    CorNome NVARCHAR(50) NOT NULL
+CREATE TABLE Color (
+    ColorId INT PRIMARY KEY IDENTITY(1,1),
+    ColorName NVARCHAR(50) NOT NULL
 );
 
 -- Cadastro de Tamanho
-CREATE TABLE Tamanho (
-    TamanhoId INT PRIMARY KEY IDENTITY(1,1),
-    TamanhoDescricao NVARCHAR(3) NOT NULL
+CREATE TABLE Size (
+    SizeId INT PRIMARY KEY IDENTITY(1,1),
+    SizeDescription NVARCHAR(3) NOT NULL
 );
 
--- Cadastro de Produto com as Relações
+-- Cadastro de Produto com as Relaï¿½ï¿½es
 CREATE TABLE Produto (
     ID_Produto INT IDENTITY(1,1),
-    CodigoMarca VARCHAR(50),
-    MarcaId INT,
+    BrandCode VARCHAR(50),
+    BrandId INT,
     ColorId INT,
-    Cor VARCHAR(30),
-    Descricao VARCHAR(255) NOT NULL,
-    TamanhoId INT,
-    Tamanho VARCHAR(10) NOT NULL,
-    Genero VARCHAR(10) NOT NULL,
-    Preco FLOAT(30) NOT NULL,
+    Description VARCHAR(255) NOT NULL,
+    SizeId INT,
+    Gender VARCHAR(10) NOT NULL,
+    Price FLOAT(30) NOT NULL,
     CONSTRAINT PK_Produto PRIMARY KEY (ID_Produto),
-    CONSTRAINT FK_Produto_Marca FOREIGN KEY (MarcaId) REFERENCES Marca(MarcaId),
-    CONSTRAINT FK_Produto_Cor FOREIGN KEY (ColorId) REFERENCES Cor(CorId),
-    CONSTRAINT FK_Produto_Tamanho FOREIGN KEY (TamanhoId) REFERENCES Tamanho(TamanhoId)
+    CONSTRAINT FK_Produto_Marca FOREIGN KEY (BrandId) REFERENCES Brand(BrandId),
+    CONSTRAINT FK_Produto_Cor FOREIGN KEY (ColorId) REFERENCES Cor(ColorId),
+    CONSTRAINT FK_Produto_Tamanho FOREIGN KEY (SizeId) REFERENCES Size(SizeId)
 );
 
 CREATE TABLE FornecedorProduto (
@@ -117,10 +115,17 @@ VALUES
 		('Joao', 'Silva', '12345678901', '51999991111', 'Rua Verde, 50', 3),    -- Sao Paulo
 		('Maria', 'Oliveira', '98765432100', '51999992222', 'Av. Paulista, 101', 4);  -- Rio de Janeiro
 
-INSERT INTO Produto(CodigoMarca, Cor, Descricao, Tamanho, Genero, Preco)
+INSERT INTO Color (ColorName)
 VALUES
-		(NULL, 'Azul', 'Camiseta Basica', 'M', 'Masculino',85.00),  -- Produto sem Codigo de Marca
-		('001', 'Preto', 'Calca Jeans', 'G', 'Feminino', 95.00),
-		('002', 'Vermelho', 'Vestido Longo', 'P', 'Feminino',96.00),
-		('003', 'Branco', 'Tenis Esportivo', '42', 'Masculino',85.52),
-		(NULL, 'Verde', 'Jaqueta de Couro', 'GG', 'Unissex',96.52);  -- Produto sem Codigo de Marca
+		('Branco'),
+		('Preto');
+
+INSERT INTO Size(SizeDescription)
+VALUES
+		('M'),
+		('G');
+
+INSERT INTO Produto(BrandCode, ColorId, Description, SizeId, Gender, Price)
+VALUES
+		(NULL, 1, 'Camiseta Basica', 1, 'Masculino',85.00),  -- Produto sem Codigo de Marca
+		('123AA', 2, 'Camiseta Preta', 2, 'Feminino', 85.00);
