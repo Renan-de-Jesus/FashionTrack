@@ -1,17 +1,17 @@
 ﻿<Window
-    x:Class="FashionTrack.CustomerRegistration"
+    x:Class="FashionTrack.SupplierRegister"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:FashionTrack"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-    Title="CustomerRegistration"
-    Width="1366"
-    Height="768"
+    Title="Cadastro de Fornecedores"
+    Width="1280"
+    Height="766"
+    Activated="Window_Activated"
     WindowStartupLocation="CenterScreen"
-    mc:Ignorable="d"
-    Activated="Window_Activated">
+    mc:Ignorable="d">
 
     <Grid x:Name="CusotmerRegister">
         <Grid.Background>
@@ -26,22 +26,22 @@
         </Grid.ColumnDefinitions>
 
         <TextBox
-            x:Name="firstNameTxtBox"
+            x:Name="corporateReasonTxtBox"
             Width="500"
             Height="42"
-            Margin="0,169,0,0"
+            Margin="378,161,0,0"
             Padding="5"
-            HorizontalAlignment="Center"
+            HorizontalAlignment="Left"
             VerticalAlignment="Top"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
             Panel.ZIndex="1"
             FontSize="16"
-            GotFocus="RemoveTextFirstName"
-            LostFocus="AddTextFirstName"
+            GotFocus="removeTextCorporateReason"
+            LostFocus="removeTextCorporateReason"
             Opacity="0.6"
             RenderTransformOrigin="0.716,-0.919"
-            Text="NOME DO CLIENTE"
+            Text="RAZÃO SOCIAL"
             TextWrapping="Wrap">
             <TextBox.Template>
                 <ControlTemplate TargetType="{x:Type TextBox}">
@@ -56,20 +56,20 @@
             </TextBox.Template>
         </TextBox>
         <TextBox
-            x:Name="secundNameTxtBox"
+            x:Name="addressTxtBox"
             Width="500"
             Height="42"
-            Margin="0,242,0,0"
+            Margin="378,310,0,0"
             Padding="5"
-            HorizontalAlignment="Center"
+            HorizontalAlignment="Left"
             VerticalAlignment="Top"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
             FontSize="16"
-            GotFocus="RemoveTextSecundName"
-            LostFocus="AddTextSecundName"
+            GotFocus="removeTextAddress"
+            LostFocus="addTextAddress"
             Opacity="0.6"
-            Text="SOBRENOME DO CLIENTE"
+            Text="ENDEREÇO DO FORNECEDOR"
             TextWrapping="Wrap">
             <TextBox.Template>
                 <ControlTemplate TargetType="{x:Type TextBox}">
@@ -85,20 +85,20 @@
         </TextBox>
 
         <TextBox
-            x:Name="addressTxtBox"
+            x:Name="representativeTxtBox"
             Width="500"
             Height="42"
-            Margin="0,471,0,0"
+            Margin="378,463,0,0"
             Padding="5"
-            HorizontalAlignment="Center"
+            HorizontalAlignment="Left"
             VerticalAlignment="Top"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
             FontSize="16"
-            GotFocus="RemoveTextAddress"
-            LostFocus="AddTextAddress"
+            GotFocus="removeTextRepresentative"
+            LostFocus="addTextRepresentative"
             Opacity="0.6"
-            Text="ENDEREÇO DO CLIENTE"
+            Text="NOME DO REPRESENTANTE"
             TextWrapping="Wrap">
             <TextBox.Template>
                 <ControlTemplate TargetType="{x:Type TextBox}">
@@ -117,35 +117,36 @@
             x:Name="cityCbx"
             Width="447"
             Height="40"
-            Margin="433,554,0,0"
+            Margin="378,546,0,0"
             Padding="5"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
+            AutomationProperties.HelpText="dasdsadsa"
             Cursor="Hand"
             FontSize="16"
+            MaxDropDownHeight="180"
             RenderTransformOrigin="0.502,1.238"
-            SelectedIndex="1" 
-            MaxDropDownHeight="180" />
+            SelectedIndex="1" />
 
         <xctk:MaskedTextBox
-            x:Name="cpfTxtBox"
+            x:Name="cnpjTxtBox"
             Width="500"
             Height="42"
-            Margin="0,317,0,0"
+            Margin="378,239,0,0"
             Padding="5"
-            HorizontalAlignment="Center"
+            HorizontalAlignment="Left"
             VerticalAlignment="Top"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
             FontSize="16"
-            GotFocus="RemoveTextCPF"
-            LostFocus="AddTextCPF"
-            Mask="000,000,000-00"
+            GotFocus="removeTextCNPJ"
+            LostFocus="removeTextCNPJ"
+            Mask="00,000,000/0000-00"
             Opacity="0.6"
             PromptChar=" "
-            Text="00000000000">
+            Text="00000000000000">
             <xctk:MaskedTextBox.Template>
                 <ControlTemplate TargetType="{x:Type TextBox}">
                     <Border
@@ -163,15 +164,15 @@
             x:Name="phoneTxt"
             Width="500"
             Height="42"
-            Margin="0,394,0,0"
+            Margin="378,386,0,0"
             Padding="5"
-            HorizontalAlignment="Center"
+            HorizontalAlignment="Left"
             VerticalAlignment="Top"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
             FontSize="16"
-            GotFocus="RemoveTextPhone"
-            LostFocus="AddTextPhone"
+            GotFocus="removeTextPhone"
+            LostFocus="addTextPhone"
             Mask="(00)00000-0000"
             Opacity="0.6"
             PromptChar=" "
@@ -192,7 +193,7 @@
         <Rectangle
             Width="550"
             Height="644"
-            Margin="408,54,0,54"
+            Margin="354,46,0,62"
             HorizontalAlignment="Left"
             Panel.ZIndex="-1"
             RadiusX="10"
@@ -203,7 +204,7 @@
             x:Name="saveBtn"
             Width="250"
             Height="50"
-            Margin="558,621,0,0"
+            Margin="503,614,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Background="#2888E3"
@@ -226,64 +227,63 @@
             </Button.Template>
         </Button>
         <TextBlock
-            Width="204"
+            Width="284"
             Height="60"
-            Margin="0,92,0,0"
-            HorizontalAlignment="Center"
+            Margin="486,66,0,0"
+            HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontSize="35"
             FontWeight="light"
             RenderTransformOrigin="0.505,0.284"
-            Text="Novo Cliente"
+            Text="Novo Fornecedor"
             TextWrapping="Wrap" />
 
         <TextBlock
-            Width="45"
+            Width="92"
             Height="23"
-            Margin="429,146,0,0"
+            Margin="375,138,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontSize="16"
-            Text="Nome"
+            Text="Razão Social"
             TextWrapping="Wrap" />
 
         <TextBlock
-            Margin="429,221,0,0"
+            Margin="375,213,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontSize="16"
-            Text="Sobrenome"
+            Text="CNPJ"
             TextWrapping="Wrap" />
 
         <TextBlock
-            Margin="429,297,0,0"
+            Margin="375,289,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontSize="16"
             RenderTransformOrigin="1.368,0.542"
-            Text="CPF"
-            TextWrapping="Wrap" />
+            TextWrapping="Wrap"><Run Language="pt-br" Text="Endereço" /></TextBlock>
 
         <TextBlock
-            Margin="429,373,0,0"
+            Margin="375,0,0,0"
             HorizontalAlignment="Left"
-            VerticalAlignment="Top"
+            VerticalAlignment="Center"
             FontSize="16"
             Text="Telefone"
             TextWrapping="Wrap" />
 
         <TextBlock
-            Margin="429,450,0,0"
+            Margin="375,442,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontSize="16"
-            Text="Endereço"
+            Text="Representante"
             TextWrapping="Wrap" />
         <Image
             x:Name="addCityBtn"
             Width="36"
             Height="28"
-            Margin="904,560,0,0"
+            Margin="850,552,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Panel.ZIndex="1"
@@ -291,7 +291,7 @@
             MouseDown="addCityBtn_MouseDown"
             Source="/add128.png">
             <Image.OpacityMask>
-                <ImageBrush ImageSource="/add128.png" />
+                <ImageBrush ImageSource="/add128.png" Stretch="Uniform" />
             </Image.OpacityMask>
         </Image>
 

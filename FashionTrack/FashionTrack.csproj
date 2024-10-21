@@ -11,11 +11,15 @@
 
   <ItemGroup>
     <None Remove="add.png" />
+    <None Remove="add128.png" />
     <None Remove="images\add.png" />
+    <None Remove="images\add128.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="add128.png" />
     <Resource Include="images\add.png" />
+    <Resource Include="images\add128.png" />
     <Resource Include="images\fav.ico" />
   </ItemGroup>
 

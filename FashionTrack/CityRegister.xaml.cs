@@ -95,20 +95,34 @@ namespace FashionTrack
 
                     try
                     {
-                        string saveCityQuerry = "INSERT INTO Cidade(Descricao, UF) VALUES(@city, @UF)";
-                        SqlCommand cityCommand = new SqlCommand(saveCityQuerry, connection);
-                        cityCommand.Parameters.AddWithValue("@city", city);
-                        cityCommand.Parameters.AddWithValue("@UF", UF);
+                        string checkCityQuery = "SELECT COUNT(*) FROM Cidade WHERE Descricao = @city AND UF = @UF";
+                        SqlCommand checkCityCommand = new SqlCommand(checkCityQuery, connection);
+                        checkCityCommand.Parameters.AddWithValue("@city", city);
+                        checkCityCommand.Parameters.AddWithValue("@UF", UF);
 
-                        int rowsAffected = cityCommand.ExecuteNonQuery();
+                        int cityExists = (int)checkCityCommand.ExecuteScalar();
 
-                        if (rowsAffected > 0)
+                        if (cityExists > 0)
                         {
-                            MessageBox.Show("Cidade cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show("Cidade já cadastrada!", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                         else
                         {
-                            MessageBox.Show("Erro ao cadastrar a cidade.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                            string saveCityQuerry = "INSERT INTO Cidade(Descricao, UF) VALUES(@city, @UF)";
+                            SqlCommand cityCommand = new SqlCommand(saveCityQuerry, connection);
+                            cityCommand.Parameters.AddWithValue("@city", city);
+                            cityCommand.Parameters.AddWithValue("@UF", UF);
+
+                            int rowsAffected = cityCommand.ExecuteNonQuery();
+
+                            if (rowsAffected > 0)
+                            {
+                                MessageBox.Show("Cidade cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Erro ao cadastrar a cidade.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
                         }
                     }
                     catch (SqlException ex)

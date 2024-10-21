@@ -1,6 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -18,9 +17,9 @@ using System.Windows.Shapes;
 
 namespace FashionTrack
 {
-    public partial class CustomerRegistration : Window
+    public partial class SupplierRegister : Window
     {
-        public CustomerRegistration()
+        public SupplierRegister()
         {
             InitializeComponent();
             fillComboBox();
@@ -28,7 +27,7 @@ namespace FashionTrack
 
         private void fillComboBox()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["connection"].ConnectionString;
             using (SqlConnection connection = new SqlConnection(connectionString))
                 try
                 {
@@ -53,66 +52,66 @@ namespace FashionTrack
             fillComboBox();
         }
 
-        private void RemoveTextFirstName(object sender, RoutedEventArgs e)
+        private void removeTextCorporateReason(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "NOME DO CLIENTE")
+            if (textBox.Text == "RAZÃO SOCIAL")
             {
                 textBox.Text = "";
                 textBox.Opacity = 1;
             }
         }
 
-        private void AddTextFirstName(object sender, RoutedEventArgs e)
+        private void addTextFirstName(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             if (string.IsNullOrWhiteSpace(textBox.Text))
             {
-                textBox.Text = "NOME DO CLIENTE";
+                textBox.Text = "RAZÃO SOCIAL";
                 textBox.Opacity = 0.6;
             }
         }
-        private void RemoveTextSecundName(object sender, RoutedEventArgs e)
+        private void removeTextCNPJ(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "SOBRENOME DO CLIENTE")
+            if (textBox.Text == "00.000.000/0000-00")
             {
                 textBox.Text = "";
                 textBox.Opacity = 1;
             }
         }
 
-        private void AddTextSecundName(object sender, RoutedEventArgs e)
+        private void addTextCNPJ(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             if (string.IsNullOrWhiteSpace(textBox.Text))
             {
-                textBox.Text = "SOBRENOME DO CLIENTE";
+                textBox.Text = "00.000.000/0000-00";
                 textBox.Opacity = 0.6;
             }
         }
 
-        private void RemoveTextCPF(object sender, RoutedEventArgs e)
+        private void removeTextAddress(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "000.000.000-00")
+            if (textBox.Text == "ENDEREÇO DO FORNECEDOR")
             {
                 textBox.Text = "";
                 textBox.Opacity = 1;
             }
         }
 
-        private void AddTextCPF(object sender, RoutedEventArgs e)
+        private void addTextAddress(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             if (string.IsNullOrWhiteSpace(textBox.Text))
             {
-                textBox.Text = "000.000.000-00";
+                textBox.Text = "ENDEREÇO DO FORNECEDOR";
                 textBox.Opacity = 0.6;
             }
         }
 
-        private void RemoveTextPhone(object sender, RoutedEventArgs e)
+        private void removeTextPhone(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             if (textBox.Text == "(99)99999-9999")
@@ -122,7 +121,7 @@ namespace FashionTrack
             }
         }
 
-        private void AddTextPhone(object sender, RoutedEventArgs e)
+        private void addTextPhone(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             if (string.IsNullOrWhiteSpace(textBox.Text))
@@ -132,22 +131,22 @@ namespace FashionTrack
             }
         }
 
-        private void RemoveTextAddress(object sender, RoutedEventArgs e)
+        private void removeTextRepresentative(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "ENDEREÇO DO CLIENTE")
+            if (textBox.Text == "NOME DO REPRESENTANTE")
             {
                 textBox.Text = "";
                 textBox.Opacity = 1;
             }
         }
 
-        private void AddTextAddress(object sender, RoutedEventArgs e)
+        private void addTextRepresentative(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             if (string.IsNullOrWhiteSpace(textBox.Text))
             {
-                textBox.Text = "ENDEREÇO DO CLIENTE";
+                textBox.Text = "NOME DO REPRESENTANTE";
                 textBox.Opacity = 0.6;
             }
         }
@@ -156,46 +155,46 @@ namespace FashionTrack
         {
             try
             {
-                string firstName = firstNameTxtBox.Text;
-                string secundName = secundNameTxtBox.Text;
-                string cpf = cpfTxtBox.Text;
+                string corporateReason = corporateReasonTxtBox.Text;
+                string cnpj = cnpjTxtBox.Text;
+                string representative = representativeTxtBox.Text;
                 string phone = phoneTxt.Text;
                 string address = addressTxtBox.Text;
 
-                cpf = cpf.Replace(".", "").Replace("-", "");
+                cnpj = cnpj.Replace(".", "").Replace("-", "");
                 phone = phone.Replace("(", "").Replace(")", "").Replace("-", "");
 
-                if (string.IsNullOrEmpty(firstName))
+                if (string.IsNullOrEmpty(corporateReason))
                 {
-                    MessageBox.Show("Por favor, preencha o nome do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    firstNameTxtBox.Focus();
+                    MessageBox.Show("Por favor, preencha a razão social do fornecedor!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    corporateReasonTxtBox.Focus();
                     return;
                 }
 
-                if (string.IsNullOrEmpty(secundName))
+                if (string.IsNullOrEmpty(cnpj))
                 {
-                    MessageBox.Show("Por favor, preencha o sobrenome do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    secundNameTxtBox.Focus();
+                    MessageBox.Show("Por favor, preencha o cnpj do fornecedor!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    cnpjTxtBox.Focus();
                     return;
                 }
 
-                if (string.IsNullOrEmpty(cpf))
+                if (string.IsNullOrEmpty(representative))
                 {
-                    MessageBox.Show("Por favor, preencha o CPF do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    cpfTxtBox.Focus();
+                    MessageBox.Show("Por favor, preencha o nome do representante!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    representativeTxtBox.Focus();
                     return;
                 }
 
                 if (string.IsNullOrEmpty(phone))
                 {
-                    MessageBox.Show("Por favor, preencha o telefone do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Por favor, preencha o telefone do fornecedor!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     phoneTxt.Focus();
                     return;
                 }
 
                 if (string.IsNullOrEmpty(address))
                 {
-                    MessageBox.Show("Por favor, preencha o endereço do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Por favor, preencha o endereço do fornecedor!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     addressTxtBox.Focus();
                     return;
                 }
@@ -216,40 +215,40 @@ namespace FashionTrack
                     {
                         connection.Open();
 
-                        string checkCustomerQuery = "SELECT COUNT(*) FROM Cliente WHERE CPF = @CPF";
+                        string checkCustomerQuery = "SELECT COUNT(*) FROM Fornecedor WHERE CNPJ = @CNPJ";
                         SqlCommand checkCustomerCommand = new SqlCommand(checkCustomerQuery, connection);
-                        checkCustomerCommand.Parameters.AddWithValue("@CPF", cpf);
+                        checkCustomerCommand.Parameters.AddWithValue("@CNPJ", cnpj);
 
                         object result = checkCustomerCommand.ExecuteScalar();
                         int customerCount = result != null ? Convert.ToInt32(result) : 0;
 
                         if (customerCount > 0)
                         {
-                            MessageBox.Show("Cliente já cadastrado com este CPF.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show("Fornecedor já cadastrado com este CNPJ.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                         else
                         {
-                            string saveCustomerQuery = "INSERT INTO Cliente (Nome, Sobrenome, CPF, Telefone, Endereco, ID_Cidade) " +
-                                                        "VALUES (@firstName, @secundName, @CPF, @phone, @address, @selectCityId)";
+                            string saveSupplierQuery = "INSERT INTO Fornecedor (NomeRazaoSocial, CNPJ, Endereco, Telefone, ID_Cidade, NomeRepresentante) " +
+                                                        "VALUES (@corporateReason, @CNPJ, @address, @phone, @selectCityId, @representative)";
 
-                            SqlCommand saveCustomerCommand = new SqlCommand(saveCustomerQuery, connection);
+                            SqlCommand saveSupplierCommand = new SqlCommand(saveSupplierQuery, connection);
 
-                            saveCustomerCommand.Parameters.AddWithValue("@firstName", firstName);
-                            saveCustomerCommand.Parameters.AddWithValue("@secundName", secundName);
-                            saveCustomerCommand.Parameters.AddWithValue("@CPF", cpf);
-                            saveCustomerCommand.Parameters.AddWithValue("@phone", phone);
-                            saveCustomerCommand.Parameters.AddWithValue("@address", address);
-                            saveCustomerCommand.Parameters.AddWithValue("@selectCityId", selectCityId);
+                            saveSupplierCommand.Parameters.AddWithValue("@corporateReason", corporateReason);
+                            saveSupplierCommand.Parameters.AddWithValue("@CNPJ", cnpj);
+                            saveSupplierCommand.Parameters.AddWithValue("@address", address);
+                            saveSupplierCommand.Parameters.AddWithValue("@phone", phone);
+                            saveSupplierCommand.Parameters.AddWithValue("@selectCityId", selectCityId);
+                            saveSupplierCommand.Parameters.AddWithValue("@representative", representative);
 
-                            int rowsAffected = saveCustomerCommand.ExecuteNonQuery();
+                            int rowsAffected = saveSupplierCommand.ExecuteNonQuery();
 
                             if (rowsAffected > 0)
                             {
-                                MessageBox.Show("Cliente cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                                MessageBox.Show("Fornecedor cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
                             }
                             else
                             {
-                                MessageBox.Show("Erro ao cadastrar o cliente.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                                MessageBox.Show("Erro ao cadastrar o Fornecedor.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
                         }
                     }
