@@ -60,5 +60,17 @@ namespace FashionTrack
             SearchTextBox.Text = string.Empty;
             Products.Clear();
         }
+
+        private void Image_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            RegisterWindow userRegister = new RegisterWindow();
+            userRegister.Show();
+        }
+
+        private void customerImg_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            CustomerRegistration registerNewCustomer = new CustomerRegistration();
+            registerNewCustomer.Show();
+        }
     }
 }

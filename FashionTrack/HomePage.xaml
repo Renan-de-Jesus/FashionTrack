@@ -6,25 +6,24 @@
     xmlns:local="clr-namespace:FashionTrack"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
-    Title="HomePage"
+    Title="Home"
     Width="1366"
     Height="768"
+    ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <Grid
-        x:Name="HomeScreen"
-
-        Background="White">
+    <Grid x:Name="HomeScreen" Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Rectangle
+            Grid.RowSpan="2"
             Width="71"
             Height="768"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Stroke="#565656" Grid.RowSpan="2" />
+            Stroke="#565656" />
         <TextBlock
             Width="184"
             Height="43"
@@ -40,21 +39,26 @@
             x:Name="SearchTextBox"
             Width="642"
             Height="40"
-            Text="Numero do comprador"
-            KeyDown="TextBox_KeyDown"
+            Margin="97,51,0,0"
             Padding="5"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
-            TextWrapping="Wrap" Margin="97,51,0,0">
+            KeyDown="TextBox_KeyDown"
+            Text="Numero do comprador"
+            TextWrapping="Wrap">
             <TextBox.Style>
                 <Style TargetType="TextBox">
                     <Setter Property="Control.Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="TextBox">
-                                <Border CornerRadius="08" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                    <ScrollViewer x:Name="PART_ContentHost"/>
+                                <Border
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="08">
+                                    <ScrollViewer x:Name="PART_ContentHost" />
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>
@@ -63,33 +67,37 @@
             </TextBox.Style>
         </TextBox>
         <Button
-            Content="X"
-            FontSize="20"
-            FontWeight="Light"
             Width="40"
             Height="40"
             Margin="699,51,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Click="ClearSearch">
+            Click="ClearSearch"
+            Content="X"
+            FontSize="20"
+            FontWeight="Light">
             <Button.Style>
                 <Style TargetType="Button">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
                     <Setter Property="Control.Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="Button">
-                                <Border CornerRadius="8" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Border
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="8">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#B5B5B5"/>
+                            <Setter Property="Background" Value="#B5B5B5" />
 
-                            <Setter Property="Foreground" Value="Black"/>
+                            <Setter Property="Foreground" Value="Black" />
                         </Trigger>
                     </Style.Triggers>
                 </Style>
@@ -97,18 +105,18 @@
         </Button>
         <ListBox
             x:Name="SearchResults"
-            Height="300"
             Width="673"
+            Height="300"
             Margin="90,96,0,146"
             HorizontalAlignment="Left"
-            Background="Transparent"
-            BorderBrush="Transparent"
             HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center">
+            VerticalContentAlignment="Center"
+            Background="Transparent"
+            BorderBrush="Transparent">
             <ListBox.Resources>
                 <Style TargetType="ListBoxItem">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">
@@ -122,21 +130,30 @@
             </ListBox.Resources>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderBrush="#565656" BorderThickness="1" Padding="5" Margin="5" CornerRadius="8">
+                    <Border
+                        Margin="5"
+                        Padding="5"
+                        BorderBrush="#565656"
+                        BorderThickness="1"
+                        CornerRadius="8">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Background" Value="Transparent" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#B5B5B5"/>
-                                        <Setter Property="BorderBrush" Value="#B5B5B5"/>
+                                        <Setter Property="Background" Value="#B5B5B5" />
+                                        <Setter Property="BorderBrush" Value="#B5B5B5" />
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
                         </Border.Style>
                         <StackPanel Orientation="Horizontal">
-                            <CheckBox VerticalAlignment="Center" Margin="5"/>
-                            <TextBlock Text="{Binding}" VerticalAlignment="Center" Margin="5" Height="30" />
+                            <CheckBox Margin="5" VerticalAlignment="Center" />
+                            <TextBlock
+                                Height="30"
+                                Margin="5"
+                                VerticalAlignment="Center"
+                                Text="{Binding}" />
                         </StackPanel>
                     </Border>
                 </DataTemplate>
@@ -148,6 +165,7 @@
             Margin="24,304,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            Cursor="Hand"
             Source="pack://application:,,,/images/shopping-bag.png" />
         <Image
             Width="24"
@@ -163,36 +181,53 @@
             Margin="24,364,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            Cursor="Hand"
+            MouseDown="Image_MouseDown"
             Source="pack://application:,,,/images/users.png" />
 
         <TextBlock
+            Width="69"
+            Height="16"
             Margin="144,428,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Text="Selecionados"
-            TextWrapping="Wrap" Height="16" Width="69" />
+            TextWrapping="Wrap" />
         <Image
+            Grid.RowSpan="2"
             Width="47"
             Height="48"
             Margin="97,412,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             RenderTransformOrigin="-0.354,-7.312"
-            Source="pack://application:,,,/images/lightBox.png" Grid.RowSpan="2" />
+            Source="pack://application:,,,/images/lightBox.png" />
         <Rectangle
+            Grid.RowSpan="2"
             Width="256"
             Height="736"
             Margin="1002,8,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Stroke="Black" Grid.RowSpan="2" />
+            Stroke="Black" />
         <Rectangle
+            Grid.Row="1"
             Width="100"
             Height="100"
             Margin="1431,17,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Stroke="Black" Grid.Row="1" />
+            Stroke="Black" />
+        <Image
+            x:Name="customerImg"
+            Width="24"
+            Height="24"
+            Margin="24,412,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Cursor="Hand"
+            MouseDown="customerImg_MouseDown"
+            Source="/customer64.png" />
 
     </Grid>
 </Window>

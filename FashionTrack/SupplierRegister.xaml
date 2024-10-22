@@ -10,6 +10,7 @@
     Width="1280"
     Height="766"
     Activated="Window_Activated"
+    ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 

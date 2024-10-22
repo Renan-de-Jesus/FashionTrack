@@ -99,6 +99,9 @@ namespace FashionTrack
             {
                 textBox.Text = "";
                 textBox.Opacity = 1;
+
+                cpfTxtBox.SelectionStart = 0;
+                cpfTxtBox.SelectionLength = 0;
             }
         }
 

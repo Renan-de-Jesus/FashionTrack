@@ -22,11 +22,7 @@ namespace FashionTrack
             lblUser.Focus();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-        private void RemoveText(object sender, RoutedEventArgs e)
+private void RemoveText(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             if (textBox.Text == "Usuário")
@@ -83,7 +79,7 @@ namespace FashionTrack
                 try
                 {
                     connection.Open();
-                    string query = "SELECT COUNT(1) FROM Usuarios WHERE Usuario = @username AND Senha = @password";
+                    string query = "SELECT COUNT(1) FROM Usuarios WHERE Usuario = @username AND Senha =  @password";
 
                     SqlCommand comando = new SqlCommand(query, connection);
                     comando.Parameters.AddWithValue("@username", username);
@@ -112,6 +108,13 @@ namespace FashionTrack
             }
         }
 
+        private void passwordText_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                btnLogin_Click(sender, e);
+            }
+        }
     }
 
 }

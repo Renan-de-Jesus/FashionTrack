@@ -12,14 +12,23 @@
   <ItemGroup>
     <None Remove="add.png" />
     <None Remove="add128.png" />
+    <None Remove="customer.png" />
+    <None Remove="customer128.png" />
+    <None Remove="customer64.png" />
     <None Remove="images\add.png" />
     <None Remove="images\add128.png" />
+    <None Remove="images\customer.png" />
+    <None Remove="images\customer128.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="add128.png" />
+    <Resource Include="customer128.png" />
+    <Resource Include="customer64.png" />
     <Resource Include="images\add.png" />
     <Resource Include="images\add128.png" />
+    <Resource Include="images\customer.png" />
+    <Resource Include="images\customer128.png" />
     <Resource Include="images\fav.ico" />
   </ItemGroup>
 

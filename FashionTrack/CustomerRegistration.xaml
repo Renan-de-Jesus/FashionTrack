@@ -9,9 +9,10 @@
     Title="CustomerRegistration"
     Width="1366"
     Height="768"
+    Activated="Window_Activated"
+    ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
-    mc:Ignorable="d"
-    Activated="Window_Activated">
+    mc:Ignorable="d">
 
     <Grid x:Name="CusotmerRegister">
         <Grid.Background>
@@ -125,9 +126,9 @@
             VerticalContentAlignment="Center"
             Cursor="Hand"
             FontSize="16"
+            MaxDropDownHeight="180"
             RenderTransformOrigin="0.502,1.238"
-            SelectedIndex="1" 
-            MaxDropDownHeight="180" />
+            SelectedIndex="1" />
 
         <xctk:MaskedTextBox
             x:Name="cpfTxtBox"
