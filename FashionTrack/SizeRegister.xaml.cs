@@ -8,23 +8,23 @@ using System.Configuration;
 
 namespace FashionTrack
 {
-    public partial class TamanhoRegister : Window
+    public partial class SizeRegister : Window
     {
         string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
         private bool isEditMode = false; // Flag para identificar o modo de edição
-        private int currentTamanhoId = -1; // Armazena o ID do tamanho atual
+        private int currentSizeId = -1; // Armazena o ID do tamanho atual
 
-        public TamanhoRegister()
+        public SizeRegister()
         {
             InitializeComponent();
         }
 
-        private void TamanhoDescricaoTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void SizeDescriptionTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             // Permitir letras e números
             e.Handled = !IsTextAllowedForDescription(e.Text);
         }
-        private void TamanhoIdTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void SizeIdTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             // Permitir apenas números inteiros
             e.Handled = !IsTextAllowedForId(e.Text);
@@ -44,23 +44,23 @@ namespace FashionTrack
             return !regex.IsMatch(text);
         }
 
-        private void TamanhoDescricaoTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void SizeDescriptionTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            PlaceholderTextBlock.Visibility = string.IsNullOrWhiteSpace(TamanhoDescricaoTextBox.Text) ? Visibility.Visible : Visibility.Hidden;
+            PlaceholderTextBlock.Visibility = string.IsNullOrWhiteSpace(SizeDescriptionTextBox.Text) ? Visibility.Visible : Visibility.Hidden;
             SaveButton.IsEnabled = true; // Habilita o botão de salvar ao alterar o nome da cor
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            string tamanhoDescricao = TamanhoDescricaoTextBox.Text.Trim();
+            string sizeDescription = SizeDescriptionTextBox.Text.Trim();
 
-            if (string.IsNullOrWhiteSpace(tamanhoDescricao))
+            if (string.IsNullOrWhiteSpace(sizeDescription))
             {
                 MessageBox.Show("O campo Descrição do Tamanho não pode estar vazio");
                 return;
             }
 
-            if (IsTamanhoDescricaoDuplicate(tamanhoDescricao))
+            if (IsSizeDescricaoDuplicate(sizeDescription))
             {
                 MessageBox.Show("A descrição do tamanho já está cadastrada. Por favor, escolha outra descrição.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -71,34 +71,34 @@ namespace FashionTrack
                 conn.Open();
                 SqlCommand cmd;
 
-                if (isEditMode && currentTamanhoId != -1)
+                if (isEditMode && currentSizeId != -1)
                 {
                     // Atualizar o registro existente
-                    cmd = new SqlCommand("UPDATE Tamanho SET TamanhoDescricao = @TamanhoDescricao WHERE TamanhoId = @TamanhoId", conn);
-                    cmd.Parameters.AddWithValue("@TamanhoId", currentTamanhoId);
+                    cmd = new SqlCommand("UPDATE Size SET SizeDescription = @SizeDescription WHERE SizeId = @SizeId", conn);
+                    cmd.Parameters.AddWithValue("@TamanhoId", currentSizeId);
                 }
                 else
                 {
                     // Inserir um novo registro
-                    cmd = new SqlCommand("INSERT INTO Tamanho (TamanhoDescricao) VALUES (@TamanhoDescricao)", conn);
+                    cmd = new SqlCommand("INSERT INTO Size (SizeDescription) VALUES (@SizeDescription)", conn);
                 }
 
-                cmd.Parameters.AddWithValue("@TamanhoDescricao", tamanhoDescricao);
+                cmd.Parameters.AddWithValue("@SizeDescription", sizeDescription);
                 cmd.ExecuteNonQuery();
             }
 
-            MessageBox.Show($"Tamanho '{tamanhoDescricao}' salvo com sucesso!");
-            TamanhoIdTextBox.Clear();
-            TamanhoDescricaoTextBox.Clear();
+            MessageBox.Show($"Tamanho '{sizeDescription}' salvo com sucesso!");
+            SizeIdTextBox.Clear();
+            SizeDescriptionTextBox.Clear();
         }
 
-        private bool IsTamanhoDescricaoDuplicate(string tamanhoDescricao)
+        private bool IsSizeDescricaoDuplicate(string sizeDescription)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Tamanho WHERE TamanhoDescricao = @TamanhoDescricao", conn);
-                cmd.Parameters.AddWithValue("@TamanhoDescricao", tamanhoDescricao);
+                SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Size WHERE SizeDescription = @SizeDescription", conn);
+                cmd.Parameters.AddWithValue("@SizeDescription", sizeDescription);
                 int count = (int)cmd.ExecuteScalar();
                 return count > 0;
             }
@@ -106,15 +106,15 @@ namespace FashionTrack
 
         private void ResetForm()
         {
-            TamanhoDescricaoTextBox.Clear();
+            SizeDescriptionTextBox.Clear();
             isEditMode = false;
-            currentTamanhoId = -1;
+            currentSizeId = -1;
             SaveButton.IsEnabled = false;
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            if (currentTamanhoId == -1)
+            if (currentSizeId == -1)
             {
                 MessageBox.Show("Por favor, selecione um tamanho para deletar");
                 return;
@@ -123,18 +123,18 @@ namespace FashionTrack
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("DELETE FROM Tamanho WHERE TamanhoId = @TamanhoId", conn);
-                cmd.Parameters.AddWithValue("@TamanhoId", currentTamanhoId);
+                SqlCommand cmd = new SqlCommand("DELETE FROM Size WHERE SizeId = @SizeId", conn);
+                cmd.Parameters.AddWithValue("@SizeId", currentSizeId);
                 cmd.ExecuteNonQuery();
             }
 
-            MessageBox.Show($"Tamanho de ID '{currentTamanhoId}' deletado com sucesso.");
+            MessageBox.Show($"Tamanho de ID '{currentSizeId}' deletado com sucesso.");
             ResetForm();
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(TamanhoIdTextBox.Text) && string.IsNullOrWhiteSpace(TamanhoDescricaoTextBox.Text))
+            if (string.IsNullOrWhiteSpace(SizeIdTextBox.Text) && string.IsNullOrWhiteSpace(SizeDescriptionTextBox.Text))
             {
                 MessageBox.Show("Por favor preenche um ou mais parâmetros para busca");
                 return;
@@ -143,16 +143,16 @@ namespace FashionTrack
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Tamanho WHERE TamanhoId = @TamanhoId OR TamanhoDescricao = @TamanhoDescricao", conn);
-                cmd.Parameters.AddWithValue("@TamanhoId", TamanhoIdTextBox.Text);
-                cmd.Parameters.AddWithValue("@TamanhoDescricao", TamanhoDescricaoTextBox.Text);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Size WHERE SizeId = @SizeId OR SizeDescription = @SizeDescription", conn);
+                cmd.Parameters.AddWithValue("@SizeId", SizeIdTextBox.Text);
+                cmd.Parameters.AddWithValue("@SizeDescription", SizeDescriptionTextBox.Text);
 
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
-                    currentTamanhoId = Convert.ToInt32(reader["TamanhoId"]);
-                    TamanhoIdTextBox.Text = reader["TamanhoId"].ToString();
-                    TamanhoDescricaoTextBox.Text = reader["TamanhoDescricao"].ToString();
+                    currentSizeId = Convert.ToInt32(reader["SizeId"]);
+                    SizeIdTextBox.Text = reader["SizeId"].ToString();
+                    SizeDescriptionTextBox.Text = reader["SizeDescription"].ToString();
                     isEditMode = true;
                     SaveButton.IsEnabled = false;
                 }
@@ -164,14 +164,14 @@ namespace FashionTrack
         }
         private void ResetaForm()
         {
-            TamanhoIdTextBox.Clear();
-            TamanhoDescricaoTextBox.Clear();
+            SizeIdTextBox.Clear();
+            SizeDescriptionTextBox.Clear();
             isEditMode = false;
-            currentTamanhoId = -1;
+            currentSizeId = -1;
             SaveButton.IsEnabled = false;
         }
 
-        private void TamanhoIdTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void SizeIdTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             //aa
         }

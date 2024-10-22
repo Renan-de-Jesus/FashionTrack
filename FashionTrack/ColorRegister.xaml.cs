@@ -83,16 +83,16 @@ namespace FashionTrack
                 if (isEditMode && currentColorId != -1)
                 {
                     // Atualizar o registro existente
-                    cmd = new SqlCommand("UPDATE Cor SET CorNome = @CorNome WHERE CorId = @CorId", conn);
+                    cmd = new SqlCommand("UPDATE Cor SET ColorName = @ColorName WHERE ColorId = @ColorId", conn);
                     cmd.Parameters.AddWithValue("@CorId", currentColorId);
                 }
                 else
                 {
                     // Inserir um novo registro
-                    cmd = new SqlCommand("INSERT INTO Cor (CorNome) VALUES (@CorNome)", conn);
+                    cmd = new SqlCommand("INSERT INTO Cor (ColorName) VALUES (@ColorName)", conn);
                 }
 
-                cmd.Parameters.AddWithValue("@CorNome", ColorNameTextBox.Text);
+                cmd.Parameters.AddWithValue("@ColorName", ColorNameTextBox.Text);
                 cmd.ExecuteNonQuery();
             }
 
@@ -105,8 +105,8 @@ namespace FashionTrack
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Cor WHERE CorNome = @CorNome", conn);
-                cmd.Parameters.AddWithValue("@CorNome", colorName);
+                SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Cor WHERE ColorName = @ColorName", conn);
+                cmd.Parameters.AddWithValue("@ColorName", colorName);
                 int count = (int)cmd.ExecuteScalar();
                 return count > 0;
             }
@@ -123,16 +123,16 @@ namespace FashionTrack
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Cor WHERE CorId = @CorId OR CorNome = @CorNome", conn);
-                cmd.Parameters.AddWithValue("@CorId", ColorIdTextBox.Text);
-                cmd.Parameters.AddWithValue("@CorNome", ColorNameTextBox.Text);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Cor WHERE ColorId = @ColorId OR ColorName = @ColorName", conn);
+                cmd.Parameters.AddWithValue("@ColorId", ColorIdTextBox.Text);
+                cmd.Parameters.AddWithValue("@ColorName", ColorNameTextBox.Text);
 
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
-                    currentColorId = Convert.ToInt32(reader["CorId"]);
-                    ColorIdTextBox.Text = reader["CorId"].ToString();
-                    ColorNameTextBox.Text = reader["CorNome"].ToString();
+                    currentColorId = Convert.ToInt32(reader["ColorId"]);
+                    ColorIdTextBox.Text = reader["ColorId"].ToString();
+                    ColorNameTextBox.Text = reader["ColorName"].ToString();
                     isEditMode = true; // Ativa o modo de edição
                     SaveButton.IsEnabled = false; // Desabilita o botão de salvar até que o nome da cor seja alterado
                 }
@@ -164,8 +164,8 @@ namespace FashionTrack
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("DELETE FROM Cor WHERE CorId = @CorId", conn);
-                cmd.Parameters.AddWithValue("@CorId", ColorIdTextBox.Text);
+                SqlCommand cmd = new SqlCommand("DELETE FROM Cor WHERE ColorId = @ColorId", conn);
+                cmd.Parameters.AddWithValue("@ColorId", ColorIdTextBox.Text);
                 cmd.ExecuteNonQuery();
             }
 

@@ -6,8 +6,8 @@
     mc:Ignorable="av"
     x:Class="FashionTrack.ProductRegister"
     Title="Product Registration"
-    Width="1366"
-    Height="768"
+    Width="1280"
+    Height="600"
     WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -59,7 +59,6 @@
         <ControlTemplate x:Key="CustomComboBoxTemplate" TargetType="ComboBox">
             <Grid>
                 <ToggleButton x:Name="ToggleButton"
-                              Template="{StaticResource ComboBoxToggleButton}"
                               IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                               Focusable="False"
                               ClickMode="Press">
@@ -156,11 +155,7 @@
 
         <!-- Search Button -->
         <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <TextBox x:Name="SearchTextBox" Width="200" Margin="5"/>
-            <TextBlock Text="Buscar por Nome ou ID" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False" Visibility="{Binding Text, ElementName=SearchTextBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
-            <Button x:Name="SearchButton" Content="Buscar" Width="100" Height="30" Margin="5" Click="SearchButton_Click"/>
-            <TextBox x:Name="SearchIDTextBox" Width="200" Margin="5" PreviewTextInput="SearchIDTextBox_PreviewTextInput" TextChanged="SearchIDTextBox_TextChanged"/>
-            <Button x:Name="SearchIDButton" Content="Buscar por ID" Width="100" Height="30" Click="SearchIDButton_Click"/>
+            <TextBox x:Name="ProductIDTextBox" Width="200" Margin="5" PreviewTextInput="ProductIdTextBox_PreviewTextInput" TextChanged="ProductIDTextBox_TextChanged"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.Column="0" Margin="10">
@@ -173,7 +168,7 @@
             <Label Content="Código da Marca"/>
             <Grid>
                 <TextBox x:Name="BrandCodeTextBox" Width="200" Margin="5" TextChanged="BrandCodeTextBox_TextChanged"/>
-                <TextBlock Text="Código da Marca" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False" Visibility="{Binding Text, ElementName=BrandCodeTextBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
+                <TextBlock Text="Código da Marca" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False"/>
             </Grid>
 
             <Label Content="Cor"/>
@@ -185,7 +180,7 @@
             <Label Content="Descrição"/>
             <Grid>
                 <TextBox x:Name="DescriptionTextBox" Width="200" Margin="5" TextChanged="DescriptionTextBox_TextChanged"/>
-                <TextBlock Text="Descrição" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False" Visibility="{Binding Text, ElementName=DescriptionTextBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
+                <TextBlock Text="Descrição" Foreground="Gray" VerticalAlignment="Top" Margin="17,23,-7,0" IsHitTestVisible="False"/>
             </Grid>
 
             <Label Content="Tamanho"/>
@@ -204,7 +199,7 @@
             <Label Content="Preço"/>
             <Grid>
                 <TextBox x:Name="PriceTextBox" Width="200" Margin="5" TextChanged="PriceTextBox_TextChanged" PreviewTextInput="PriceTextBox_PreviewTextInput"/>
-                <TextBlock Text="Preço" Foreground="Gray" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False" Visibility="{Binding Text, ElementName=PriceTextBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
+                <TextBlock Text="Preço" Foreground="Gray" VerticalAlignment="Top" Margin="10,15,0,0" IsHitTestVisible="False"/>
             </Grid>
         </StackPanel>
 
