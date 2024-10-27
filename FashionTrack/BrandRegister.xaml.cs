@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Configuration;
+using System.ComponentModel;
 
 namespace FashionTrack
 {
@@ -14,6 +15,25 @@ namespace FashionTrack
         private bool isEditMode = false; // Flag para identificar o modo de edição
         private int currentBrandId = -1; // Armazena o ID da marca atual
 
+        private void RemoveText(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text == "Digite o nome da marca")
+            {
+                textBox.Text = "";
+                textBox.Opacity = 1;
+            }
+        }
+
+        private void AddText(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                textBox.Text = "Digite o nome da marca";
+                textBox.Opacity = 0.6;
+            }
+        }
         public BrandRegister()
         {
             InitializeComponent();
@@ -47,14 +67,13 @@ namespace FashionTrack
 
         private void BrandNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            PlaceholderTextBlock.Visibility = string.IsNullOrWhiteSpace(BrandNameTextBox.Text) ? Visibility.Visible : Visibility.Hidden;
-            SaveButton.IsEnabled = true; // Habilita o botão de salvar ao alterar o nome da marca
+          
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             string brandName = BrandNameTextBox.Text.Trim();
-            if (string.IsNullOrWhiteSpace(BrandNameTextBox.Text))
+            if (string.IsNullOrWhiteSpace(BrandNameTextBox.Text) || BrandNameTextBox.Text == "Digite o nome da marca" )
             {
                 MessageBox.Show("Campo marca não pode estar vazio");
                 return;
@@ -86,9 +105,11 @@ namespace FashionTrack
                 cmd.Parameters.AddWithValue("@BrandName", BrandNameTextBox.Text);
                 cmd.ExecuteNonQuery();
             }
-
-            MessageBox.Show($"Marca '{BrandNameTextBox.Text}' salva com sucesso!");
-            ResetForm();
+            MessageBoxResult result = MessageBox.Show($"Marca '{BrandNameTextBox.Text}' salvo com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (result == MessageBoxResult.OK)
+            {           
+                this.Close();
+            }
         }
 
         private bool IsBrandNameDuplicate(string brandName)
@@ -103,65 +124,14 @@ namespace FashionTrack
             }
         }
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(BrandIdTextBox.Text) && string.IsNullOrWhiteSpace(BrandNameTextBox.Text))
-            {
-                MessageBox.Show("Por favor preenche um ou mais parâmetros para busca");
-                return;
-            }
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Brand WHERE BrandId = @BrandId OR BrandName = @BrandName", conn);
-                cmd.Parameters.AddWithValue("@BrandId", BrandIdTextBox.Text);
-                cmd.Parameters.AddWithValue("@BrandName", BrandNameTextBox.Text);
-
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    currentBrandId = Convert.ToInt32(reader["BrandId"]);
-                    BrandIdTextBox.Text = reader["BrandId"].ToString();
-                    BrandNameTextBox.Text = reader["BrandName"].ToString();
-                    isEditMode = true; // Ativa o modo de edição
-                    SaveButton.IsEnabled = false; // Desabilita o botão de salvar até que o nome da marca seja alterado
-                }
-                else
-                {
-                    MessageBox.Show("Marca não encontrada.");
-                    ResetForm();
-                }
-            }
-        }
-
         private void ResetForm()
         {
-            BrandIdTextBox.Clear();
-            BrandNameTextBox.Clear();
+            
             isEditMode = false;
             currentBrandId = -1;
             SaveButton.IsEnabled = false;
         }
 
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(BrandIdTextBox.Text))
-            {
-                MessageBox.Show("Por favor preencha um ID para deletar");
-                return;
-            }
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand("DELETE FROM Brand WHERE BrandId = @BrandId", conn);
-                cmd.Parameters.AddWithValue("@BrandId", BrandIdTextBox.Text);
-                cmd.ExecuteNonQuery();
-            }
-
-            MessageBox.Show($"Marca de ID '{BrandIdTextBox.Text}' deletada com sucesso.");
-            ResetForm();
-        }
+       
     }
 }

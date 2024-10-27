@@ -11,12 +11,32 @@ namespace FashionTrack
     public partial class SizeRegister : Window
     {
         string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
-        private bool isEditMode = false; // Flag para identificar o modo de edição
-        private int currentSizeId = -1; // Armazena o ID do tamanho atual
+        private bool isEditMode = false; 
+        private int currentSizeId = -1; 
 
         public SizeRegister()
         {
             InitializeComponent();
+        }
+
+        private void RemoveText(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text == "Digite o tamanho (P, M, G, etc.)")
+            {
+                textBox.Text = "";
+                textBox.Opacity = 1;
+            }
+        }
+
+        private void AddText(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                textBox.Text = "Digite o tamanho (P, M, G, etc.)";
+                textBox.Opacity = 0.6;
+            }
         }
 
         private void SizeDescriptionTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -43,18 +63,11 @@ namespace FashionTrack
             Regex regex = new Regex("[^a-zA-Z0-9]+"); // Apenas letras e números
             return !regex.IsMatch(text);
         }
-
-        private void SizeDescriptionTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            PlaceholderTextBlock.Visibility = string.IsNullOrWhiteSpace(SizeDescriptionTextBox.Text) ? Visibility.Visible : Visibility.Hidden;
-            SaveButton.IsEnabled = true; // Habilita o botão de salvar ao alterar o nome da cor
-        }
-
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             string sizeDescription = SizeDescriptionTextBox.Text.Trim();
 
-            if (string.IsNullOrWhiteSpace(sizeDescription))
+            if (string.IsNullOrWhiteSpace(sizeDescription) || SizeDescriptionTextBox.Text == "Digite o tamanho (P, M, G, etc.)")
             {
                 MessageBox.Show("O campo Descrição do Tamanho não pode estar vazio");
                 return;
@@ -79,7 +92,6 @@ namespace FashionTrack
                 }
                 else
                 {
-                    // Inserir um novo registro
                     cmd = new SqlCommand("INSERT INTO Size (SizeDescription) VALUES (@SizeDescription)", conn);
                 }
 
@@ -87,9 +99,12 @@ namespace FashionTrack
                 cmd.ExecuteNonQuery();
             }
 
-            MessageBox.Show($"Tamanho '{sizeDescription}' salvo com sucesso!");
-            SizeIdTextBox.Clear();
-            SizeDescriptionTextBox.Clear();
+            MessageBoxResult result = MessageBox.Show($"Tamanho '{sizeDescription}' salvo com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (result == MessageBoxResult.OK)
+            {
+                SizeDescriptionTextBox.Clear();
+                this.Close();
+            }
         }
 
         private bool IsSizeDescricaoDuplicate(string sizeDescription)
@@ -112,68 +127,12 @@ namespace FashionTrack
             SaveButton.IsEnabled = false;
         }
 
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (currentSizeId == -1)
-            {
-                MessageBox.Show("Por favor, selecione um tamanho para deletar");
-                return;
-            }
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand("DELETE FROM Size WHERE SizeId = @SizeId", conn);
-                cmd.Parameters.AddWithValue("@SizeId", currentSizeId);
-                cmd.ExecuteNonQuery();
-            }
-
-            MessageBox.Show($"Tamanho de ID '{currentSizeId}' deletado com sucesso.");
-            ResetForm();
-        }
-
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(SizeIdTextBox.Text) && string.IsNullOrWhiteSpace(SizeDescriptionTextBox.Text))
-            {
-                MessageBox.Show("Por favor preenche um ou mais parâmetros para busca");
-                return;
-            }
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Size WHERE SizeId = @SizeId OR SizeDescription = @SizeDescription", conn);
-                cmd.Parameters.AddWithValue("@SizeId", SizeIdTextBox.Text);
-                cmd.Parameters.AddWithValue("@SizeDescription", SizeDescriptionTextBox.Text);
-
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    currentSizeId = Convert.ToInt32(reader["SizeId"]);
-                    SizeIdTextBox.Text = reader["SizeId"].ToString();
-                    SizeDescriptionTextBox.Text = reader["SizeDescription"].ToString();
-                    isEditMode = true;
-                    SaveButton.IsEnabled = false;
-                }
-                else
-                {
-                    MessageBox.Show("Tamanho não encontrado.");
-                }
-            }
-        }
         private void ResetaForm()
         {
-            SizeIdTextBox.Clear();
             SizeDescriptionTextBox.Clear();
             isEditMode = false;
             currentSizeId = -1;
             SaveButton.IsEnabled = false;
-        }
-
-        private void SizeIdTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //aa
         }
     }
 }

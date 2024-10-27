@@ -14,6 +14,41 @@ namespace FashionTrack
         private bool isEditMode = false;
         private int currentProductID = -1;
 
+         private void RemoveText(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text == "Código da Marca" || textBox.Text == "Cor" || textBox.Text == "Descrição" || textBox.Text == "Preço")
+            {
+                textBox.Text = "";
+                textBox.Opacity = 1;
+            }
+        }
+
+        private void AddText(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                if (textBox.Name == "BrandCodeTextBox")
+                {
+                    textBox.Text = "Código da Marca";
+                }
+                else if (textBox.Name == "CorTextBox")
+                {
+                    textBox.Text = "Cor";
+                }
+                else if (textBox.Name == "DescriptionTextBox")
+                {
+                    textBox.Text = "Descrição";
+                }
+                else if (textBox.Name == "PriceTextBox")
+                {
+                    textBox.Text = "Preço";
+                }
+                textBox.Opacity = 0.6;
+            }
+        }
+
         public ProductRegister()
         {
             InitializeComponent();
@@ -150,12 +185,12 @@ namespace FashionTrack
                         if (isEditMode && currentProductID != -1)
                         {
                             cmd.ExecuteNonQuery();
-                            MessageBox.Show("Product saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show("Produto salvo com sucesso!", "Boa deu certo!", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                         else
                         {
                             currentProductID = (int)cmd.ExecuteScalar();
-                            MessageBox.Show("Product saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show("Product salvo com sucesso!", "Boa deu certo!", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                     }
                 }
@@ -238,14 +273,5 @@ namespace FashionTrack
             sizeRegister.ShowDialog();
             LoadComboBox(SizeComboBox, "Size", "SizeDescription", "SizeId");
         }
-
-        private void BrandComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) { /* Implement if necessary */ }
-        private void BrandCodeTextBox_TextChanged(object sender, TextChangedEventArgs e) { /* Implement if necessary */ }
-        private void ProductIDTextBox_TextChanged(object sender, TextChangedEventArgs e) { /* Implement if necessary */ }
-        private void ColorComboBox_TextChanged(object sender, SelectionChangedEventArgs e) { /* Implement if necessary */ }
-        private void DescriptionTextBox_TextChanged(object sender, TextChangedEventArgs e) { /* Implement if necessary */ }
-        private void SizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) { /* Implement if necessary */ }
-        private void GenderComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) { /* Implement if necessary */ }
-        private void PriceTextBox_TextChanged(object sender, TextChangedEventArgs e) { /* Implement if necessary */ }
     }
 }

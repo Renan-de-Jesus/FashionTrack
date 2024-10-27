@@ -23,6 +23,25 @@ namespace FashionTrack
         private bool isEditMode = false; // Flag para identificar o modo de edição
         private int currentColorId = -1; // Armazena o ID da cor atual
 
+        private void RemoveText(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text == "Digite o nome da cor")
+            {
+                textBox.Text = "";
+                textBox.Opacity = 1;
+            }
+        }
+
+        private void AddText(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                textBox.Text = "Digite o nome da cor";
+                textBox.Opacity = 0.6;
+            }
+        }
         public ColorRegister()
         {
             InitializeComponent();
@@ -56,14 +75,13 @@ namespace FashionTrack
 
         private void ColorNameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            PlaceholderTextBlock.Visibility = string.IsNullOrWhiteSpace(ColorNameTextBox.Text) ? Visibility.Visible : Visibility.Hidden;
-            SaveButton.IsEnabled = true; // Habilita o botão de salvar ao alterar o nome da cor
+           
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             string colorName = ColorNameTextBox.Text.Trim();
-            if (string.IsNullOrWhiteSpace(ColorNameTextBox.Text))
+            if (string.IsNullOrWhiteSpace(ColorNameTextBox.Text) || ColorNameTextBox.Text == "Digite o nome da cor")
             {
                 MessageBox.Show("Campo cor não pode estar vazio");
                 return;
@@ -96,8 +114,12 @@ namespace FashionTrack
                 cmd.ExecuteNonQuery();
             }
 
-            MessageBox.Show($"Cor '{ColorNameTextBox.Text}' salva com sucesso!");
-            ResetForm();
+            MessageBoxResult result = MessageBox.Show($"Cor '{ColorNameTextBox.Text}' salva com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (result == MessageBoxResult.OK)
+            {
+                this.Close();
+            }
+            
         }
 
         private bool IsColorNameDuplicate(string colorName)
@@ -111,66 +133,12 @@ namespace FashionTrack
                 return count > 0;
             }
         }
-
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(ColorIdTextBox.Text) && string.IsNullOrWhiteSpace(ColorNameTextBox.Text))
-            {
-                MessageBox.Show("Por favor preencha um ou mais parâmetros para busca!");
-                return;
-            }
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Cor WHERE ColorId = @ColorId OR ColorName = @ColorName", conn);
-                cmd.Parameters.AddWithValue("@ColorId", ColorIdTextBox.Text);
-                cmd.Parameters.AddWithValue("@ColorName", ColorNameTextBox.Text);
-
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    currentColorId = Convert.ToInt32(reader["ColorId"]);
-                    ColorIdTextBox.Text = reader["ColorId"].ToString();
-                    ColorNameTextBox.Text = reader["ColorName"].ToString();
-                    isEditMode = true; // Ativa o modo de edição
-                    SaveButton.IsEnabled = false; // Desabilita o botão de salvar até que o nome da cor seja alterado
-                }
-                else
-                {
-                    MessageBox.Show("Cor não encontrada.");
-                    ResetForm();
-                }
-            }
-        }
-
         private void ResetForm()
         {
-            ColorIdTextBox.Clear();
             ColorNameTextBox.Clear();
             isEditMode = false;
             currentColorId = -1;
             SaveButton.IsEnabled = false;
-        }
-
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(ColorIdTextBox.Text))
-            {
-                MessageBox.Show("Por favor preencha um ID para deletar");
-                return;
-            }
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand("DELETE FROM Cor WHERE ColorId = @ColorId", conn);
-                cmd.Parameters.AddWithValue("@ColorId", ColorIdTextBox.Text);
-                cmd.ExecuteNonQuery();
-            }
-
-            MessageBox.Show($"Cor de ID '{ColorIdTextBox.Text}' deletada com sucesso.");
-            ResetForm();
-        }
+        }   
     }
 }
