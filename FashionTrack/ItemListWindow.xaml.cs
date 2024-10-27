@@ -27,15 +27,19 @@ namespace FashionTrack
                 {
                     conn.Open();
                     string query = @"
-                SELECT 
-                    p.*, 
-                    c.ColorName, 
-                    s.SizeDescription, 
-                    b.BrandName
-                FROM Produto p
-                LEFT JOIN Color c ON p.ColorId = c.ColorId
-                LEFT JOIN Size s ON p.SizeId = s.SizeId
-                LEFT JOIN Brand b ON p.BrandId = b.BrandId"; // Usando LEFT JOINs
+                        SELECT 
+                            p.ID_Produto, 
+                            p.Description, 
+                            p.Price, 
+                            p.BrandCode, 
+                            p.Gender, 
+                            c.ColorName, 
+                            s.SizeDescription, 
+                            b.BrandName
+                        FROM Produto p
+                        LEFT JOIN Color c ON p.ColorId = c.ColorId
+                        LEFT JOIN Size s ON p.SizeId = s.SizeId
+                        LEFT JOIN Brand b ON p.BrandId = b.BrandId"; // Usando LEFT JOINs
 
                     using (SqlDataAdapter adapter = new SqlDataAdapter(query, conn))
                     {
@@ -43,7 +47,14 @@ namespace FashionTrack
                     }
                 }
 
-                ItemsDataGrid.ItemsSource = dataTable.DefaultView;
+                if (dataTable.Rows.Count > 0)
+                {
+                    ItemsDataGrid.ItemsSource = dataTable.DefaultView;
+                }
+                else
+                {
+                    MessageBox.Show("No items found.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
             catch (Exception ex)
             {
@@ -92,9 +103,9 @@ namespace FashionTrack
         {
             if (ItemsDataGrid.SelectedItem is DataRowView selectedRow)
             {
-                int productId = Convert.ToInt32(selectedRow["ID_Produto"]); // Ajuste o nome da coluna conforme necessário
+                int productId = Convert.ToInt32(selectedRow["ID_Produto"]);
 
-                // Abra a janela de cadastro e passe os dados do item selecionado
+                // Abre a janela de cadastro e passe os dados do item selecionado
                 ProductRegister productRegister = new ProductRegister(productId);
                 productRegister.Closed += (s, args) => LoadItems();
                 productRegister.ShowDialog();

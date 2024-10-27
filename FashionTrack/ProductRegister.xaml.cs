@@ -22,6 +22,13 @@ namespace FashionTrack
             LoadComboBox(SizeComboBox, "Size", "SizeDescription", "SizeId");
         }
 
+        public ProductRegister(int productId) : this()
+        {
+            isEditMode = true;
+            currentProductID = productId;
+            LoadProductData();
+        }
+
         private void LoadProductData()
         {
             if (currentProductID == -1) return;
@@ -62,13 +69,6 @@ namespace FashionTrack
             }
         }
 
-        public ProductRegister(int productId) : this()
-        {
-            isEditMode = true;
-            currentProductID = productId;
-            LoadProductData();
-        }
-
         private void LoadComboBox(ComboBox comboBox, string tableName, string displayMember, string valueMember)
         {
             comboBox.Items.Clear();
@@ -104,7 +104,7 @@ namespace FashionTrack
 
         private static bool IsTextAllowedForPrice(string text)
         {
-            Regex regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            Regex regex = new Regex("^[0-9,]*$");
             return regex.IsMatch(text);
         }
 
@@ -123,9 +123,18 @@ namespace FashionTrack
             }
 
             string description = DescriptionTextBox.Text;
-            string price = PriceTextBox.Text;
+            string priceText = PriceTextBox.Text;
             string brandCode = BrandCodeTextBox.Text;
             string gender = GenderComboBox.Text;
+
+            if (!decimal.TryParse(priceText, out decimal price))
+            {
+                MessageBox.Show("Invalid price format.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Round the price to two decimal places
+            price = Math.Round(price, 2);
 
             int brandId = GetSelectedItemId(BrandComboBox);
             int colorId = GetSelectedItemId(ColorComboBox);
@@ -141,12 +150,13 @@ namespace FashionTrack
                         if (isEditMode && currentProductID != -1)
                         {
                             cmd.ExecuteNonQuery();
+                            MessageBox.Show("Product saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                         else
                         {
                             currentProductID = (int)cmd.ExecuteScalar();
+                            MessageBox.Show("Product saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
-                        MessageBox.Show("Product saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
                 catch (Exception ex)
@@ -156,28 +166,31 @@ namespace FashionTrack
             }
         }
 
-        private SqlCommand CreateCommand(SqlConnection conn, string description, string price, string brandCode, string gender, int brandId, int colorId, int sizeId)
+        private SqlCommand CreateCommand(SqlConnection conn, string description, decimal price, string brandCode, string gender, int brandId, int colorId, int sizeId)
         {
-            try
-            {
-                SqlCommand cmd;
-                cmd = new SqlCommand("INSERT INTO Produto (Description, Price, BrandCode, Gender, BrandId, ColorId, SizeId) OUTPUT INSERTED.ID_Produto " +
-                                     "VALUES (@Description, @Price, @BrandCode, @Gender, @BrandId, @ColorId, @SizeId) ", conn);
+            SqlCommand cmd;
 
-                cmd.Parameters.AddWithValue("@Description", description);
-                cmd.Parameters.AddWithValue("@Price", price);
-                cmd.Parameters.AddWithValue("@BrandCode", brandCode);
-                cmd.Parameters.AddWithValue("@Gender", gender);
-                cmd.Parameters.AddWithValue("@BrandId", brandId);
-                cmd.Parameters.AddWithValue("@ColorId", colorId);
-                cmd.Parameters.AddWithValue("@SizeId", sizeId);
-                return cmd;
-            }
-            catch (Exception ex)
+            if (isEditMode && currentProductID != -1)
             {
-                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
+                cmd = new SqlCommand("UPDATE Produto SET Description = @Description, Price = @Price, BrandCode = @BrandCode, " +
+                                        "Gender = @Gender, BrandId = @BrandId, ColorId = @ColorId, SizeId = @SizeId WHERE ID_Produto = @ID_Produto", conn);
+                cmd.Parameters.AddWithValue("@ID_Produto", currentProductID);
             }
+            else
+            {
+                cmd = new SqlCommand("INSERT INTO Produto (Description, Price, BrandCode, Gender, BrandId, ColorId, SizeId) OUTPUT INSERTED.ID_Produto " +
+                                        "VALUES (@Description, @Price, @BrandCode, @Gender, @BrandId, @ColorId, @SizeId) ", conn);
+            }
+
+            cmd.Parameters.AddWithValue("@Description", description);
+            cmd.Parameters.AddWithValue("@Price", price);
+            cmd.Parameters.AddWithValue("@BrandCode", brandCode);
+            cmd.Parameters.AddWithValue("@Gender", gender);
+            cmd.Parameters.AddWithValue("@BrandId", brandId);
+            cmd.Parameters.AddWithValue("@ColorId", colorId);
+            cmd.Parameters.AddWithValue("@SizeId", sizeId);
+
+            return cmd;
         }
 
         private bool ValidateInputs(out string errorMessage)
@@ -226,13 +239,13 @@ namespace FashionTrack
             LoadComboBox(SizeComboBox, "Size", "SizeDescription", "SizeId");
         }
 
-        private void BrandComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) { /* Implementar se necessário */ }
-        private void BrandCodeTextBox_TextChanged(object sender, TextChangedEventArgs e) { /* Implementar se necessário */ }
-        private void ProductIDTextBox_TextChanged(object sender, TextChangedEventArgs e) { /* Implementar se necessário */ }
-        private void ColorComboBox_TextChanged(object sender, SelectionChangedEventArgs e) { /* Implementar se necessário */ }
-        private void DescriptionTextBox_TextChanged(object sender, TextChangedEventArgs e) { /* Implementar se necessário */ }
-        private void SizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) { /* Implementar se necessário */ }
-        private void GenderComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) { /* Implementar se necessário */ }
-        private void PriceTextBox_TextChanged(object sender, TextChangedEventArgs e) { /* Implementar se necessário */ }
+        private void BrandComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) { /* Implement if necessary */ }
+        private void BrandCodeTextBox_TextChanged(object sender, TextChangedEventArgs e) { /* Implement if necessary */ }
+        private void ProductIDTextBox_TextChanged(object sender, TextChangedEventArgs e) { /* Implement if necessary */ }
+        private void ColorComboBox_TextChanged(object sender, SelectionChangedEventArgs e) { /* Implement if necessary */ }
+        private void DescriptionTextBox_TextChanged(object sender, TextChangedEventArgs e) { /* Implement if necessary */ }
+        private void SizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) { /* Implement if necessary */ }
+        private void GenderComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) { /* Implement if necessary */ }
+        private void PriceTextBox_TextChanged(object sender, TextChangedEventArgs e) { /* Implement if necessary */ }
     }
 }
