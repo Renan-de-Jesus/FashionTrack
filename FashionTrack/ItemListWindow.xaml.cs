@@ -33,7 +33,7 @@ namespace FashionTrack
                     s.SizeDescription, 
                     b.BrandName
                 FROM Produto p
-                LEFT JOIN Cor c ON p.ColorId = c.ColorId
+                LEFT JOIN Color c ON p.ColorId = c.ColorId
                 LEFT JOIN Size s ON p.SizeId = s.SizeId
                 LEFT JOIN Brand b ON p.BrandId = b.BrandId"; // Usando LEFT JOINs
 
@@ -79,7 +79,26 @@ namespace FashionTrack
             }
         }
 
-        private void ItemsDataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e){ //aa
+        private void ItemsDataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e){ /*something*/ }
+
+        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProductRegister productRegister = new ProductRegister();
+            productRegister.Closed += (s, args) => LoadItems();
+            productRegister.ShowDialog();
+        }
+
+        private void ItemsDataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (ItemsDataGrid.SelectedItem is DataRowView selectedRow)
+            {
+                int productId = Convert.ToInt32(selectedRow["ID_Produto"]); // Ajuste o nome da coluna conforme necessário
+
+                // Abra a janela de cadastro e passe os dados do item selecionado
+                ProductRegister productRegister = new ProductRegister(productId);
+                productRegister.Closed += (s, args) => LoadItems();
+                productRegister.ShowDialog();
+            }
         }
     }
 }

@@ -18,8 +18,55 @@ namespace FashionTrack
         {
             InitializeComponent();
             LoadComboBox(BrandComboBox, "Brand", "BrandName", "BrandId");
-            LoadComboBox(ColorComboBox, "Cor", "ColorName", "ColorId");
+            LoadComboBox(ColorComboBox, "Color", "ColorName", "ColorId");
             LoadComboBox(SizeComboBox, "Size", "SizeDescription", "SizeId");
+        }
+
+        private void LoadProductData()
+        {
+            if (currentProductID == -1) return;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "SELECT * FROM Produto WHERE ID_Produto = @ID_Produto";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ID_Produto", currentProductID);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            DescriptionTextBox.Text = reader["Description"].ToString();
+                            PriceTextBox.Text = reader["Price"].ToString();
+                            BrandCodeTextBox.Text = reader["BrandCode"].ToString();
+                            GenderComboBox.Text = reader["Gender"].ToString();
+                            SelectComboBoxItemByValue(BrandComboBox, reader["BrandId"]);
+                            SelectComboBoxItemByValue(ColorComboBox, reader["ColorId"]);
+                            SelectComboBoxItemByValue(SizeComboBox, reader["SizeId"]);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void SelectComboBoxItemByValue(ComboBox comboBox, object value)
+        {
+            foreach (ComboBoxItem item in comboBox.Items)
+            {
+                if (item.Tag.Equals(value))
+                {
+                    comboBox.SelectedItem = item;
+                    break;
+                }
+            }
+        }
+
+        public ProductRegister(int productId) : this()
+        {
+            isEditMode = true;
+            currentProductID = productId;
+            LoadProductData();
         }
 
         private void LoadComboBox(ComboBox comboBox, string tableName, string displayMember, string valueMember)
@@ -111,27 +158,26 @@ namespace FashionTrack
 
         private SqlCommand CreateCommand(SqlConnection conn, string description, string price, string brandCode, string gender, int brandId, int colorId, int sizeId)
         {
-            SqlCommand cmd;
-            if (isEditMode && currentProductID != -1)
+            try
             {
-                cmd = new SqlCommand("UPDATE Produto SET Description = @Description, Price = @Price, BrandCode = @BrandCode, Gender = @Gender," + 
-                                     "BrandId = @BrandId, ColorId = @ColorId, SizeId = @SizeId WHERE ID_Produto = @ID_Produto", conn);
-                cmd.Parameters.AddWithValue("@ID_Produto", currentProductID);
-            }
-            else
-            {
-                cmd = new SqlCommand("INSERT INTO Produto (Description, Price, BrandCode, Gender, BrandId, ColorId, SizeId) OUTPUT INSERTED.ID_Produto" + 
-                                     "VALUES (@Description, @Price, @BrandCode, @Gender, @BrandId, @ColorId, @SizeId)", conn);
-            }
+                SqlCommand cmd;
+                cmd = new SqlCommand("INSERT INTO Produto (Description, Price, BrandCode, Gender, BrandId, ColorId, SizeId) OUTPUT INSERTED.ID_Produto " +
+                                     "VALUES (@Description, @Price, @BrandCode, @Gender, @BrandId, @ColorId, @SizeId) ", conn);
 
-            cmd.Parameters.AddWithValue("@Description", description);
-            cmd.Parameters.AddWithValue("@Price", price);
-            cmd.Parameters.AddWithValue("@BrandCode", brandCode);
-            cmd.Parameters.AddWithValue("@Gender", gender);
-            cmd.Parameters.AddWithValue("@BrandId", brandId);
-            cmd.Parameters.AddWithValue("@ColorId", colorId);
-            cmd.Parameters.AddWithValue("@SizeId", sizeId);
-            return cmd;
+                cmd.Parameters.AddWithValue("@Description", description);
+                cmd.Parameters.AddWithValue("@Price", price);
+                cmd.Parameters.AddWithValue("@BrandCode", brandCode);
+                cmd.Parameters.AddWithValue("@Gender", gender);
+                cmd.Parameters.AddWithValue("@BrandId", brandId);
+                cmd.Parameters.AddWithValue("@ColorId", colorId);
+                cmd.Parameters.AddWithValue("@SizeId", sizeId);
+                return cmd;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
         }
 
         private bool ValidateInputs(out string errorMessage)
@@ -163,7 +209,7 @@ namespace FashionTrack
         {
             ColorRegister colorRegister = new ColorRegister();
             colorRegister.Show();
-            LoadComboBox(ColorComboBox, "Cor", "ColorName", "ColorId");
+            LoadComboBox(ColorComboBox, "Color", "ColorName", "ColorId");
         }
 
         private void OpenBrandRegisterButton_Click(object sender, RoutedEventArgs e)
