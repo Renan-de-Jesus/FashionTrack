@@ -22,11 +22,7 @@ namespace FashionTrack
             lblUser.Focus();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-        private void RemoveText(object sender, RoutedEventArgs e)
+private void RemoveText(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             if (textBox.Text == "Usuário")
@@ -91,27 +87,34 @@ namespace FashionTrack
 
                     int count = Convert.ToInt32(comando.ExecuteScalar());
 
-                        if (count == 1)
-                        {
-                        RegisterWindow registerUser = new RegisterWindow();
-                        registerUser.Show();
-                        Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Usuário ou senha incorretos. Tente novamente!", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                            lblUser.Text = "";
-                            passwordText.Password = "";
-                            lblUser.Focus();
-                        }
-                    }
-                    catch (SqlException ex)
+                    if (count == 1)
                     {
-                        MessageBox.Show($"Erro de SQL: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                        HomePage homePage = new HomePage();
+                        homePage.Show();
+                        Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Usuário ou senha incorretos. Tente novamente!", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                        lblUser.Text = "";
+                        passwordText.Password = "";
+                        lblUser.Focus();
                     }
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao conectar ao banco de dados: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
+        }
 
+        private void passwordText_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                btnLogin_Click(sender, e);
+            }
+        }
     }
 
 }

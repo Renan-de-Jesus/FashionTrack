@@ -1,0 +1,56 @@
+﻿<Window
+    x:Class="FashionTrack.CityRegister"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:FashionTrack"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Cadastro de Cidades"
+    Width="900"
+    Height="381"
+    ResizeMode="NoResize"
+    mc:Ignorable="d">
+    <Grid Margin="0,0,0,-6" UseLayoutRounding="False">
+        <Button
+            x:Name="saveBtn"
+            Width="196"
+            Height="94"
+            Margin="212,202,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="saveBtn_Click"
+            Content="Salvar" />
+        <TextBox
+            x:Name="idTxt"
+            Width="120"
+            Height="50"
+            Margin="510,66,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            FontSize="16"
+            Text="ID CIDADE"
+            TextWrapping="Wrap" />
+        <TextBox
+            x:Name="cityTxt"
+            Width="162"
+            Height="50"
+            Margin="120,66,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            FontSize="16"
+            Text="NOME DA CIDADE"
+            TextWrapping="Wrap" />
+        <TextBox
+            x:Name="ufTxt"
+            Width="120"
+            Height="50"
+            Margin="348,66,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            FontSize="16"
+            Text="UF"
+            TextWrapping="Wrap" />
+    </Grid>
+</Window>

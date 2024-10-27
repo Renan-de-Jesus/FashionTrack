@@ -5,6 +5,7 @@
     Title="Cadastro de Usuário"
     Width="1366"
     Height="768"
+    ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style x:Key="HoverButtonStyle" TargetType="Button">
@@ -79,7 +80,7 @@
             VerticalAlignment="Top"
             FontSize="35"
             FontWeight="light"
-            Text="Novo cadastro"
+            Text="Novo Usuário"
             TextWrapping="Wrap" />
 
         <TextBlock

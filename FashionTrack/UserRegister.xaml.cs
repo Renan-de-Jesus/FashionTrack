@@ -72,38 +72,49 @@ namespace FashionTrack
         return;
     }
 
+string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
 
-            string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
+using (SqlConnection connection = new SqlConnection(connectionString))
+try
+{
+    connection.Open();
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-                try
-                {
-                    connection.Open();
-                    string querry = "INSERT INTO Usuarios(NomeCompleto, Usuario, Senha, Adm) VALUES (@name, @username, HASHBYTES('SHA2_256', @password), @IsAdmin)";
-                    SqlCommand command = new SqlCommand(querry, connection);
+    string checkUserQuery = "SELECT COUNT(*) FROM Usuarios WHERE Usuario = @username";
+    SqlCommand checkUserCommand = new SqlCommand(checkUserQuery, connection);
+    checkUserCommand.Parameters.AddWithValue("@username", username);
 
-                    command.Parameters.AddWithValue("@name", name);
-                    command.Parameters.AddWithValue("@username", username);
-                    command.Parameters.AddWithValue("@Password", password);
-                    command.Parameters.AddWithValue("@IsAdmin", isAdmin);
-                            int result = command.ExecuteNonQuery();
+    int userCount = (int)checkUserCommand.ExecuteScalar();
 
-                            if ((result > 0))
-                            {
+    if (userCount > 0)
+    {
+        MessageBox.Show("Usuário já existe.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+    }
+    else
+    {
+        string insertQuery = "INSERT INTO Usuarios(NomeCompleto, Usuario, Senha, Adm) VALUES (@name, @username, @password, @IsAdmin)";
+        SqlCommand insertCommand = new SqlCommand(insertQuery, connection);
 
-                                MessageBox.Show("Usuário cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-                            }
-                            else
-                            {
-                                MessageBox.Show("Falha ao cadastrar o usuário.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                            }
+        insertCommand.Parameters.AddWithValue("@name", name);
+        insertCommand.Parameters.AddWithValue("@username", username);
+        insertCommand.Parameters.AddWithValue("@Password", password);
+        insertCommand.Parameters.AddWithValue("@IsAdmin", isAdmin);
 
+        int result = insertCommand.ExecuteNonQuery();
 
-                }
-                catch (SqlException ex)
-                {
-                    MessageBox.Show($"Erro de SQL: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+        if (result > 0)
+        {
+            MessageBox.Show("Usuário cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        else
+        {
+            MessageBox.Show("Falha ao cadastrar o usuário.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+}
+catch (Exception ex)
+{
+    MessageBox.Show($"Erro: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+}
         }
     }
 }

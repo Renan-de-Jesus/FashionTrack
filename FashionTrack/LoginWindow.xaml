@@ -8,6 +8,7 @@
     Title="Login"
     Width="1366"
     Height="768"
+    ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
@@ -166,6 +167,7 @@
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
             FontSize="14"
+            KeyDown="passwordText_KeyDown"
             LostFocus="PasswordText_LostFocus"
             PasswordChanged="PasswordText_PasswordChanged"
             Visibility="Hidden">
