@@ -21,18 +21,6 @@
             Click="saveBtn_Click"
             Content="Salvar" />
         <TextBox
-            x:Name="idTxt"
-            Width="120"
-            Height="50"
-            Margin="510,66,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            FontSize="16"
-            Text="ID CIDADE"
-            TextWrapping="Wrap" />
-        <TextBox
             x:Name="cityTxt"
             Width="162"
             Height="50"

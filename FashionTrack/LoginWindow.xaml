@@ -67,7 +67,8 @@
             RadiusX="10"
             RadiusY="10"
             Stroke="Gray"
-            StrokeThickness="1">
+            StrokeThickness="1"
+            Panel.ZIndex="-1">
 
             <Rectangle.Fill>
                 <SolidColorBrush Opacity="0.245" Color="#FFFFFF" />
@@ -118,7 +119,8 @@
             FontFamily="Merriweather Sans"
             FontSize="16"
             RenderTransformOrigin="0.5,-1.848"
-            Text="Usuário" />
+            Text="Usuário" 
+            Panel.ZIndex="1"/>
         <TextBlock
             x:Name="txtPassword"
             Width="48"
@@ -127,7 +129,8 @@
             FontFamily="Merriweather Sans"
             FontSize="16"
             RenderTransformOrigin="0.5,-1.848"
-            Text="Senha" />
+            Text="Senha" 
+            Panel.ZIndex="1"/>
 
         <TextBox
             x:Name="passwordPlaceholder"

@@ -10,6 +10,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Data.SqlClient;
 using System.Configuration;
+using System.Data;
 
 namespace FashionTrack
 {
@@ -81,13 +82,17 @@ private void RemoveText(object sender, RoutedEventArgs e)
                     connection.Open();
                     string query = "SELECT COUNT(1) FROM Usuarios WHERE Usuario = @username AND Senha = HASHBYTES('SHA2_256', @password)";
 
-                    SqlCommand comando = new SqlCommand(query, connection);
-                    comando.Parameters.AddWithValue("@username", username);
-                    comando.Parameters.AddWithValue("@password", password);
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@username", username);
 
-                    int count = Convert.ToInt32(comando.ExecuteScalar());
+                    byte[] passwordBytes = System.Text.Encoding.UTF8.GetBytes(password);
+                    SqlParameter passwordParam = new SqlParameter("@password", SqlDbType.VarBinary);
+                    passwordParam.Value = passwordBytes;
+                    command.Parameters.Add(passwordParam);
 
-                    if (count == 1)
+                    int count = Convert.ToInt32(command.ExecuteScalar());
+
+                    if (count > 0)
                     {
                         HomePage homePage = new HomePage();
                         homePage.Show();

@@ -27,62 +27,12 @@ namespace FashionTrack
 
         private void cleanTextBox()
         {
-            idTxt.Text = string.Empty;
             cityTxt.Text = string.Empty;
             ufTxt.Text = string.Empty;
         }
 
-
-
-        private void searchCityBtn_Click(object sender, RoutedEventArgs e)
-        {
-            string ID = idTxt.Text;
-            string city = cityTxt.Text;
-            string UF = ufTxt.Text;
-
-            string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-
-                    try
-                    {
-                        string searchCityQuerry = "SELECT * FROM Cidade WHERE ID_Cidade = @ID";
-                        SqlCommand cityCommand = new SqlCommand(searchCityQuerry, connection);
-                        cityCommand.Parameters.AddWithValue("ID", ID);
-
-                        SqlDataReader reader = cityCommand.ExecuteReader();
-
-                        if (reader.Read())
-                        {
-                            cityTxt.Text = reader["Descricao"].ToString();
-                            ufTxt.Text = reader["UF"].ToString();
-                        }
-                        else
-                        {
-                            MessageBox.Show("O ID inserido não está vinculado a nunhuma cidade", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-                        reader.Close();
-                    }
-                    catch (SqlException error)
-                    {
-                        MessageBox.Show($"Erro de SQL: {error}", "SQL Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Erro: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-
-
-            }
-        }
-
         private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
-            string ID = idTxt.Text;
             string city = cityTxt.Text;
             string UF = ufTxt.Text;
 
@@ -123,49 +73,6 @@ namespace FashionTrack
                             {
                                 MessageBox.Show("Erro ao cadastrar a cidade.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
-                        }
-                    }
-                    catch (SqlException ex)
-                    {
-                        MessageBox.Show($"Erro de SQL: {ex}", "SQL Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-        }
-
-        private void deleteBtn_Click(object sender, RoutedEventArgs e)
-        {
-            string ID = idTxt.Text;
-            string city = cityTxt.Text;
-            string UF = ufTxt.Text;
-
-            string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-
-                    try
-                    {
-                        string cityDeleteQuerry = "DELETE FROM Cidade WHERE ID_Cidade = @ID";
-                        SqlCommand deleteCommand = new SqlCommand(cityDeleteQuerry, connection);
-                        deleteCommand.Parameters.AddWithValue("@ID", ID);
-
-                        int rowsAffected = deleteCommand.ExecuteNonQuery();
-
-                        if (rowsAffected > 0)
-                        {
-                            MessageBox.Show("Cidade deletada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-                            cleanTextBox();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Nenhuma cidade encontrada com o ID informado.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
                         }
                     }
                     catch (SqlException ex)

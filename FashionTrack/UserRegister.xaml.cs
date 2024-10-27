@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Configuration;
+using System.Data;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
@@ -91,12 +92,17 @@ try
     }
     else
     {
-        string insertQuery = "INSERT INTO Usuarios(NomeCompleto, Usuario, Senha, Adm) VALUES (@name, @username, @password, @IsAdmin)";
+        string insertQuery = "INSERT INTO Usuarios(NomeCompleto, Usuario, Senha, Adm) VALUES (@name, @username, HASHBYTES('SHA2_256', @password) , @IsAdmin)";
         SqlCommand insertCommand = new SqlCommand(insertQuery, connection);
 
         insertCommand.Parameters.AddWithValue("@name", name);
         insertCommand.Parameters.AddWithValue("@username", username);
-        insertCommand.Parameters.AddWithValue("@Password", password);
+
+        byte[] passwordBytes = System.Text.Encoding.UTF8.GetBytes(password);
+        SqlParameter passwordParam = new SqlParameter("@password", SqlDbType.VarBinary);
+        passwordParam.Value = passwordBytes;
+        insertCommand.Parameters.Add(passwordParam);
+
         insertCommand.Parameters.AddWithValue("@IsAdmin", isAdmin);
 
         int result = insertCommand.ExecuteNonQuery();
