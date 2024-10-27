@@ -221,9 +221,8 @@
                 GotFocus="RemoveText"
                 LostFocus="AddText"
                 Opacity="0.6"
-                Text="Código da Marca"
-                TextChanged="BrandCodeTextBox_TextChanged">
-                <TextBox.Template>
+                Text="Código da Marca">
+            <TextBox.Template>
                     <ControlTemplate TargetType="{x:Type TextBox}">
                         <Border
                             Background="White"
@@ -255,8 +254,7 @@
                 LostFocus="AddText"
                 Opacity="0.6"
                 PreviewTextInput="PriceTextBox_PreviewTextInput"
-                Text="Preço"
-                TextChanged="PriceTextBox_TextChanged">
+                Text="Preço">
                 <TextBox.Template>
                     <ControlTemplate TargetType="{x:Type TextBox}">
                         <Border
@@ -288,8 +286,7 @@
                 GotFocus="RemoveText"
                 LostFocus="AddText"
                 Opacity="0.6"
-                Text="Descrição"
-                TextChanged="DescriptionTextBox_TextChanged">
+                Text="Descrição">
                 <TextBox.Template>
                     <ControlTemplate TargetType="{x:Type TextBox}">
                         <Border
@@ -318,7 +315,6 @@
                 HorizontalContentAlignment="Left"
                 VerticalContentAlignment="Center"
                 FontSize="16"
-                SelectionChanged="SizeComboBox_SelectionChanged"
                 Style="{StaticResource CustomComboBoxStyle}" />
             <TextBlock
                 Margin="20,0,0,0"
@@ -336,7 +332,6 @@
                 HorizontalContentAlignment="Left"
                 VerticalContentAlignment="Center"
                 FontSize="16"
-                SelectionChanged="SizeComboBox_SelectionChanged"
                 Style="{StaticResource CustomComboBoxStyle}" />
             <TextBlock
                 Margin="20,0,0,0"
@@ -354,7 +349,6 @@
                 HorizontalContentAlignment="Left"
                 VerticalContentAlignment="Center"
                 FontSize="16"
-                SelectionChanged="ColorComboBox_TextChanged"
                 Style="{StaticResource CustomComboBoxStyle}" />
             <TextBlock
                 Margin="20,0,0,0"
@@ -372,7 +366,6 @@
                 HorizontalContentAlignment="Left"
                 VerticalContentAlignment="Center"
                 FontSize="16"
-                SelectionChanged="GenderComboBox_SelectionChanged"
                 Style="{StaticResource CustomComboBoxStyle}">
                 <ComboBoxItem Content="Masculino" />
                 <ComboBoxItem Content="Feminino" />

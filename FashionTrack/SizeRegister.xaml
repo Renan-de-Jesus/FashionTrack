@@ -81,8 +81,7 @@
                 MaxLength="3"
                 Opacity=".6"
                 PreviewTextInput="SizeDescriptionTextBox_PreviewTextInput"
-                Text="Digite o tamanho (P, M, G, etc.)"
-                TextChanged="SizeDescriptionTextBox_TextChanged">
+                Text="Digite o tamanho (P, M, G, etc.)">
                 <TextBox.Template>
                     <ControlTemplate TargetType="{x:Type TextBox}">
                         <Border

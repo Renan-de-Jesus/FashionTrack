@@ -273,5 +273,6 @@ namespace FashionTrack
             sizeRegister.ShowDialog();
             LoadComboBox(SizeComboBox, "Size", "SizeDescription", "SizeId");
         }
+
     }
 }
