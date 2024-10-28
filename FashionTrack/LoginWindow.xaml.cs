@@ -10,6 +10,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Data.SqlClient;
 using System.Configuration;
+using System.Data;
 
 namespace FashionTrack
 {
@@ -87,7 +88,7 @@ private void RemoveText(object sender, RoutedEventArgs e)
 
                     int count = Convert.ToInt32(comando.ExecuteScalar());
 
-                    if (count == 1)
+                    if (count > 0)
                     {
                         HomePage homePage = new HomePage();
                         homePage.Show();

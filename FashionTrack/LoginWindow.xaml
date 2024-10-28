@@ -67,7 +67,8 @@
             RadiusX="10"
             RadiusY="10"
             Stroke="Gray"
-            StrokeThickness="1">
+            StrokeThickness="1"
+            Panel.ZIndex="-1">
 
             <Rectangle.Fill>
                 <SolidColorBrush Opacity="0.245" Color="#FFFFFF" />
@@ -94,7 +95,7 @@
             VerticalAlignment="top"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
-            FontSize="16"
+            FontSize="14"
             GotFocus="RemoveText"
             LostFocus="AddText"
             Text="Usuário"
@@ -111,20 +112,25 @@
                 </ControlTemplate>
             </TextBox.Template>
         </TextBox>
-        <Label
-            Width="71"
-            Margin="450,225,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="Usuário"
-            FontSize="16" />
-        <Label
-            Width="59"
-            Margin="450,343,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="Senha"
-            FontSize="16" />
+        <TextBlock
+            x:Name="txtUser"
+            Height="20"
+            Margin="465,236,832,502"
+            FontFamily="Merriweather Sans"
+            FontSize="16"
+            RenderTransformOrigin="0.5,-1.848"
+            Text="Usuário" 
+            Panel.ZIndex="1"/>
+        <TextBlock
+            x:Name="txtPassword"
+            Width="48"
+            Height="20"
+            Margin="465,354,843,384"
+            FontFamily="Merriweather Sans"
+            FontSize="16"
+            RenderTransformOrigin="0.5,-1.848"
+            Text="Senha" 
+            Panel.ZIndex="1"/>
 
         <TextBox
             x:Name="passwordPlaceholder"
@@ -136,7 +142,7 @@
             VerticalAlignment="Top"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
-            FontSize="14"
+            FontSize="16"
             GotFocus="PasswordPlaceholder_GotFocus"
             Opacity=".6"
             Text="Senha">
