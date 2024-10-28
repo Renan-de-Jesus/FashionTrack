@@ -91,7 +91,7 @@ try
     }
     else
     {
-        string insertQuery = "INSERT INTO Usuarios(NomeCompleto, Usuario, Senha, Adm) VALUES (@name, @username, @password, @IsAdmin)";
+        string insertQuery = "INSERT INTO Usuarios(NomeCompleto, Usuario, Senha, Adm) VALUES (@name, @username, HASHBYTES('SHA2_256', @password), @IsAdmin)";
         SqlCommand insertCommand = new SqlCommand(insertQuery, connection);
 
         insertCommand.Parameters.AddWithValue("@name", name);
