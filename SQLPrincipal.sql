@@ -150,8 +150,8 @@ CREATE TABLE StockMovement (
     CONSTRAINT FK_Movement_User FOREIGN KEY (ID_Users) REFERENCES Users(ID_Users) ON DELETE CASCADE
 );
 
-INSERT INTO StockMovement (ID_Product, Document, MovementType, Operation, Qty, ID_Users) 
-VALUES (1, 1, 'Entrada', 'E', 100, 1);
+INSERT INTO StockMovement (ID_Product, MDescription, Document, MovementType, Operation, Qty, ID_Users) 
+VALUES (1, 'Movimento 1', 1, 'Entrada', 'E', 100, 1);
 
 CREATE TABLE Stock (
     ID_Stock INT IDENTITY(1,1) PRIMARY KEY,
