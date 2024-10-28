@@ -46,14 +46,15 @@ CREATE TABLE Supplier (
     CorporateName VARCHAR(100) NOT NULL,
     CNPJ CHAR(14) NOT NULL UNIQUE,
     Address VARCHAR(150) NOT NULL,
-    Cellphone VARCHAR(15) NOT NULL,
+    Telephone VARCHAR(15) NOT NULL,
+	Representative NVARCHAR(150) NULL,
     ID_City INT NOT NULL,
     CONSTRAINT PK_Supplier PRIMARY KEY (ID_Supplier),
     CONSTRAINT FK_Supplier_City FOREIGN KEY (ID_City) REFERENCES City(ID_City) ON DELETE CASCADE
 );
 
-INSERT INTO Supplier (CorporateName, CNPJ, Address, Cellphone, ID_City) 
-VALUES ('Fornecedor Exemplo LTDA', '12345678000195', 'Avenida B, 456', '11876543210', 1);
+INSERT INTO Supplier (CorporateName, CNPJ, Address, Cellphone, Representative, ID_City) 
+VALUES ('Fornecedor Exemplo LTDA', '12345678000195', 'Avenida B, 456', '11876543210', 'Hugo', 1);
 
 CREATE TABLE Brand (
     BrandId INT PRIMARY KEY IDENTITY(1,1),
