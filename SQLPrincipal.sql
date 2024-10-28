@@ -139,7 +139,8 @@ VALUES (1, 1, 1, 59.90);
 CREATE TABLE StockMovement (
     ID_StockMovement INT IDENTITY(1,1) PRIMARY KEY,
     ID_Product INT NOT NULL,
-    Document INT NOT NULL,
+    MDescription NVARCHAR(100) NOT NULL, 
+    Document INT NULL,
     MovementType NVARCHAR(10) NOT NULL, CHECK (MovementType IN ('Entrada', 'Saida')),
     Operation NVARCHAR(2) NOT NULL, CHECK (Operation IN ('E', 'S', 'I', 'R', 'D', 'T')),
     Qty INT NOT NULL,
