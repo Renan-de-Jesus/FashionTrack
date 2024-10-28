@@ -43,16 +43,38 @@ CREATE TABLE Fornecedor (
     CONSTRAINT FK_Fornecedor_Cidade FOREIGN KEY (ID_Cidade) REFERENCES Cidade(ID_Cidade)
 );
 
--- Interessante em algum momento criar uma tabela MARCAS, para que possa ser feito relatorios depois, evitando que o usuario digite 2 nomes que seriam iguais, de forma diferente
+-- Cadastro de Marca
+CREATE TABLE Brand (
+    BrandId INT PRIMARY KEY IDENTITY(1,1),
+    BrandName NVARCHAR(100) NOT NULL
+);
+
+-- Cadastro de Cor
+CREATE TABLE Color (
+    ColorId INT PRIMARY KEY IDENTITY(1,1),
+    ColorName NVARCHAR(50) NOT NULL
+);
+
+-- Cadastro de Tamanho
+CREATE TABLE Size (
+    SizeId INT PRIMARY KEY IDENTITY(1,1),
+    SizeDescription NVARCHAR(3) NOT NULL
+);
+
+-- Cadastro de Produto com as Rela��es
 CREATE TABLE Produto (
     ID_Produto INT IDENTITY(1,1),
-    CodigoMarca VARCHAR(50),
-    Cor VARCHAR(30),
-    Descricao VARCHAR(255) NOT NULL,
-    Tamanho VARCHAR(10) NOT NULL,
-    Genero VARCHAR(10) NOT NULL,
-    Preco FLOAT(30) NOT NULL,
-    CONSTRAINT PK_Produto PRIMARY KEY (ID_Produto)
+    BrandCode VARCHAR(50),
+    BrandId INT,
+    ColorId INT,
+    Description VARCHAR(255) NOT NULL,
+    SizeId INT,
+    Gender VARCHAR(10) NOT NULL,
+    Price FLOAT(30) NOT NULL,
+    CONSTRAINT PK_Produto PRIMARY KEY (ID_Produto),
+    CONSTRAINT FK_Produto_Marca FOREIGN KEY (BrandId) REFERENCES Brand(BrandId),
+    CONSTRAINT FK_Produto_Cor FOREIGN KEY (ColorId) REFERENCES Cor(ColorId),
+    CONSTRAINT FK_Produto_Tamanho FOREIGN KEY (SizeId) REFERENCES Size(SizeId)
 );
 
 CREATE TABLE FornecedorProduto (
@@ -62,6 +84,7 @@ CREATE TABLE FornecedorProduto (
     CONSTRAINT FK_FornecedorProduto_Fornecedor FOREIGN KEY (ID_Fornecedor) REFERENCES Fornecedor(ID_Fornecedor),
     CONSTRAINT FK_FornecedorProduto_Produto FOREIGN KEY (ID_Produto) REFERENCES Produto(ID_Produto)
 );
+
 
 INSERT INTO Usuarios(NomeCompleto, Usuario, Senha, Adm)
 VALUES
@@ -92,10 +115,17 @@ VALUES
 		('Joao', 'Silva', '12345678901', '51999991111', 'Rua Verde, 50', 3),    -- Sao Paulo
 		('Maria', 'Oliveira', '98765432100', '51999992222', 'Av. Paulista, 101', 4);  -- Rio de Janeiro
 
-INSERT INTO Produto(CodigoMarca, Cor, Descricao, Tamanho, Genero, Preco)
+INSERT INTO Color (ColorName)
 VALUES
-		(NULL, 'Azul', 'Camiseta Basica', 'M', 'Masculino',85.00),  -- Produto sem Codigo de Marca
-		('001', 'Preto', 'Calca Jeans', 'G', 'Feminino', 95.00),
-		('002', 'Vermelho', 'Vestido Longo', 'P', 'Feminino',96.00),
-		('003', 'Branco', 'Tenis Esportivo', '42', 'Masculino',85.52),
-		(NULL, 'Verde', 'Jaqueta de Couro', 'GG', 'Unissex',96.52);  -- Produto sem Codigo de Marca
+		('Branco'),
+		('Preto');
+
+INSERT INTO Size(SizeDescription)
+VALUES
+		('M'),
+		('G');
+
+INSERT INTO Produto(BrandCode, ColorId, Description, SizeId, Gender, Price)
+VALUES
+		(NULL, 1, 'Camiseta Basica', 1, 'Masculino',85.00),  -- Produto sem Codigo de Marca
+		('123AA', 2, 'Camiseta Preta', 2, 'Feminino', 85.00);
