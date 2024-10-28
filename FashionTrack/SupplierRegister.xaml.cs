@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace FashionTrack
 {
@@ -52,104 +54,132 @@ namespace FashionTrack
             fillComboBox();
         }
 
-        private void removeTextCorporateReason(object sender, RoutedEventArgs e)
+
+        private void RemoveText(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "RAZÃO SOCIAL")
+            if (textBox.Text == "Nome do representante" || textBox.Text == "Razão social" || textBox.Text == "Endereço do fornecedor" || textBox.Text == "00.000.000/0000-00" || textBox.Text == "(00)00000-0000")
             {
                 textBox.Text = "";
                 textBox.Opacity = 1;
             }
         }
 
-        private void addTextFirstName(object sender, RoutedEventArgs e)
+        private void AddText(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             if (string.IsNullOrWhiteSpace(textBox.Text))
             {
-                textBox.Text = "RAZÃO SOCIAL";
-                textBox.Opacity = 0.6;
-            }
-        }
-        private void removeTextCNPJ(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "00.000.000/0000-00")
-            {
-                textBox.Text = "";
-                textBox.Opacity = 1;
-            }
-        }
-
-        private void addTextCNPJ(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                textBox.Text = "00.000.000/0000-00";
-                textBox.Opacity = 0.6;
-            }
-        }
-
-        private void removeTextAddress(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "ENDEREÇO DO FORNECEDOR")
-            {
-                textBox.Text = "";
-                textBox.Opacity = 1;
-            }
-        }
-
-        private void addTextAddress(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                textBox.Text = "ENDEREÇO DO FORNECEDOR";
+                switch (textBox.Name)
+                {
+                    case "representativeTxtBox":
+                        textBox.Text = "Nome do representante";
+                        break;
+                    case "corporateReasonTxtBox":
+                        textBox.Text = "Razão social";
+                        break;
+                    case "addressTxtBox":
+                        textBox.Text = "Endereço do fornecedor";
+                        break;
+                    case "cnpjTxtBox":
+                        textBox.Text = "00.000.000/0000-00";
+                        break;
+                    case "phoneTxt":
+                        textBox.Text = "(00)00000-0000";
+                        break;
+                }
                 textBox.Opacity = 0.6;
             }
         }
 
-        private void removeTextPhone(object sender, RoutedEventArgs e)
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "(99)99999-9999")
+
+            if (textBox.Name == "cnpjTxtBox")
             {
-                textBox.Text = "";
-                textBox.Opacity = 1;
+                // Existing CNPJ formatting logic
+                string formattedCnpj = ApplyCnpjMask(textBox.Text);
+                textBox.TextChanged -= TextBox_TextChanged;
+                textBox.Text = formattedCnpj;
+                textBox.CaretIndex = formattedCnpj.Length;
+                textBox.TextChanged += TextBox_TextChanged;
+            }
+            else if (textBox.Name == "phoneTxt")
+            {
+                // Store caret position
+                int caretIndex = textBox.CaretIndex;
+
+                // Remove event handler
+                textBox.TextChanged -= TextBox_TextChanged;
+
+                // Apply phone mask
+                string formattedPhone = ApplyPhoneMask(textBox.Text);
+                textBox.Text = formattedPhone;
+
+                // Restore caret position
+                if (caretIndex > textBox.Text.Length)
+                    caretIndex = textBox.Text.Length;
+                textBox.CaretIndex = caretIndex;
+
+                // Re-attach event handler
+                textBox.TextChanged += TextBox_TextChanged;
             }
         }
 
-        private void addTextPhone(object sender, RoutedEventArgs e)
+        private string ApplyCnpjMask(string input)
         {
-            TextBox textBox = (TextBox)sender;
-            if (string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                textBox.Text = "(99)99999-9999";
-                textBox.Opacity = 0.6;
-            }
+            input = new string(input.Where(char.IsDigit).ToArray());
+            if (input.Length > 14) input = input.Substring(0, 14);
+
+            if (input.Length > 2) input = input.Insert(2, ".");
+            if (input.Length > 6) input = input.Insert(6, ".");
+            if (input.Length > 10) input = input.Insert(10, "/");
+            if (input.Length > 15) input = input.Insert(15, "-");
+
+            return input;
         }
 
-        private void removeTextRepresentative(object sender, RoutedEventArgs e)
+        private string ApplyPhoneMask(string input)
         {
-            TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "NOME DO REPRESENTANTE")
+            // Remove all non-digit characters
+            string digits = new string(input.Where(char.IsDigit).ToArray());
+
+            // Limit to maximum 11 digits
+            if (digits.Length > 11)
+                digits = digits.Substring(0, 11);
+
+            // Initialize the formatted number
+            string formattedNumber = "";
+
+            // Apply formatting
+            if (digits.Length > 0)
             {
-                textBox.Text = "";
-                textBox.Opacity = 1;
+                formattedNumber += "(" + digits.Substring(0, Math.Min(2, digits.Length));
+
+                if (digits.Length >= 2)
+                {
+                    formattedNumber += ")";
+
+                    int firstPartLength = Math.Min(5, digits.Length - 2);
+                    formattedNumber += digits.Substring(2, firstPartLength);
+
+                    if (digits.Length > 7)
+                    {
+                        formattedNumber += "-";
+                        formattedNumber += digits.Substring(7);
+                    }
+                }
+                else
+                {
+                    formattedNumber += ")";
+                }
             }
+
+            return formattedNumber;
         }
 
-        private void addTextRepresentative(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                textBox.Text = "NOME DO REPRESENTANTE";
-                textBox.Opacity = 0.6;
-            }
-        }
+
 
         private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -164,35 +194,35 @@ namespace FashionTrack
                 cnpj = cnpj.Replace(".", "").Replace("-", "");
                 phone = phone.Replace("(", "").Replace(")", "").Replace("-", "");
 
-                if (string.IsNullOrEmpty(corporateReason))
+                if (string.IsNullOrEmpty(corporateReason) || corporateReasonTxtBox.Text == "Razão social")
                 {
                     MessageBox.Show("Por favor, preencha a razão social do fornecedor!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     corporateReasonTxtBox.Focus();
                     return;
                 }
 
-                if (string.IsNullOrEmpty(cnpj))
+                if (string.IsNullOrEmpty(cnpj) || cnpj == "00000000000000")
                 {
                     MessageBox.Show("Por favor, preencha o cnpj do fornecedor!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     cnpjTxtBox.Focus();
                     return;
                 }
 
-                if (string.IsNullOrEmpty(representative))
+                if (string.IsNullOrEmpty(representative) || representative == "Nome do representante")
                 {
                     MessageBox.Show("Por favor, preencha o nome do representante!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     representativeTxtBox.Focus();
                     return;
                 }
 
-                if (string.IsNullOrEmpty(phone))
+                if (string.IsNullOrEmpty(phone) || phone == "00000000000")
                 {
                     MessageBox.Show("Por favor, preencha o telefone do fornecedor!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     phoneTxt.Focus();
                     return;
                 }
 
-                if (string.IsNullOrEmpty(address))
+                if (string.IsNullOrEmpty(address) || address == "Endereço do fornecedor")
                 {
                     MessageBox.Show("Por favor, preencha o endereço do fornecedor!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     addressTxtBox.Focus();
@@ -264,7 +294,7 @@ namespace FashionTrack
             }
         }
 
-        private void addCityBtn_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Add_city_btn(object sender, RoutedEventArgs e)
         {
             CityRegister cityRegister = new CityRegister();
             cityRegister.Show();
