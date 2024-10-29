@@ -31,6 +31,37 @@ namespace FashionTrack
             ufTxt.Text = string.Empty;
         }
 
+        private void RemoveText(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text == "UF")
+            {
+                textBox.Text = "";
+                textBox.Opacity = 1;
+            }
+            else if (textBox.Text == "Cidade")
+            {
+                textBox.Text = "";
+                textBox.Opacity = 1;
+
+            }
+        }
+
+        private void AddText(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                textBox.Text = "Cidade";
+                textBox.Opacity = 0.6;
+            }
+            else if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                textBox.Text = "UF";
+                textBox.Opacity = 0.6;
+            }
+        }
+
         private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
             string city = cityTxt.Text;
@@ -57,6 +88,18 @@ namespace FashionTrack
                             MessageBox.Show("Cidade já cadastrada!", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                         else
+                        if (string.IsNullOrWhiteSpace(cityTxt.Text) || cityTxt.Text == "Cidade")
+                        {
+                            MessageBox.Show("O campo cidade não pode estar vazio");
+                            return;
+                        }
+                        else
+                        if (string.IsNullOrWhiteSpace(ufTxt.Text) || ufTxt.Text == "UF")
+                        {
+                            MessageBox.Show("O campo UF não pode estar vazio");
+                            return;
+                        }
+                        else
                         {
                             string saveCityQuerry = "INSERT INTO Cidade(Descricao, UF) VALUES(@city, @UF)";
                             SqlCommand cityCommand = new SqlCommand(saveCityQuerry, connection);
@@ -67,12 +110,19 @@ namespace FashionTrack
 
                             if (rowsAffected > 0)
                             {
-                                MessageBox.Show("Cidade cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                                MessageBoxResult result = MessageBox.Show("Cidade cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                                if (result == MessageBoxResult.OK)
+                                {
+                                    ufTxt.Clear();
+                                    cityTxt.Clear();
+                                    this.Close();
+                                }
                             }
                             else
                             {
                                 MessageBox.Show("Erro ao cadastrar a cidade.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
+
                         }
                     }
                     catch (SqlException ex)

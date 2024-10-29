@@ -96,37 +96,33 @@ namespace FashionTrack
         {
             TextBox textBox = (TextBox)sender;
 
+            // Store caret position
+            int caretIndex = textBox.CaretIndex;
+
+            // Remove event handler to prevent recursive calls
+            textBox.TextChanged -= TextBox_TextChanged;
+
             if (textBox.Name == "cnpjTxtBox")
             {
                 // Existing CNPJ formatting logic
                 string formattedCnpj = ApplyCnpjMask(textBox.Text);
-                textBox.TextChanged -= TextBox_TextChanged;
                 textBox.Text = formattedCnpj;
-                textBox.CaretIndex = formattedCnpj.Length;
-                textBox.TextChanged += TextBox_TextChanged;
             }
             else if (textBox.Name == "phoneTxt")
             {
-                // Store caret position
-                int caretIndex = textBox.CaretIndex;
-
-                // Remove event handler
-                textBox.TextChanged -= TextBox_TextChanged;
-
                 // Apply phone mask
                 string formattedPhone = ApplyPhoneMask(textBox.Text);
                 textBox.Text = formattedPhone;
 
-                // Restore caret position
-                if (caretIndex > textBox.Text.Length)
-                    caretIndex = textBox.Text.Length;
+                // Adjust caret position after formatting
+                // Ensure the caret position is set correctly
+                caretIndex = Math.Min(caretIndex, formattedPhone.Length);
                 textBox.CaretIndex = caretIndex;
-
-                // Re-attach event handler
-                textBox.TextChanged += TextBox_TextChanged;
             }
-        }
 
+            // Re-attach event handler
+            textBox.TextChanged += TextBox_TextChanged;
+        }
         private string ApplyCnpjMask(string input)
         {
             input = new string(input.Where(char.IsDigit).ToArray());
@@ -145,9 +141,12 @@ namespace FashionTrack
             // Remove all non-digit characters
             string digits = new string(input.Where(char.IsDigit).ToArray());
 
-            // Limit to maximum 11 digits
+            // Limit to a maximum of 11 digits
             if (digits.Length > 11)
                 digits = digits.Substring(0, 11);
+
+            // Return empty if no digits
+            if (string.IsNullOrEmpty(digits)) return string.Empty;
 
             // Initialize the formatted number
             string formattedNumber = "";
@@ -155,32 +154,21 @@ namespace FashionTrack
             // Apply formatting
             if (digits.Length > 0)
             {
-                formattedNumber += "(" + digits.Substring(0, Math.Min(2, digits.Length));
+                formattedNumber += $"({digits.Substring(0, Math.Min(2, digits.Length))})"; // First two digits
 
-                if (digits.Length >= 2)
+                if (digits.Length > 2)
                 {
-                    formattedNumber += ")";
-
-                    int firstPartLength = Math.Min(5, digits.Length - 2);
-                    formattedNumber += digits.Substring(2, firstPartLength);
+                    formattedNumber += digits.Substring(2, Math.Min(5, digits.Length - 2)); // Next part (up to 5 digits)
 
                     if (digits.Length > 7)
                     {
-                        formattedNumber += "-";
-                        formattedNumber += digits.Substring(7);
+                        formattedNumber += "-" + digits.Substring(7); // Remaining digits
                     }
-                }
-                else
-                {
-                    formattedNumber += ")";
                 }
             }
 
             return formattedNumber;
         }
-
-
-
         private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
             try

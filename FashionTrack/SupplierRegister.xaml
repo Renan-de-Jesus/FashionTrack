@@ -8,7 +8,7 @@
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     Title="Cadastro de Fornecedores"
     Width="600"
-    Height="800"
+    Height="712"
     Activated="Window_Activated"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
@@ -189,8 +189,8 @@
     <Grid>
         <StackPanel
             Width="500"
-            Height="720"
-            Margin="50,10,50,0"
+            Height="694"
+            Margin="50,-8,50,0"
             VerticalAlignment="Top">
             <TextBlock
                 Width="194"
@@ -211,7 +211,7 @@
                 x:Name="representativeTxtBox"
                 Width="420"
                 Height="42"
-                Margin="5,20,5,20"
+                Margin="5,0,5,30"
                 Padding="5"
                 HorizontalAlignment="Center"
                 VerticalAlignment="top"
@@ -248,7 +248,7 @@
                 x:Name="corporateReasonTxtBox"
                 Width="420"
                 Height="42"
-                Margin="5,5,5,30"
+                Margin="5,0,5,30"
                 Padding="5"
                 HorizontalAlignment="Center"
                 VerticalAlignment="top"
@@ -282,7 +282,7 @@
                 x:Name="addressTxtBox"
                 Width="420"
                 Height="42"
-                Margin="5,5,5,30"
+                Margin="5,0,5,30"
                 Padding="5"
                 HorizontalAlignment="Center"
                 VerticalAlignment="top"
@@ -317,7 +317,7 @@
                 x:Name="cnpjTxtBox"
                 Width="420"
                 Height="42"
-                Margin="5,5,5,30"
+                Margin="5,0,5,30"
                 Padding="5"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
@@ -353,7 +353,7 @@
                 x:Name="phoneTxt"
                 Width="420"
                 Height="42"
-                Margin="5,5,5,30"
+                Margin="5,0,5,30"
                 Padding="5"
                 HorizontalAlignment="Center"
                 VerticalAlignment="top"
@@ -381,7 +381,7 @@
                 x:Name="cityCbx"
                 Width="420"
                 Height="42"
-                Margin="5,5,5,30"
+                Margin="5,0,5,30"
                 Padding="5"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
@@ -390,12 +390,14 @@
                 FontSize="16"
                 MaxDropDownHeight="180"
                 SelectedIndex="1"
-                Style="{StaticResource CustomComboBoxStyle}" />
+                Style="{StaticResource CustomComboBoxStyle}"
+                />
+
             <Button
                 x:Name="save_btn"
                 Width="250"
                 Height="50"
-                Margin="5,20,5,20"
+                Margin="5,10,5,20"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 HorizontalContentAlignment="Center"
@@ -424,9 +426,9 @@
         </StackPanel>
         <Button
             x:Name="addCityBtn"
-            Width="35"
-            Height="35"
-            Margin="518,586,0,0"
+            Width="36"
+            Height="36"
+            Margin="522,532,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             HorizontalContentAlignment="Center"
