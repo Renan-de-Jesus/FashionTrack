@@ -96,7 +96,7 @@ namespace FashionTrack
 
                         if (resultInsert > 0)
                         {
-                            MessageBoxResult result = MessageBox.Show("Usuário cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show("Usuário cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
                            
                         }
                         else

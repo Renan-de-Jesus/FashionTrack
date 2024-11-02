@@ -127,7 +127,6 @@
                 Opacity=".6"
                 TabIndex="1"
                 Text=""
-                TextChanged="txtBoxUser_TextChanged"
                 UndoLimit="50">
                 <TextBox.Template>
                     <ControlTemplate TargetType="{x:Type TextBox}">
@@ -225,9 +224,7 @@
                     Margin="0,0,0,30"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Checked="toggleAdmin_Checked"
-                    TabIndex="4"
-                    Unchecked="toggleAdmin_Unchecked">
+                    TabIndex="4">
                     <ToggleButton.Template>
                         <ControlTemplate TargetType="ToggleButton">
                             <Border
