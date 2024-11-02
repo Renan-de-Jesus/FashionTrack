@@ -34,14 +34,18 @@ namespace FashionTrack
                 try
                 {
                     connection.Open();
-                    string cityQuery = "SELECT ID_Cidade, Descricao FROM Cidade";
+                    string cityQuery = "SELECT ID_City, Description FROM City";
                     SqlCommand cityCommand = new SqlCommand(cityQuery, connection);
                     DataTable dt = new DataTable();
                     SqlDataAdapter adapter = new SqlDataAdapter(cityCommand);
                     adapter.Fill(dt);
                     cityCbx.ItemsSource = dt.DefaultView;
-                    cityCbx.DisplayMemberPath = "Descricao";
-                    cityCbx.SelectedValuePath = "ID_Cidade";
+                    cityCbx.DisplayMemberPath = "Description";
+                    cityCbx.SelectedValuePath = "ID_City";
+                    if (dt.Rows.Count > 0)
+                    {
+                        cityCbx.SelectedIndex = 0;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -92,42 +96,93 @@ namespace FashionTrack
             }
         }
 
+
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
+            int originalCaretIndex = textBox.CaretIndex;
+            int originalLength = textBox.Text.Length;
 
-            // Store caret position
-            int caretIndex = textBox.CaretIndex;
-
-            // Remove event handler to prevent recursive calls
             textBox.TextChanged -= TextBox_TextChanged;
 
             if (textBox.Name == "cnpjTxtBox")
             {
-                // Existing CNPJ formatting logic
-                string formattedCnpj = ApplyCnpjMask(textBox.Text);
-                textBox.Text = formattedCnpj;
+                // Avoid formatting placeholder text
+                if (textBox.Text != "00.000.000/0000-00")
+                {
+                    string formattedCnpj = ApplyCnpjMask(textBox.Text);
+                    textBox.Text = formattedCnpj;
+                }
             }
             else if (textBox.Name == "phoneTxt")
             {
-                // Apply phone mask
-                string formattedPhone = ApplyPhoneMask(textBox.Text);
-                textBox.Text = formattedPhone;
-
-                // Adjust caret position after formatting
-                // Ensure the caret position is set correctly
-                caretIndex = Math.Min(caretIndex, formattedPhone.Length);
-                textBox.CaretIndex = caretIndex;
+                // Avoid formatting placeholder text
+                if (textBox.Text != "(00)00000-0000")
+                {
+                    string formattedPhone = ApplyPhoneMask(textBox.Text, allowParenthesisErase: true);
+                    textBox.Text = formattedPhone;
+                }
             }
 
-            // Re-attach event handler
+            // Adjust the caret position accordingly
+            int newLength = textBox.Text.Length;
+            int adjustedCaretIndex = originalCaretIndex + (newLength - originalLength);
+            adjustedCaretIndex = Math.Max(0, Math.Min(adjustedCaretIndex, textBox.Text.Length));
+            textBox.CaretIndex = adjustedCaretIndex;
+
             textBox.TextChanged += TextBox_TextChanged;
         }
+
+        private string ApplyPhoneMask(string input, bool allowParenthesisErase)
+        {
+            // Remove all non-digit characters
+            string digits = new string(input.Where(char.IsDigit).ToArray());
+
+            // Limit to 11 digits
+            if (digits.Length > 11)
+                digits = digits.Substring(0, 11);
+
+            // Return empty if no digits are present
+            if (string.IsNullOrEmpty(digits)) return string.Empty;
+
+            // Format phone number
+            string formattedNumber = "";
+
+            if (digits.Length > 0)
+            {
+                if (allowParenthesisErase)
+                {
+                    formattedNumber += $"({digits.Substring(0, Math.Min(2, digits.Length))})";
+                }
+                else
+                {
+                    formattedNumber += $"({digits.Substring(0, Math.Min(2, digits.Length))})";
+                }
+
+                if (digits.Length > 2)
+                {
+                    formattedNumber += " " + digits.Substring(2, Math.Min(5, digits.Length - 2));
+
+                    if (digits.Length > 7)
+                    {
+                        formattedNumber += "-" + digits.Substring(7);
+                    }
+                }
+            }
+
+            return formattedNumber;
+        }
+
         private string ApplyCnpjMask(string input)
         {
+            // Remove all non-digit characters
             input = new string(input.Where(char.IsDigit).ToArray());
-            if (input.Length > 14) input = input.Substring(0, 14);
 
+            // Limit to 14 digits
+            if (input.Length > 14)
+                input = input.Substring(0, 14);
+
+            // Format CNPJ
             if (input.Length > 2) input = input.Insert(2, ".");
             if (input.Length > 6) input = input.Insert(6, ".");
             if (input.Length > 10) input = input.Insert(10, "/");
@@ -136,39 +191,7 @@ namespace FashionTrack
             return input;
         }
 
-        private string ApplyPhoneMask(string input)
-        {
-            // Remove all non-digit characters
-            string digits = new string(input.Where(char.IsDigit).ToArray());
 
-            // Limit to a maximum of 11 digits
-            if (digits.Length > 11)
-                digits = digits.Substring(0, 11);
-
-            // Return empty if no digits
-            if (string.IsNullOrEmpty(digits)) return string.Empty;
-
-            // Initialize the formatted number
-            string formattedNumber = "";
-
-            // Apply formatting
-            if (digits.Length > 0)
-            {
-                formattedNumber += $"({digits.Substring(0, Math.Min(2, digits.Length))})"; // First two digits
-
-                if (digits.Length > 2)
-                {
-                    formattedNumber += digits.Substring(2, Math.Min(5, digits.Length - 2)); // Next part (up to 5 digits)
-
-                    if (digits.Length > 7)
-                    {
-                        formattedNumber += "-" + digits.Substring(7); // Remaining digits
-                    }
-                }
-            }
-
-            return formattedNumber;
-        }
         private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -179,7 +202,7 @@ namespace FashionTrack
                 string phone = phoneTxt.Text;
                 string address = addressTxtBox.Text;
 
-                cnpj = cnpj.Replace(".", "").Replace("-", "");
+                cnpj = cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
                 phone = phone.Replace("(", "").Replace(")", "").Replace("-", "");
 
                 if (string.IsNullOrEmpty(corporateReason) || corporateReasonTxtBox.Text == "Razão social")
@@ -233,30 +256,30 @@ namespace FashionTrack
                     {
                         connection.Open();
 
-                        string checkCustomerQuery = "SELECT COUNT(*) FROM Fornecedor WHERE CNPJ = @CNPJ";
-                        SqlCommand checkCustomerCommand = new SqlCommand(checkCustomerQuery, connection);
-                        checkCustomerCommand.Parameters.AddWithValue("@CNPJ", cnpj);
+                        string checkSupplierQuery = "SELECT COUNT(*) FROM Supplier WHERE CNPJ = @CNPJ";
+                        SqlCommand checkSupplierCommand = new SqlCommand(checkSupplierQuery, connection);
+                        checkSupplierCommand.Parameters.AddWithValue("@CNPJ", cnpj);
 
-                        object result = checkCustomerCommand.ExecuteScalar();
-                        int customerCount = result != null ? Convert.ToInt32(result) : 0;
+                        object result = checkSupplierCommand.ExecuteScalar();
+                        int supplierCount = result != null ? Convert.ToInt32(result) : 0;
 
-                        if (customerCount > 0)
+                        if (supplierCount > 0)
                         {
                             MessageBox.Show("Fornecedor já cadastrado com este CNPJ.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                         else
                         {
-                            string saveSupplierQuery = "INSERT INTO Fornecedor (NomeRazaoSocial, CNPJ, Endereco, Telefone, ID_Cidade, NomeRepresentante) " +
-                                                        "VALUES (@corporateReason, @CNPJ, @address, @phone, @selectCityId, @representative)";
+                            string saveSupplierQuery = "INSERT INTO Supplier (CorporateName, CNPJ, Address, Telephone, Representative, ID_City) " +
+                                                        "VALUES (@corporateName, @CNPJ, @address, @telephone, @representative, @cityId)";
 
                             SqlCommand saveSupplierCommand = new SqlCommand(saveSupplierQuery, connection);
 
-                            saveSupplierCommand.Parameters.AddWithValue("@corporateReason", corporateReason);
+                            saveSupplierCommand.Parameters.AddWithValue("@corporateName", corporateReason);
                             saveSupplierCommand.Parameters.AddWithValue("@CNPJ", cnpj);
                             saveSupplierCommand.Parameters.AddWithValue("@address", address);
-                            saveSupplierCommand.Parameters.AddWithValue("@phone", phone);
-                            saveSupplierCommand.Parameters.AddWithValue("@selectCityId", selectCityId);
+                            saveSupplierCommand.Parameters.AddWithValue("@telephone", phone);
                             saveSupplierCommand.Parameters.AddWithValue("@representative", representative);
+                            saveSupplierCommand.Parameters.AddWithValue("@cityId", selectCityId);
 
                             int rowsAffected = saveSupplierCommand.ExecuteNonQuery();
 
