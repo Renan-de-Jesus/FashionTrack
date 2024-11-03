@@ -47,13 +47,13 @@ CREATE TABLE Supplier (
     CNPJ CHAR(14) NOT NULL UNIQUE,
     Address VARCHAR(150) NOT NULL,
     Telephone VARCHAR(15) NOT NULL,
-	Representative NVARCHAR(150) NULL,
+    Representative NVARCHAR(150) NULL,
     ID_City INT NOT NULL,
     CONSTRAINT PK_Supplier PRIMARY KEY (ID_Supplier),
     CONSTRAINT FK_Supplier_City FOREIGN KEY (ID_City) REFERENCES City(ID_City) ON DELETE CASCADE
 );
 
-INSERT INTO Supplier (CorporateName, CNPJ, Address, Cellphone, Representative, ID_City) 
+INSERT INTO Supplier (CorporateName, CNPJ, Address, Telephone, Representative, ID_City) 
 VALUES ('Fornecedor Exemplo LTDA', '12345678000195', 'Avenida B, 456', '11876543210', 'Hugo', 1);
 
 CREATE TABLE Brand (
@@ -116,6 +116,7 @@ CREATE TABLE Sell (
     Sell_Document INT NOT NULL,
     SellDate DATETIME NOT NULL CONSTRAINT DF_SellDate DEFAULT GETDATE(),
     TotalPrice DECIMAL(10, 2) NOT NULL,
+    PaymentMethod VARCHAR(50) NOT NULL,
     CONSTRAINT PK_Sell PRIMARY KEY (ID_Sell),
     CONSTRAINT FK_Sell_Customer FOREIGN KEY (ID_Customer) REFERENCES Customer(ID_Customer) ON DELETE CASCADE
 );
