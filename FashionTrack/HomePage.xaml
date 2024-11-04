@@ -9,30 +9,64 @@
     Title="Vendas"
     Width="1280"
     Height="768"
-    ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
+    <Window.Resources>
+        <Style x:Key="HoverButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="LightGray" />
+            <Setter Property="Foreground" Value="Black" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation
+                                    Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
+                                    To="#1B8FFC"
+                                    Duration="0:0:0.3" />
+                                <DoubleAnimation
+                                    Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Opacity)"
+                                    To="0.69"
+                                    Duration="0:0:0.3" />
+                                <ColorAnimation
+                                    Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"
+                                    To="White"
+                                    Duration="0:0:0.3" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation
+                                    Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
+                                    To="#2888E3"
+                                    Duration="0:0:0.3" />
+                                <DoubleAnimation
+                                    Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Opacity)"
+                                    To="1.0"
+                                    Duration="0:0:0.3" />
+                                <ColorAnimation
+                                    Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"
+                                    To="White"
+                                    Duration="0:0:0.3" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid x:Name="HomeScreen" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock
-            Width="184"
-            Height="43"
-            Margin="0,8,0,0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            FontSize="24"
-            FontWeight="light"
-            RenderTransformOrigin="0.804,0.804"
-            Text="Venda de produto"
-            TextWrapping="Wrap" />
         <TextBox
             x:Name="SearchTextBox"
             Width="666"
             Height="40"
-            Margin="97,51,0,0"
+            Margin="97,222,0,0"
             Padding="5"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
@@ -62,7 +96,7 @@
         <Button
             Width="40"
             Height="40"
-            Margin="723,51,0,0"
+            Margin="723,222,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Click="ClearSearch"
@@ -101,8 +135,7 @@
         <ListBox
             x:Name="SearchResults"
             Width="673"
-            Height="300"
-            Margin="90,96,0,146"
+            Margin="90,267,0,31"
             HorizontalAlignment="Left"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -219,33 +252,263 @@
             ItemsSource="{Binding SelectedProducts}">
             <DataGrid.Columns>
                 <DataGridTextColumn
-                    Binding="{Binding Description}"
+                    Width="30"
+                    Binding="{Binding Id}"
+                    Header="ID"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
                     Width="*"
+                    Binding="{Binding Description}"
                     Header="Descrição"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Color}"
                     Width="*"
+                    Binding="{Binding Color}"
                     Header="Cor"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Brand}"
                     Width="*"
+                    Binding="{Binding Brand}"
                     Header="Marca"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Size}"
                     Width="*"
+                    Binding="{Binding Size}"
                     Header="Tamanho"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Gender}"
                     Width="*"
+                    Binding="{Binding Gender}"
                     Header="Genêro"
                     IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding Quantity, Mode=TwoWay}" Width="*" Header="Quantidade" />
-                <DataGridTextColumn Binding="{Binding Price, Mode=TwoWay, StringFormat={}{0:C}, ConverterCulture=pt-BR}" Width="*" Header="Preço" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding Quantity, Mode=TwoWay}"
+                    Header="Quantidade" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding Price, Mode=TwoWay, StringFormat={}{0:C}, ConverterCulture=pt-BR}"
+                    Header="Preço" />
             </DataGrid.Columns>
         </DataGrid>
+        <Label
+            Grid.Row="1"
+            Width="118"
+            Margin="956,76,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="Total R$"
+            FontSize="22"
+            FontWeight="Bold" />
+        <Label
+            x:Name="fullPriceLbl"
+            Grid.Row="1"
+            Margin="1044,76,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="0,00"
+            FontSize="22"
+            FontWeight="Bold" />
+
+        <Button
+            x:Name="btnLogin"
+            Grid.Row="1"
+            Width="242"
+            Height="50"
+            Margin="953,144,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Background="#2888E3"
+            Click="btnLogin_Click"
+            Content="Finalizar Compra"
+            FontSize="16"
+            Foreground="White"
+            RenderTransformOrigin="0.5,0.5"
+            Style="{StaticResource HoverButtonStyle}">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        Padding="5"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness=".5"
+                        CornerRadius="08">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <TextBox
+            x:Name="SearchCustomer"
+            Width="666"
+            Height="40"
+            Margin="100,11,0,0"
+            Padding="5"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            KeyDown="SearchCustomer_KeyDown"
+            Text="Cliente"
+            TextWrapping="Wrap">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TextBox}">
+                                <Border
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="8">
+                                    <ScrollViewer x:Name="PART_ContentHost" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+        <Button
+            x:Name="deleteBtn"
+            Width="40"
+            Height="40"
+            Margin="726,11,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="deleteBtn_Click"
+            Content="X"
+            FontSize="20"
+            FontWeight="Light"
+            RenderTransformOrigin="1.458,0.543">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="8">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#B5B5B5" />
+
+                            <Setter Property="Foreground" Value="Black" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <ListBox
+            x:Name="CustomerResults"
+            Width="672"
+            Margin="94,56,0,242"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            SelectionChanged="CustomerResults_SelectionChanged">
+            <ListBox.Resources>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                <Grid Background="{TemplateBinding Background}">
+                                    <ContentPresenter />
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.Resources>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        Margin="5"
+                        Padding="5"
+                        BorderBrush="#565656"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#B5B5B5" />
+                                        <Setter Property="BorderBrush" Value="#B5B5B5" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Margin="5" VerticalAlignment="Center" />
+                            <TextBlock
+                                Height="30"
+                                Margin="5"
+                                VerticalAlignment="Center"
+                                Text="{Binding Name}" />
+                            <TextBlock
+                                Height="30"
+                                Margin="5"
+                                VerticalAlignment="Center"
+                                Text="{Binding Surname}" />
+                            <TextBlock
+                                Height="30"
+                                Margin="5"
+                                VerticalAlignment="Center"
+                                Text="{Binding CPF}" />
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <TextBox
+            x:Name="idCustomerTxt"
+            Width="46"
+            Margin="49,22,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text=""
+            TextWrapping="Wrap" />
+        <RadioButton
+            x:Name="creditoRdBtn"
+            Margin="1002,319,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Checked="creditoRdBtn_Checked"
+            Content="Crédito" />
+        <RadioButton
+            x:Name="moneyRdBtn"
+            Margin="1002,360,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Checked="moneyRdBtn_Checked"
+            Content="Dinheiro" />
+        <RadioButton
+            x:Name="debitoRdBtn"
+            Margin="1002,299,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Checked="debitoRdBtn_Checked"
+            Content="Débito" />
+        <RadioButton
+            x:Name="pixRdBtn"
+            Margin="1002,340,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Checked="pixRdBtn_Checked"
+            Content="Pix" />
     </Grid>
 </Window>

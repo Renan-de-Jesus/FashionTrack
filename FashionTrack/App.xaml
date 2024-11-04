@@ -3,10 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:FashionTrack"
-<<<<<<< HEAD
     StartupUri="HomePage.xaml">
-=======
-    StartupUri="LoginWindow.xaml">
->>>>>>> 75b446dae657ec062ef6391576153995f23de428
     <Application.Resources />
 </Application>
