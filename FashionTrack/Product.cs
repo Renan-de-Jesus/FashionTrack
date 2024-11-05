@@ -14,5 +14,6 @@ namespace FashionTrack
         public string Brand { get; set; }
         public string Size { get; set; }
         public string Gender { get; set; }
+        public int Qty { get; set; }
     }
 }

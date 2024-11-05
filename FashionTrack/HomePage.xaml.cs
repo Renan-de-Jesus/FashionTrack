@@ -39,6 +39,7 @@ namespace FashionTrack
             public string Brand { get; set; }
             public string Size { get; set; }
             public string Gender { get; set; }
+            public int Qty { get; set; }
 
             public int Quantity
             {
@@ -75,6 +76,17 @@ namespace FashionTrack
             protected void OnPropertyChanged(string propertyName)
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        public ICommand DeleteCommand => new RelayCommand<SelectedProduct>(ExecuteDeleteCommand);
+
+        void ExecuteDeleteCommand(SelectedProduct product)
+        {
+            if (product != null && SelectedProducts.Contains(product))
+            {
+                SelectedProducts.Remove(product);
+                UpdateTotalPrice();
             }
         }
 
@@ -146,7 +158,7 @@ namespace FashionTrack
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Erro ao conectar ao banco de dados: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Erro ao conectar ao banco de dados: {ex.Message}", "Erro Bando de Dados", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -166,6 +178,7 @@ namespace FashionTrack
                 SearchCustomer.Text = $"{selectedCustomer.Name} {selectedCustomer.Surname}";
                 SearchCustomer.IsEnabled = false;
                 idCustomerTxt.Text = selectedCustomer.Id.ToString();
+                Customers.Clear();
             }
         }
 
@@ -188,12 +201,13 @@ namespace FashionTrack
                 try
                 {
                     connection.Open();
-                    string query = "SELECT P.ID_Product, P.Description, B.BrandName, C.ColorName, S.SizeDescription, P.Gender " +
+                    string query = "SELECT P.ID_Product, P.Description, B.BrandName, C.ColorName, S.SizeDescription, P.Gender, ST.Qty " +
                         "FROM Product AS P " +
                         "INNER JOIN Brand AS B ON P.BrandId = B.BrandId " +
                         "INNER JOIN Color AS C ON P.ColorId = C.ColorId " +
                         "INNER JOIN Size AS S ON P.SizeId = S.SizeId " +
-                        "WHERE Description LIKE @searchText ";
+                        "INNER JOIN Stock AS ST ON P.ID_Product = ST.ID_Product " +
+                        "WHERE Description LIKE @searchText AND (ST.Qty > 0)";
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@searchText", "%" + searchText + "%");
 
@@ -208,6 +222,7 @@ namespace FashionTrack
                             Brand = reader["BrandName"].ToString(),
                             Size = reader["SizeDescription"].ToString(),
                             Gender = reader["Gender"].ToString(),
+                            Qty = reader.GetInt32(reader.GetOrdinal("Qty"))
                         };
                         Products.Add(product);
                         SearchResults.SelectedValuePath = "idProduct";
@@ -216,7 +231,7 @@ namespace FashionTrack
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Erro ao conectar ao banco de dados: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Erro ao conectar ao banco de dados: {ex.Message}", "Erro Banco de Dados", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -231,7 +246,7 @@ namespace FashionTrack
 
         private void AddSelectedProduct(int id, string description, string color, string brand, string size, string gender, decimal price)
         {
-            if (!SelectedProducts.Any(p =>p.Id == id && p.Description == description && p.Color == color && p.Brand == brand && p.Size == size && p.Gender == gender))
+            if (!SelectedProducts.Any(p => p.Id == id && p.Description == description && p.Color == color && p.Brand == brand && p.Size == size && p.Gender == gender))
             {
                 SelectedProducts.Add(new SelectedProduct
                 {
@@ -254,11 +269,13 @@ namespace FashionTrack
         private void ClearSearch(object sender, RoutedEventArgs e)
         {
             SearchTextBox.Text = string.Empty;
+            idProductTxt.Text = string.Empty;
             Products.Clear();
         }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
+            bool sucessul = false;
             DateTime date = DateTime.Today;
             decimal totalPrice = Convert.ToDecimal(fullPriceLbl.Content.ToString());
             if (string.IsNullOrEmpty(idCustomerTxt.Text) || !int.TryParse(idCustomerTxt.Text, out int ID_Customer))
@@ -274,7 +291,7 @@ namespace FashionTrack
                 return;
             }
 
-            if(!SelectedProducts.Any())
+            if (!SelectedProducts.Any())
             {
                 MessageBox.Show("Por favor, selecione ao menos um produto.", "Erro", MessageBoxButton.OK, MessageBoxImage.Warning);
                 SearchTextBox.Focus();
@@ -303,7 +320,9 @@ namespace FashionTrack
                         sellRegisterCommand.Parameters.AddWithValue("@PaymentMethod", paymentMethod);
 
                         int sellId = Convert.ToInt32(sellRegisterCommand.ExecuteScalar());
-                        try {
+                        sucessul = true;
+                        try
+                        {
 
                             foreach (var selectedProduct in SelectedProducts)
                             {
@@ -318,19 +337,33 @@ namespace FashionTrack
                                 itemSellCommand.ExecuteNonQuery();
                             }
                         }
-                        catch(Exception ex){
-                            MessageBox.Show("Erro: " + ex.Message, "Error ItemVenda", MessageBoxButton.OK, MessageBoxImage.Error);
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro: " + ex.Message, "Erro ItemVenda", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        if (sucessul)
+                        {
+                            MessageBox.Show("Venda efetuada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            idCustomerTxt.Clear();
+                            SearchCustomer.Clear();
+                            idProductTxt.Clear();
+                            SearchTextBox.Clear();
+                            SearchResults.Items.Clear();
+                            foreach (var selectedProduct in SelectedProducts)
+                            {
+                                selectedProductsDgv.Items.Clear();
+                            }
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Erro ao finalizar a venda" + ex.Message, "Error Venda", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Erro ao finalizar a venda! " + ex.Message, "Erro Venda", MessageBoxButton.OK, MessageBoxImage.Error);
 
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Erro ao conectar ao banco de dados" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Erro ao conectar ao banco de dados! " + ex.Message, "Erro Bando de Dados", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
         }
 
@@ -338,6 +371,7 @@ namespace FashionTrack
         {
             SearchCustomer.IsEnabled = true;
             SearchCustomer.Text = string.Empty;
+            idCustomerTxt.Text = string.Empty;
             Customers.Clear();
         }
 
@@ -359,6 +393,124 @@ namespace FashionTrack
         private void moneyRdBtn_Checked(object sender, RoutedEventArgs e)
         {
             paymentMethod = "Dinheiro";
+        }
+
+        private void idCustomerTxt_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                int idCustomer;
+                if (!int.TryParse(idCustomerTxt.Text, out idCustomer))
+                {
+                    MessageBox.Show("Por favor, insira um ID de cliente válido.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                    try
+                    {
+                        connection.Open();
+                        try
+                        {
+                            string searchCustomer = "SELECT ID_Customer, Name, Surname " +
+                                "FROM Customer " +
+                                "WHERE ID_Customer = @idCustomer";
+                            SqlCommand searchCustomerCommand = new SqlCommand(searchCustomer, connection);
+                            searchCustomerCommand.Parameters.AddWithValue("@idCustomer", idCustomer);
+
+                            try
+                            {
+                                using (SqlDataReader reader = searchCustomerCommand.ExecuteReader())
+                                    if (reader.Read())
+                                    {
+                                        string name = reader["Name"].ToString();
+                                        string surname = reader["Surname"].ToString();
+                                        SearchCustomer.Text = $"{name} {surname}";
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Cliente não encontrado.", "Atenção", MessageBoxButton.OK, MessageBoxImage.Information);
+                                    }
+                            }
+                            catch
+                            {
+                                MessageBox.Show("Erro ao mostar o clinte.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao buscas informações no banco de dados" + ex.Message, "Erro Informações", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Erro ao conectar ao banco de dados" + ex.Message, "Erro Banco de Dados", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+            }
+        }
+
+        private void idProductTxt_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                int idProduct;
+                if (!int.TryParse(idProductTxt.Text, out idProduct))
+                {
+                    MessageBox.Show("Por favor, insira um ID de produto válido.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                    try
+                    {
+                        connection.Open();
+                        try
+                        {
+                            string searchProduct = "SELECT P.ID_Product, P.Description, B.BrandName, C.ColorName, S.SizeDescription, P.Gender, ST.Qty " +
+                            "FROM Product AS P " +
+                            "INNER JOIN Brand AS B ON P.BrandId = B.BrandId " +
+                            "INNER JOIN Color AS C ON P.ColorId = C.ColorId " +
+                            "INNER JOIN Size AS S ON P.SizeId = S.SizeId " +
+                            "INNER JOIN Stock AS ST ON P.ID_Product = ST.ID_Product " +
+                            "WHERE P.ID_Product = @idProduct AND (ST.Qty > 0)";
+
+                            SqlCommand searchProductCommand = new SqlCommand(searchProduct, connection);
+                            searchProductCommand.Parameters.AddWithValue("@idProduct", idProduct);
+                            Products.Clear();
+                            try
+                            {
+                                using (SqlDataReader reader = searchProductCommand.ExecuteReader())
+                                    while (reader.Read())
+                                    {
+                                        var product = new Product
+                                        {
+                                            Id = reader.GetInt32(reader.GetOrdinal("ID_Product")),
+                                            Description = reader["Description"].ToString(),
+                                            Color = reader["ColorName"].ToString(),
+                                            Brand = reader["BrandName"].ToString(),
+                                            Size = reader["SizeDescription"].ToString(),
+                                            Gender = reader["Gender"].ToString(),
+                                            Qty = reader.GetInt32(reader.GetOrdinal("Qty"))
+                                        };
+                                        Products.Add(product);
+                                        SearchResults.SelectedValuePath = "idProduct";
+                                    }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Erro ao repassar os dados para o grid! " + ex.Message, "Erro Grid", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao buscas informações no banco de dados! " + ex.Message, "Erro Informações", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Erro ao conectar ao banco de dados! " + ex.Message, "Erro Banco de Dados", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+            }
         }
     }
 }

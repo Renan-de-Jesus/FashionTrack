@@ -203,6 +203,11 @@
                                 Margin="5"
                                 VerticalAlignment="Center"
                                 Text="{Binding Gender}" />
+                            <TextBlock
+                                Height="30"
+                                Margin="5"
+                                VerticalAlignment="Center"
+                                Text="{Binding Qty}" />
                         </StackPanel>
                     </Border>
                 </DataTemplate>
@@ -249,7 +254,9 @@
             Margin="118,481,517,10"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
-            ItemsSource="{Binding SelectedProducts}">
+            ItemsSource="{Binding SelectedProducts}"
+            SelectionMode="Single"
+            SelectionUnit="FullRow">
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Width="30"
@@ -289,6 +296,16 @@
                     Width="*"
                     Binding="{Binding Price, Mode=TwoWay, StringFormat={}{0:C}, ConverterCulture=pt-BR}"
                     Header="Preço" />
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button
+                                Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                CommandParameter="{Binding}"
+                                Content="X" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
         <Label
@@ -480,6 +497,7 @@
             Margin="49,22,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            KeyDown="idCustomerTxt_KeyDown"
             Text=""
             TextWrapping="Wrap" />
         <RadioButton
@@ -510,5 +528,14 @@
             VerticalAlignment="Top"
             Checked="pixRdBtn_Checked"
             Content="Pix" />
+        <TextBox
+            x:Name="idProductTxt"
+            Width="51"
+            Height="21"
+            Margin="41,231,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            KeyDown="idProductTxt_KeyDown"
+            TextWrapping="Wrap" />
     </Grid>
 </Window>
