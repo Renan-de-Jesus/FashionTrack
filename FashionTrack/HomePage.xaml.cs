@@ -7,7 +7,6 @@ using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Linq;
 using System.ComponentModel;
-using static FashionTrack.HomePage;
 using System.Windows.Markup;
 using Microsoft.IdentityModel.Tokens;
 
@@ -123,6 +122,64 @@ namespace FashionTrack
                 }
                 UpdateTotalPrice();
             };
+        }
+
+        private void ClearScreen()
+        {
+            idCustomerTxt.Clear();
+            SearchCustomer.Clear();
+            SearchTextBox.Clear();
+            fullPriceLbl.Content = "0";
+            SelectedProducts.Clear();
+            debitoRdBtn.IsChecked = false;
+            creditoRdBtn.IsChecked = false;
+            pixRdBtn.IsChecked = false;
+            moneyRdBtn.IsChecked = false;
+        }
+
+        private void UpdateQuantityInStock()
+        {
+            if (SelectedProducts.Count > 0)
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    try
+                    {
+                        connection.Open();
+
+                        foreach (var item in SelectedProducts)
+                        {
+                            var selectedProduct = item as SelectedProduct;
+                            if (selectedProduct != null)
+                            {
+                                int productId = selectedProduct.Id;
+                                int quantitySold = selectedProduct.Quantity;
+
+                                try
+                                {
+                                    string updateStockString = "UPDATE Stock " +
+                                        "SET Qty = Qty - @quantitySold " +
+                                        "WHERE ID_Product = @idProduct";
+                                    SqlCommand updateCommand = new SqlCommand(updateStockString, connection);
+                                    updateCommand.Parameters.AddWithValue("@idProduct", productId);
+                                    updateCommand.Parameters.AddWithValue("@quantitySold", quantitySold);
+
+                                    int rowsAffected = updateCommand.ExecuteNonQuery();
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show($"Erro ao atualizar o estoque para o produto ID: {productId}. {ex.Message}", "Erro Atualização Estoque", MessageBoxButton.OK, MessageBoxImage.Error);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Erro ao conectar ao banco de dados! {ex.Message}", "Erro Banco de Dados", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
         }
 
         private void SearchCustomers(string searchText)
@@ -241,6 +298,7 @@ namespace FashionTrack
             if (SearchResults.SelectedItem is Product selectedProduct)
             {
                 AddSelectedProduct(selectedProduct.Id, selectedProduct.Description, selectedProduct.Color, selectedProduct.Brand, selectedProduct.Size, selectedProduct.Gender, 0);
+                Products.Clear();
             }
         }
 
@@ -343,22 +401,19 @@ namespace FashionTrack
                         }
                         if (sucessul)
                         {
+                            UpdateQuantityInStock();
                             MessageBox.Show("Venda efetuada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-                            idCustomerTxt.Clear();
-                            SearchCustomer.Clear();
-                            idProductTxt.Clear();
-                            SearchTextBox.Clear();
-                            SearchResults.Items.Clear();
-                            foreach (var selectedProduct in SelectedProducts)
-                            {
-                                selectedProductsDgv.Items.Clear();
-                            }
+                            ClearScreen();
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("Falha ao realizar a venda. Por favor, tente novamente!", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show("Erro ao finalizar a venda! " + ex.Message, "Erro Venda", MessageBoxButton.OK, MessageBoxImage.Error);
-
                     }
                 }
                 catch (Exception ex)
