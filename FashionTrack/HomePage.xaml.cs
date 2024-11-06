@@ -349,10 +349,7 @@ namespace FashionTrack
                             idProductTxt.Clear();
                             SearchTextBox.Clear();
                             SearchResults.Items.Clear();
-                            foreach (var selectedProduct in SelectedProducts)
-                            {
-                                selectedProductsDgv.Items.Clear();
-                            }
+                            selectedProductsDgv.Items.Clear();
                         }
                     }
                     catch (Exception ex)
