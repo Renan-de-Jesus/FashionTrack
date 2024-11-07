@@ -3,8 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="Cadastro de Usuário"
-    Width="1366"
-    Height="768"
+    Width="600"
+    Height="712"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen">
     <Window.Resources>
@@ -55,302 +55,280 @@
     </Window.Resources>
 
     <Grid x:Name="registerScreen">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-
-        <Rectangle
-            Width="550"
-            Height="644"
-            Margin="0,54,0,54"
-            HorizontalAlignment="Center"
-            RadiusX="10"
-            RadiusY="10"
-            Stroke="Black" />
-
-        <TextBlock
-            Width="214"
-            Height="60"
-            Margin="0,92,0,0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            FontSize="35"
-            FontWeight="light"
-            Text="Novo Usuário"
-            TextWrapping="Wrap" />
-
-        <TextBlock
-            x:Name="txtName"
-            Width="48"
-            Height="20"
-            Margin="433,171,885,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            FontFamily="Merriweather Sans"
-            FontSize="16"
-            Text="Nome" />
-
-        <TextBox
-            x:Name="txtBoxName"
+        <StackPanel
             Width="500"
-            Height="42"
-            Margin="432,196,434,514"
-            Padding="5"
-            HorizontalAlignment="Center"
-            VerticalAlignment="top"
-            HorizontalContentAlignment="Left"
-            VerticalContentAlignment="Center"
-            Panel.ZIndex="1"
-            FontSize="16"
-            TabIndex="0"
-            Text="">
-            <TextBox.Template>
-                <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Border
-                        Background="White"
-                        BorderBrush="Gray"
-                        BorderThickness="1"
-                        CornerRadius="10">
-                        <ScrollViewer x:Name="PART_ContentHost" />
-                    </Border>
-                </ControlTemplate>
-            </TextBox.Template>
-        </TextBox>
+            Height="694"
+            Margin="50,0,50,0"
+            VerticalAlignment="Top">
+            <TextBlock
+                Width="192"
+                Height="45"
+                Margin="5,30,5,20"
+                HorizontalAlignment="Center"
+                FontSize="30"
+                Text="Novo Usuário"
+                TextWrapping="Wrap" />
 
-        <TextBlock
-            x:Name="txtUser"
-            Width="59"
-            Height="20"
-            Margin="432,270,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            FontFamily="Merriweather Sans"
-            FontSize="16"
-            Text="Usuário" />
+            <TextBlock
+                Margin="20,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                FontSize="16"
+                Text="Nome"
+                TextWrapping="Wrap" />
+            <TextBox
+                x:Name="txtBoxName"
+                Width="420"
+                Height="42"
+                Margin="5,0,5,30"
+                Padding="5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="top"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Panel.ZIndex="1"
+                FontSize="16"
+                Opacity=".6"
+                TabIndex="0"
+                Text="">
+                <TextBox.Template>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border
+                            Background="White"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            CornerRadius="10">
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </TextBox.Template>
+            </TextBox>
 
-        <TextBox
-            x:Name="txtBoxUser"
-            Width="500"
-            Height="42"
-            Margin="433,295,433,415"
-            Padding="5"
-            HorizontalAlignment="Center"
-            VerticalAlignment="top"
-            HorizontalContentAlignment="Left"
-            VerticalContentAlignment="Center"
-            FontSize="16"
-            IsEnabled="True"
-            TabIndex="1"
-            TextChanged="txtBoxUser_TextChanged"
-            UndoLimit="50">
-            <TextBox.Template>
-                <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Border
-                        Background="White"
-                        BorderBrush="Gray"
-                        BorderThickness="1"
-                        CornerRadius="10">
-                        <ScrollViewer x:Name="PART_ContentHost" />
-                    </Border>
-                </ControlTemplate>
-            </TextBox.Template>
-        </TextBox>
+            <TextBlock
+                Margin="20,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                FontSize="16"
+                Text="Usuário"
+                TextWrapping="Wrap" />
 
-        <TextBlock
-            x:Name="txtPassword"
-            Width="48"
-            Height="20"
-            Margin="432,366,885,366"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            FontFamily="Merriweather Sans"
-            FontSize="16"
-            Text="Senha" />
+            <TextBox
+                x:Name="txtBoxUser"
+                Width="420"
+                Height="42"
+                Margin="5,0,5,30"
+                Padding="5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="top"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                FontSize="16"
+                IsEnabled="True"
+                Opacity=".6"
+                TabIndex="1"
+                Text=""
+                UndoLimit="50">
+                <TextBox.Template>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border
+                            Background="White"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            CornerRadius="10">
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </TextBox.Template>
+            </TextBox>
 
-        <PasswordBox
-            x:Name="pwdPassword"
-            Width="500"
-            Height="42"
-            Margin="432,391,434,319"
-            Padding="5"
-            HorizontalAlignment="Center"
-            VerticalAlignment="top"
-            HorizontalContentAlignment="Left"
-            VerticalContentAlignment="Center"
-            FontSize="16"
-            TabIndex="2">
-            <PasswordBox.Template>
-                <ControlTemplate>
-                    <Border
-                        Background="White"
-                        BorderBrush="Gray"
-                        BorderThickness="1"
-                        CornerRadius="10">
-                        <ScrollViewer x:Name="PART_ContentHost" />
-                    </Border>
-                </ControlTemplate>
-            </PasswordBox.Template>
-        </PasswordBox>
+            <TextBlock
+                Margin="20,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                FontSize="16"
+                Text="Senha"
+                TextWrapping="Wrap" />
+            <PasswordBox
+                x:Name="pwdPassword"
+                Width="420"
+                Height="42"
+                Margin="5,0,5,30"
+                Padding="5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="top"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                FontSize="16"
+                TabIndex="2">
+                <PasswordBox.Template>
+                    <ControlTemplate>
+                        <Border
+                            Background="White"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            CornerRadius="10">
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </PasswordBox.Template>
+            </PasswordBox>
 
-        <TextBlock
-            x:Name="txtConfirmPassword"
-            Width="134"
-            Height="20"
-            Margin="432,461,799,271"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            FontFamily="Merriweather Sans"
-            FontSize="16"
-            Text="Confirme a senha" />
+            <TextBlock
+                Margin="20,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                FontSize="16"
+                Text="Confirme a senha"
+                TextWrapping="Wrap" />
 
-        <PasswordBox
-            x:Name="pwdConfirmPassword"
-            Width="500"
-            Height="42"
-            Margin="433,486,433,224"
-            Padding="5"
-            HorizontalAlignment="Center"
-            VerticalAlignment="top"
-            HorizontalContentAlignment="Left"
-            VerticalContentAlignment="Center"
-            Panel.ZIndex="1"
-            FontSize="16"
-            TabIndex="3">
-            <PasswordBox.Template>
-                <ControlTemplate>
-                    <Border
-                        Background="White"
-                        BorderBrush="Gray"
-                        BorderThickness="1"
-                        CornerRadius="10">
-                        <ScrollViewer x:Name="PART_ContentHost" />
-                    </Border>
-                </ControlTemplate>
-            </PasswordBox.Template>
-        </PasswordBox>
-
-        <TextBlock
-            Width="61"
-            Height="22"
-            Margin="438,558,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            FontFamily="Merriweather Sans"
-            FontSize="16"
-            Text="Admin"
-            TextWrapping="Wrap" />
-        <ToggleButton
-            x:Name="toggleAdmin"
-            Width="60"
-            Height="30"
-            Margin="499,554,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Checked="toggleAdmin_Checked"
-            TabIndex="4"
-            Unchecked="toggleAdmin_Unchecked">
-            <ToggleButton.Template>
-                <ControlTemplate TargetType="ToggleButton">
-                    <Border
-                        x:Name="toggleBorder"
-                        Width="60"
-                        Height="30"
-                        Background="DarkGray"
-                        BorderBrush="DarkGray"
-                        BorderThickness="2"
-                        CornerRadius="15">
-                        <Grid>
-                            <Ellipse
-                                x:Name="ellipse"
-                                Width="20"
-                                Height="20"
-                                Margin="3,3,33,3"
-                                Fill="White">
-                                <Ellipse.RenderTransform>
-                                    <TranslateTransform />
-                                </Ellipse.RenderTransform>
-                            </Ellipse>
+            <PasswordBox
+                x:Name="pwdConfirmPassword"
+                Width="420"
+                Height="42"
+                Margin="5,0,5,30"
+                Padding="5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="top"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Panel.ZIndex="1"
+                FontSize="16"
+                TabIndex="3">
+                <PasswordBox.Template>
+                    <ControlTemplate>
+                        <Border
+                            Background="White"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            CornerRadius="10">
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </PasswordBox.Template>
+            </PasswordBox>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Width="61"
+                    Height="22"
+                    Margin="5,0,0,30"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontFamily="Merriweather Sans"
+                    FontSize="16"
+                    Text="Admin"
+                    TextWrapping="Wrap" />
+                <ToggleButton
+                    x:Name="toggleAdmin"
+                    Width="60"
+                    Height="30"
+                    Margin="0,0,0,30"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    TabIndex="4">
+                    <ToggleButton.Template>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Border
+                                x:Name="toggleBorder"
+                                Width="60"
+                                Height="30"
+                                Background="DarkGray"
+                                BorderBrush="DarkGray"
+                                BorderThickness="2"
+                                CornerRadius="15">
+                                <Grid>
+                                    <Ellipse
+                                        x:Name="ellipse"
+                                        Width="20"
+                                        Height="20"
+                                        Margin="3,3,33,3"
+                                        Fill="White">
+                                        <Ellipse.RenderTransform>
+                                            <TranslateTransform />
+                                        </Ellipse.RenderTransform>
+                                    </Ellipse>
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="ellipse"
+                                                    Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                    To="30"
+                                                    Duration="0:0:0.1" />
+                                                <ColorAnimation
+                                                    Storyboard.TargetName="toggleBorder"
+                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                    To="#2888E3"
+                                                    Duration="0:0:0.1" />
+                                                <ColorAnimation
+                                                    Storyboard.TargetName="toggleBorder"
+                                                    Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                    To="DodgerBlue"
+                                                    Duration="0:0:0.1" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                                                    Storyboard.TargetName="ellipse"
+                                                    Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                    To="0"
+                                                    Duration="0:0:0.1" />
+                                                <ColorAnimation
+                                                    Storyboard.TargetName="toggleBorder"
+                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                    To="DarkGray"
+                                                    Duration="0:0:0.1" />
+                                                <ColorAnimation
+                                                    Storyboard.TargetName="toggleBorder"
+                                                    Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
+                                                    To="DarkGray"
+                                                    Duration="0:0:0.1" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </ToggleButton.Template>
+                </ToggleButton>
+            </StackPanel>
+            <Button
+                x:Name="btnCadastrar"
+                Width="250"
+                Height="50"
+                Margin="5,10,5,20"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#2888E3"
+                Click="btnLogin_Click"
+                Content="Salvar"
+                FontSize="16"
+                Foreground="White"
+                IsEnabled="{Binding IsModified}"
+                RenderTransformOrigin="0.511,0.535"
+                Style="{StaticResource HoverButtonStyle}">
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border
+                            Padding="5"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness=".5"
+                            CornerRadius="08">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Grid>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Trigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation
-                                            Storyboard.TargetName="ellipse"
-                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
-                                            To="30"
-                                            Duration="0:0:0.1" />
-                                        <ColorAnimation
-                                            Storyboard.TargetName="toggleBorder"
-                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                            To="#2888E3"
-                                            Duration="0:0:0.1" />
-                                        <ColorAnimation
-                                            Storyboard.TargetName="toggleBorder"
-                                            Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
-                                            To="DodgerBlue"
-                                            Duration="0:0:0.1" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.EnterActions>
-                            <Trigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation
-                                            Storyboard.TargetName="ellipse"
-                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
-                                            To="0"
-                                            Duration="0:0:0.1" />
-                                        <ColorAnimation
-                                            Storyboard.TargetName="toggleBorder"
-                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                            To="DarkGray"
-                                            Duration="0:0:0.1" />
-                                        <ColorAnimation
-                                            Storyboard.TargetName="toggleBorder"
-                                            Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"
-                                            To="DarkGray"
-                                            Duration="0:0:0.1" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.ExitActions>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </ToggleButton.Template>
-        </ToggleButton>
-        <Button
-            x:Name="btnCadastrar"
-            Width="250"
-            Height="50"
-            Margin="0,613,0,0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            Background="#2888E3"
-            Click="btnLogin_Click"
-            Content="Cadastrar"
-            FontSize="16"
-            Foreground="White"
-            Style="{StaticResource HoverButtonStyle}">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border
-                        Padding="5"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness=".5"
-                        CornerRadius="08">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
     </Grid>
 </Window>
