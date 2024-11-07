@@ -14,7 +14,7 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
-    <Grid x:Name="CusotmerRegister">
+    <Grid x:Name="CustomerRegister">
         <Grid.Background>
             <ImageBrush />
         </Grid.Background>
@@ -57,7 +57,7 @@
             </TextBox.Template>
         </TextBox>
         <TextBox
-            x:Name="secundNameTxtBox"
+            x:Name="surnameNameTxtBox"
             Width="500"
             Height="42"
             Margin="0,242,0,0"
@@ -67,8 +67,8 @@
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
             FontSize="16"
-            GotFocus="RemoveTextSecundName"
-            LostFocus="AddTextSecundName"
+            GotFocus="RemoveTextSurnameName"
+            LostFocus="AddTextSurnameName"
             Opacity="0.6"
             Text="SOBRENOME DO CLIENTE"
             TextWrapping="Wrap">
@@ -229,14 +229,13 @@
         <TextBlock
             Width="204"
             Height="60"
-            Margin="0,92,0,0"
-            HorizontalAlignment="Center"
+            Margin="627,98,0,0"
             VerticalAlignment="Top"
-            FontSize="35"
+            FontSize="40"
             FontWeight="light"
             RenderTransformOrigin="0.505,0.284"
-            Text="Novo Cliente"
-            TextWrapping="Wrap" />
+            Text="Cliente"
+            TextWrapping="Wrap" HorizontalAlignment="Left" />
 
         <TextBlock
             Width="45"

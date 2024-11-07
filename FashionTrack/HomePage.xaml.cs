@@ -38,14 +38,14 @@ namespace FashionTrack
                 try
                 {
                     connection.Open();
-                    string query = "SELECT Descricao FROM Produto WHERE Descricao LIKE @searchText";
+                    string query = "SELECT Description FROM Product WHERE Description LIKE @searchText";
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@searchText", "%" + searchText + "%");
 
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        Products.Add(reader["Descricao"].ToString());
+                        Products.Add(reader["Description"].ToString());
                     }
                 }
                 catch (Exception ex)

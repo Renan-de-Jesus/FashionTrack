@@ -71,10 +71,10 @@ namespace FashionTrack
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                string query = "SELECT * FROM Produto WHERE ID_Produto = @ID_Produto";
+                string query = "SELECT * FROM Product WHERE ID_Product = @ID_Product";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@ID_Produto", currentProductID);
+                    cmd.Parameters.AddWithValue("@ID_Product", currentProductID);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
@@ -207,13 +207,13 @@ namespace FashionTrack
 
             if (isEditMode && currentProductID != -1)
             {
-                cmd = new SqlCommand("UPDATE Produto SET Description = @Description, Price = @Price, BrandCode = @BrandCode, " +
-                                        "Gender = @Gender, BrandId = @BrandId, ColorId = @ColorId, SizeId = @SizeId WHERE ID_Produto = @ID_Produto", conn);
-                cmd.Parameters.AddWithValue("@ID_Produto", currentProductID);
+                cmd = new SqlCommand("UPDATE Product SET Description = @Description, Price = @Price, BrandCode = @BrandCode, " +
+                                        "Gender = @Gender, BrandId = @BrandId, ColorId = @ColorId, SizeId = @SizeId WHERE ID_Product = @ID_Product", conn);
+                cmd.Parameters.AddWithValue("@ID_Product", currentProductID);
             }
             else
             {
-                cmd = new SqlCommand("INSERT INTO Produto (Description, Price, BrandCode, Gender, BrandId, ColorId, SizeId) OUTPUT INSERTED.ID_Produto " +
+                cmd = new SqlCommand("INSERT INTO Product (Description, Price, BrandCode, Gender, BrandId, ColorId, SizeId) OUTPUT INSERTED.ID_Product " +
                                         "VALUES (@Description, @Price, @BrandCode, @Gender, @BrandId, @ColorId, @SizeId) ", conn);
             }
 

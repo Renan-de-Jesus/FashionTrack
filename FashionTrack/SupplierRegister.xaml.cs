@@ -19,32 +19,77 @@ namespace FashionTrack
 {
     public partial class SupplierRegister : Window
     {
+        private int supplierId;
+
         public SupplierRegister()
         {
             InitializeComponent();
             fillComboBox();
         }
 
+        public SupplierRegister(int supplierId) : this()
+        {
+            this.supplierId = supplierId;
+            this.Loaded += SupplierRegister_Loaded;
+        }
+
+        private void SupplierRegister_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadSupplierData(supplierId);
+        }
+
         private void fillComboBox()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["connection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
             using (SqlConnection connection = new SqlConnection(connectionString))
+            {
                 try
                 {
                     connection.Open();
-                    string cityQuery = "SELECT ID_Cidade, Descricao FROM Cidade";
+                    string cityQuery = "SELECT ID_City, Description FROM City";
                     SqlCommand cityCommand = new SqlCommand(cityQuery, connection);
                     DataTable dt = new DataTable();
                     SqlDataAdapter adapter = new SqlDataAdapter(cityCommand);
                     adapter.Fill(dt);
                     cityCbx.ItemsSource = dt.DefaultView;
-                    cityCbx.DisplayMemberPath = "Descricao";
-                    cityCbx.SelectedValuePath = "ID_Cidade";
+                    cityCbx.DisplayMemberPath = "Description";
+                    cityCbx.SelectedValuePath = "ID_City";
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
+            }
+        }
+
+        private void LoadSupplierData(int supplierId)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT CorporateName, CNPJ, Address, Telephone, ID_City, Representative FROM Supplier WHERE ID_Supplier = @ID_Supplier";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@ID_Supplier", supplierId);
+
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        corporateReasonTxtBox.Text = reader["CorporateName"].ToString();
+                        cnpjTxtBox.Text = reader["CNPJ"].ToString();
+                        addressTxtBox.Text = reader["Address"].ToString();
+                        phoneTxt.Text = reader["Telephone"].ToString();
+                        representativeTxtBox.Text = reader["Representative"].ToString();
+                        cityCbx.SelectedValue = reader["ID_City"];
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao carregar os dados do fornecedor: " + ex.Message);
+                }
+            }
         }
 
         private void Window_Activated(object sender, EventArgs e)
@@ -215,7 +260,7 @@ namespace FashionTrack
                     {
                         connection.Open();
 
-                        string checkCustomerQuery = "SELECT COUNT(*) FROM Fornecedor WHERE CNPJ = @CNPJ";
+                        string checkCustomerQuery = "SELECT COUNT(*) FROM Supplier WHERE CNPJ = @CNPJ";
                         SqlCommand checkCustomerCommand = new SqlCommand(checkCustomerQuery, connection);
                         checkCustomerCommand.Parameters.AddWithValue("@CNPJ", cnpj);
 
@@ -228,17 +273,17 @@ namespace FashionTrack
                         }
                         else
                         {
-                            string saveSupplierQuery = "INSERT INTO Fornecedor (NomeRazaoSocial, CNPJ, Endereco, Telefone, ID_Cidade, NomeRepresentante) " +
-                                                        "VALUES (@corporateReason, @CNPJ, @address, @phone, @selectCityId, @representative)";
+                            string saveSupplierQuery = "INSERT INTO Supplier (CorporateName, CNPJ, Address, Telephone, ID_City, Representative) " +
+                                                        "VALUES (@CorporateName, @CNPJ, @Address, @Telephone, @selectCityId, @Representative)";
 
                             SqlCommand saveSupplierCommand = new SqlCommand(saveSupplierQuery, connection);
 
-                            saveSupplierCommand.Parameters.AddWithValue("@corporateReason", corporateReason);
+                            saveSupplierCommand.Parameters.AddWithValue("@CorporateName", corporateReason);
                             saveSupplierCommand.Parameters.AddWithValue("@CNPJ", cnpj);
-                            saveSupplierCommand.Parameters.AddWithValue("@address", address);
-                            saveSupplierCommand.Parameters.AddWithValue("@phone", phone);
+                            saveSupplierCommand.Parameters.AddWithValue("@Address", address);
+                            saveSupplierCommand.Parameters.AddWithValue("@Telephone", phone);
                             saveSupplierCommand.Parameters.AddWithValue("@selectCityId", selectCityId);
-                            saveSupplierCommand.Parameters.AddWithValue("@representative", representative);
+                            saveSupplierCommand.Parameters.AddWithValue("@Representative", representative);
 
                             int rowsAffected = saveSupplierCommand.ExecuteNonQuery();
 

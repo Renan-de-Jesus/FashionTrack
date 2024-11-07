@@ -20,10 +20,23 @@ namespace FashionTrack
 {
     public partial class CustomerRegistration : Window
     {
+        private int customerId;
+
         public CustomerRegistration()
         {
             InitializeComponent();
             fillComboBox();
+        }
+
+        public CustomerRegistration(int customerId) : this()
+        {
+            this.customerId = customerId;
+            this.Loaded += CustomerRegister_Loaded;
+        }
+
+        private void CustomerRegister_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadCustomerData(customerId);
         }
 
         private void fillComboBox()
@@ -33,19 +46,49 @@ namespace FashionTrack
                 try
                 {
                     connection.Open();
-                    string cityQuery = "SELECT ID_Cidade, Descricao FROM Cidade";
+                    string cityQuery = "SELECT ID_City, Description FROM City";
                     SqlCommand cityCommand = new SqlCommand(cityQuery, connection);
                     DataTable dt = new DataTable();
                     SqlDataAdapter adapter = new SqlDataAdapter(cityCommand);
                     adapter.Fill(dt);
                     cityCbx.ItemsSource = dt.DefaultView;
-                    cityCbx.DisplayMemberPath = "Descricao";
-                    cityCbx.SelectedValuePath = "ID_Cidade";
+                    cityCbx.DisplayMemberPath = "Description";
+                    cityCbx.SelectedValuePath = "ID_City";
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
+        }
+
+        private void LoadCustomerData(int customerId)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT Name, Surname, CPF, Cellphone, Address, ID_City FROM Customer WHERE ID_Customer = @ID_Customer";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@ID_Customer", customerId);
+
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        firstNameTxtBox.Text = reader["Name"].ToString();
+                        surnameNameTxtBox.Text = reader["Surname"].ToString();
+                        cpfTxtBox.Text = reader["CPF"].ToString();
+                        phoneTxt.Text = reader["Cellphone"].ToString();
+                        addressTxtBox.Text = reader["Address"].ToString();
+                        cityCbx.SelectedValue = reader["ID_City"];
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao carregar os dados do fornecedor: " + ex.Message);
+                }
+            }
         }
 
         private void Window_Activated(object sender, EventArgs e)
@@ -72,7 +115,7 @@ namespace FashionTrack
                 textBox.Opacity = 0.6;
             }
         }
-        private void RemoveTextSecundName(object sender, RoutedEventArgs e)
+        private void RemoveTextSurnameName(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             if (textBox.Text == "SOBRENOME DO CLIENTE")
@@ -82,7 +125,7 @@ namespace FashionTrack
             }
         }
 
-        private void AddTextSecundName(object sender, RoutedEventArgs e)
+        private void AddTextSurnameName(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             if (string.IsNullOrWhiteSpace(textBox.Text))
@@ -160,7 +203,7 @@ namespace FashionTrack
             try
             {
                 string firstName = firstNameTxtBox.Text;
-                string secundName = secundNameTxtBox.Text;
+                string surnameName = surnameNameTxtBox.Text;
                 string cpf = cpfTxtBox.Text;
                 string phone = phoneTxt.Text;
                 string address = addressTxtBox.Text;
@@ -175,10 +218,10 @@ namespace FashionTrack
                     return;
                 }
 
-                if (string.IsNullOrEmpty(secundName))
+                if (string.IsNullOrEmpty(surnameName))
                 {
                     MessageBox.Show("Por favor, preencha o sobrenome do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    secundNameTxtBox.Focus();
+                    surnameNameTxtBox.Focus();
                     return;
                 }
 
@@ -219,7 +262,7 @@ namespace FashionTrack
                     {
                         connection.Open();
 
-                        string checkCustomerQuery = "SELECT COUNT(*) FROM Cliente WHERE CPF = @CPF";
+                        string checkCustomerQuery = "SELECT COUNT(*) FROM Customer WHERE CPF = @CPF";
                         SqlCommand checkCustomerCommand = new SqlCommand(checkCustomerQuery, connection);
                         checkCustomerCommand.Parameters.AddWithValue("@CPF", cpf);
 
@@ -232,16 +275,16 @@ namespace FashionTrack
                         }
                         else
                         {
-                            string saveCustomerQuery = "INSERT INTO Cliente (Nome, Sobrenome, CPF, Telefone, Endereco, ID_Cidade) " +
-                                                        "VALUES (@firstName, @secundName, @CPF, @phone, @address, @selectCityId)";
+                            string saveCustomerQuery = "INSERT INTO Customer (Name, Surname, CPF, Telephone, Address, ID_City) " +
+                                                        "VALUES (@Name, @Surname, @CPF, @Telephone, @Address, @selectCityId)";
 
                             SqlCommand saveCustomerCommand = new SqlCommand(saveCustomerQuery, connection);
 
-                            saveCustomerCommand.Parameters.AddWithValue("@firstName", firstName);
-                            saveCustomerCommand.Parameters.AddWithValue("@secundName", secundName);
+                            saveCustomerCommand.Parameters.AddWithValue("@Name", firstName);
+                            saveCustomerCommand.Parameters.AddWithValue("@Surname", surnameName);
                             saveCustomerCommand.Parameters.AddWithValue("@CPF", cpf);
-                            saveCustomerCommand.Parameters.AddWithValue("@phone", phone);
-                            saveCustomerCommand.Parameters.AddWithValue("@address", address);
+                            saveCustomerCommand.Parameters.AddWithValue("@Telephone", phone);
+                            saveCustomerCommand.Parameters.AddWithValue("@Address", address);
                             saveCustomerCommand.Parameters.AddWithValue("@selectCityId", selectCityId);
 
                             int rowsAffected = saveCustomerCommand.ExecuteNonQuery();

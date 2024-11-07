@@ -80,7 +80,7 @@ try
 {
     connection.Open();
 
-    string checkUserQuery = "SELECT COUNT(*) FROM Usuarios WHERE Usuario = @username";
+    string checkUserQuery = "SELECT COUNT(*) FROM Users WHERE Users = @Username";
     SqlCommand checkUserCommand = new SqlCommand(checkUserQuery, connection);
     checkUserCommand.Parameters.AddWithValue("@username", username);
 
@@ -92,7 +92,7 @@ try
     }
     else
     {
-        string insertQuery = "INSERT INTO Usuarios(NomeCompleto, Usuario, Senha, Adm) VALUES (@name, @username, HASHBYTES('SHA2_256', @password), @IsAdmin)";
+        string insertQuery = "INSERT INTO Users(FullName, Username, Password, Adm) VALUES (@FullName, @Username, HASHBYTES('SHA2_256', @Password), @IsAdmin)";
         SqlCommand insertCommand = new SqlCommand(insertQuery, connection);
 
         insertCommand.Parameters.AddWithValue("@name", name);
