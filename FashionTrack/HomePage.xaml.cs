@@ -39,6 +39,7 @@ namespace FashionTrack
             public string Size { get; set; }
             public string Gender { get; set; }
             public int Qty { get; set; }
+            public int StockQuantity { get; set; }
 
             public int Quantity
             {
@@ -110,6 +111,8 @@ namespace FashionTrack
             SearchResults.ItemsSource = Products;
             selectedProductsDgv.ItemsSource = SelectedProducts;
             CustomerResults.ItemsSource = Customers;
+            SelectedProducts.CollectionChanged += SelectedProducts_CollectionChanged;
+            DataContext = this;
 
             SelectedProducts.CollectionChanged += (s, e) =>
             {
@@ -297,12 +300,12 @@ namespace FashionTrack
         {
             if (SearchResults.SelectedItem is Product selectedProduct)
             {
-                AddSelectedProduct(selectedProduct.Id, selectedProduct.Description, selectedProduct.Color, selectedProduct.Brand, selectedProduct.Size, selectedProduct.Gender, 0);
+                AddSelectedProduct(selectedProduct.Id, selectedProduct.Description, selectedProduct.Color, selectedProduct.Brand, selectedProduct.Size, selectedProduct.Gender, 0, selectedProduct.Qty);
                 Products.Clear();
             }
         }
 
-        private void AddSelectedProduct(int id, string description, string color, string brand, string size, string gender, decimal price)
+        private void AddSelectedProduct(int id, string description, string color, string brand, string size, string gender, decimal price, int stockQuantity)
         {
             if (!SelectedProducts.Any(p => p.Id == id && p.Description == description && p.Color == color && p.Brand == brand && p.Size == size && p.Gender == gender))
             {
@@ -315,7 +318,8 @@ namespace FashionTrack
                     Size = size,
                     Gender = gender,
                     Quantity = 1,
-                    Price = price
+                    Price = price,
+                    StockQuantity = stockQuantity
                 });
             }
             else
@@ -565,6 +569,56 @@ namespace FashionTrack
                     {
                         MessageBox.Show("Erro ao conectar ao banco de dados! " + ex.Message, "Erro Banco de Dados", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
+            }
+        }
+        private void SelectedProducts_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                foreach (SelectedProduct product in e.NewItems)
+                {
+                    ViewProducts.Items.Add(product);
+                }
+            }
+
+             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+             {
+                 foreach (SelectedProduct product in e.OldItems)
+                 {
+                     ViewProducts.Items.Remove(product);
+                 }
+             }
+        }
+
+        private void selectedProductsDgv_CellEditEnding_1(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                var editedProduct = e.Row.Item as SelectedProduct;
+                if (editedProduct != null)
+                {
+                    var textBox = e.EditingElement as TextBox;
+                    if (textBox != null)
+                    {
+                        if (int.TryParse(textBox.Text, out int quantity))
+                        {
+                            if (quantity > editedProduct.StockQuantity)
+                            {
+                                MessageBox.Show($"A quantidade não pode ser maior que o estoque ({editedProduct.StockQuantity} unidades).", "Erro de Validação", MessageBoxButton.OK, MessageBoxImage.Error);
+                                editedProduct.Quantity = editedProduct.StockQuantity;
+                            }
+                            else
+                            {
+                                editedProduct.Quantity = quantity;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Digite uma quantidade válida.", "Erro de Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            editedProduct.Quantity = 1;
+                        }
+                    }
+                }
             }
         }
     }

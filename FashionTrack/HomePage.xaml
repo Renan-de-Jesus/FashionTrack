@@ -59,8 +59,8 @@
     </Window.Resources>
     <Grid x:Name="HomeScreen" Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <TextBox
             x:Name="SearchTextBox"
@@ -177,7 +177,6 @@
                             </Style>
                         </Border.Style>
                         <StackPanel Orientation="Horizontal">
-                            <CheckBox Margin="5" VerticalAlignment="Center" />
                             <TextBlock
                                 Height="30"
                                 Margin="5"
@@ -222,6 +221,7 @@
             VerticalAlignment="Top"
             Text="Selecionados"
             TextWrapping="Wrap" />
+
         <Image
             Grid.RowSpan="2"
             Width="47"
@@ -231,6 +231,7 @@
             VerticalAlignment="Top"
             RenderTransformOrigin="-0.354,-7.312"
             Source="pack://application:,,,/images/lightBox.png" />
+
         <Rectangle
             Grid.RowSpan="2"
             Width="256"
@@ -239,6 +240,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Stroke="Black" />
+
         <Rectangle
             Grid.Row="1"
             Width="150"
@@ -254,6 +256,7 @@
             Margin="118,481,517,10"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
+            CellEditEnding="selectedProductsDgv_CellEditEnding_1"
             ItemsSource="{Binding SelectedProducts}"
             SelectionMode="Single"
             SelectionUnit="FullRow">
@@ -308,6 +311,7 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+
         <Label
             Grid.Row="1"
             Width="118"
@@ -317,6 +321,7 @@
             Content="Total R$"
             FontSize="22"
             FontWeight="Bold" />
+
         <Label
             x:Name="fullPriceLbl"
             Grid.Row="1"
@@ -470,7 +475,6 @@
                             </Style>
                         </Border.Style>
                         <StackPanel Orientation="Horizontal">
-                            <CheckBox Margin="5" VerticalAlignment="Center" />
                             <TextBlock
                                 Height="30"
                                 Margin="5"
@@ -491,6 +495,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
         <TextBox
             x:Name="idCustomerTxt"
             Width="46"
@@ -500,6 +505,7 @@
             KeyDown="idCustomerTxt_KeyDown"
             Text=""
             TextWrapping="Wrap" />
+
         <RadioButton
             x:Name="creditoRdBtn"
             Margin="1002,319,0,0"
@@ -507,6 +513,7 @@
             VerticalAlignment="Top"
             Checked="creditoRdBtn_Checked"
             Content="Crédito" />
+
         <RadioButton
             x:Name="moneyRdBtn"
             Margin="1002,360,0,0"
@@ -514,6 +521,7 @@
             VerticalAlignment="Top"
             Checked="moneyRdBtn_Checked"
             Content="Dinheiro" />
+
         <RadioButton
             x:Name="debitoRdBtn"
             Margin="1002,299,0,0"
@@ -521,6 +529,7 @@
             VerticalAlignment="Top"
             Checked="debitoRdBtn_Checked"
             Content="Débito" />
+
         <RadioButton
             x:Name="pixRdBtn"
             Margin="1002,340,0,0"
@@ -528,6 +537,7 @@
             VerticalAlignment="Top"
             Checked="pixRdBtn_Checked"
             Content="Pix" />
+
         <TextBox
             x:Name="idProductTxt"
             Width="51"
@@ -537,13 +547,67 @@
             VerticalAlignment="Top"
             KeyDown="idProductTxt_KeyDown"
             TextWrapping="Wrap" />
+
         <ListBox
-            Width="220"
-            Height="98"
-            Margin="964,80,0,0"
+            x:Name="ViewProducts"
+            Width="232"
+            Height="182"
+            Margin="958,60,0,202"
             HorizontalAlignment="Left"
-            VerticalAlignment="Top"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
             d:ItemsSource="{d:SampleData ItemCount=5}"
-            SelectionChanged="ListBox_SelectionChanged" />
+            Background="Transparent"
+            BorderBrush="Transparent">
+            <ListBox.Resources>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Grid Background="{TemplateBinding Background}">
+                                    <ContentPresenter />
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.Resources>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        Margin="5"
+                        Padding="5"
+                        BorderBrush="#565656"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#B5B5B5" />
+                                        <Setter Property="BorderBrush" Value="#B5B5B5" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Height="30"
+                                Margin="5"
+                                VerticalAlignment="Center"
+                                Text="{Binding Description}" />
+                            <TextBlock
+                                Height="30"
+                                Margin="5"
+                                VerticalAlignment="Center"
+                                Text="{Binding Quantity}" />
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>
