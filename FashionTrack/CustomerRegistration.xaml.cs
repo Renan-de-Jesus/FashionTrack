@@ -25,134 +25,135 @@ namespace FashionTrack
             InitializeComponent();
             fillComboBox();
         }
+        private void RemoveText(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text == "Nome do cliente" || textBox.Text == "Sobrenome" || textBox.Text == "Endereço do cliente" || textBox.Text == "000.000.000-00" || textBox.Text == "(00)00000-0000")
+            {
+                textBox.Text = "";
+                textBox.Opacity = 1;
+            }
+        }
 
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            int originalCaretIndex = textBox.CaretIndex;
+            int originalLength = textBox.Text.Length;
+
+            textBox.TextChanged -= TextBox_TextChanged;
+
+           if (textBox.Name == "phoneTxt")
+            {
+                // Avoid formatting placeholder text
+                if (textBox.Text != "(00)00000-0000")
+                {
+                    string formattedPhone = ApplyPhoneMask(textBox.Text, allowParenthesisErase: true);
+                    textBox.Text = formattedPhone;
+                }
+            }
+
+            // Adjust the caret position accordingly
+            int newLength = textBox.Text.Length;
+            int adjustedCaretIndex = originalCaretIndex + (newLength - originalLength);
+            adjustedCaretIndex = Math.Max(0, Math.Min(adjustedCaretIndex, textBox.Text.Length));
+            textBox.CaretIndex = adjustedCaretIndex;
+
+            textBox.TextChanged += TextBox_TextChanged;
+        }
+        private void AddText(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                switch (textBox.Name)
+                {
+                    case "firstNameTxtBox":
+                        textBox.Text = "Nome do cliente";
+                        break;
+                    case "secundNameTxtBox":
+                        textBox.Text = "Sobrenome";
+                        break;
+                    case "addressTxtBox":
+                        textBox.Text = "Endereço do cliente";
+                        break;
+                    case "cpfTxtBox":
+                        textBox.Text = "000.000.000-00";
+                        break;
+                    case "phoneTxt":
+                        textBox.Text = "(00)00000-0000";
+                        break;
+                }
+                textBox.Opacity = 0.6;
+            }
+        }
+
+        private string ApplyPhoneMask(string input, bool allowParenthesisErase)
+        {
+            // Remove all non-digit characters
+            string digits = new string(input.Where(char.IsDigit).ToArray());
+
+            // Limit to 11 digits
+            if (digits.Length > 11)
+                digits = digits.Substring(0, 11);
+
+            // Return empty if no digits are present
+            if (string.IsNullOrEmpty(digits)) return string.Empty;
+
+            // Format phone number
+            string formattedNumber = "";
+
+            if (digits.Length > 0)
+            {
+                if (allowParenthesisErase)
+                {
+                    formattedNumber += $"({digits.Substring(0, Math.Min(2, digits.Length))})";
+                }
+                else
+                {
+                    formattedNumber += $"({digits.Substring(0, Math.Min(2, digits.Length))})";
+                }
+
+                if (digits.Length > 2)
+                {
+                    formattedNumber += " " + digits.Substring(2, Math.Min(5, digits.Length - 2));
+
+                    if (digits.Length > 7)
+                    {
+                        formattedNumber += "-" + digits.Substring(7);
+                    }
+                }
+            }
+
+            return formattedNumber;
+        }
         private void fillComboBox()
         {
             string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
             using (SqlConnection connection = new SqlConnection(connectionString))
+            {
                 try
                 {
                     connection.Open();
-                    string cityQuery = "SELECT ID_Cidade, Descricao FROM Cidade";
+                    string cityQuery = "SELECT ID_City, Description FROM City";
                     SqlCommand cityCommand = new SqlCommand(cityQuery, connection);
                     DataTable dt = new DataTable();
                     SqlDataAdapter adapter = new SqlDataAdapter(cityCommand);
                     adapter.Fill(dt);
                     cityCbx.ItemsSource = dt.DefaultView;
-                    cityCbx.DisplayMemberPath = "Descricao";
-                    cityCbx.SelectedValuePath = "ID_Cidade";
+                    cityCbx.DisplayMemberPath = "Description";
+                    cityCbx.SelectedValuePath = "ID_City";
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
+            }
         }
 
         private void Window_Activated(object sender, EventArgs e)
         {
             fillComboBox();
-        }
-
-        private void RemoveTextFirstName(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "NOME DO CLIENTE")
-            {
-                textBox.Text = "";
-                textBox.Opacity = 1;
-            }
-        }
-
-        private void AddTextFirstName(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                textBox.Text = "NOME DO CLIENTE";
-                textBox.Opacity = 0.6;
-            }
-        }
-        private void RemoveTextSecundName(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "SOBRENOME DO CLIENTE")
-            {
-                textBox.Text = "";
-                textBox.Opacity = 1;
-            }
-        }
-
-        private void AddTextSecundName(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                textBox.Text = "SOBRENOME DO CLIENTE";
-                textBox.Opacity = 0.6;
-            }
-        }
-
-        private void RemoveTextCPF(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "000.000.000-00")
-            {
-                textBox.Text = "";
-                textBox.Opacity = 1;
-
-                cpfTxtBox.SelectionStart = 0;
-                cpfTxtBox.SelectionLength = 0;
-            }
-        }
-
-        private void AddTextCPF(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                textBox.Text = "000.000.000-00";
-                textBox.Opacity = 0.6;
-            }
-        }
-
-        private void RemoveTextPhone(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "(99)99999-9999")
-            {
-                textBox.Text = "";
-                textBox.Opacity = 1;
-            }
-        }
-
-        private void AddTextPhone(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                textBox.Text = "(99)99999-9999";
-                textBox.Opacity = 0.6;
-            }
-        }
-
-        private void RemoveTextAddress(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "ENDEREÇO DO CLIENTE")
-            {
-                textBox.Text = "";
-                textBox.Opacity = 1;
-            }
-        }
-
-        private void AddTextAddress(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                textBox.Text = "ENDEREÇO DO CLIENTE";
-                textBox.Opacity = 0.6;
-            }
         }
 
         private void saveBtn_Click(object sender, RoutedEventArgs e)
@@ -168,35 +169,35 @@ namespace FashionTrack
                 cpf = cpf.Replace(".", "").Replace("-", "");
                 phone = phone.Replace("(", "").Replace(")", "").Replace("-", "");
 
-                if (string.IsNullOrEmpty(firstName))
+                if (string.IsNullOrEmpty(firstName) || firstName == "Nome do cliente")
                 {
                     MessageBox.Show("Por favor, preencha o nome do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     firstNameTxtBox.Focus();
                     return;
                 }
 
-                if (string.IsNullOrEmpty(secundName))
+                if (string.IsNullOrEmpty(secundName) || secundName == "Sobrenome")
                 {
                     MessageBox.Show("Por favor, preencha o sobrenome do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     secundNameTxtBox.Focus();
                     return;
                 }
 
-                if (string.IsNullOrEmpty(cpf))
+                if (string.IsNullOrEmpty(cpf)|| cpf == "000.000.000-00")
                 {
                     MessageBox.Show("Por favor, preencha o CPF do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     cpfTxtBox.Focus();
                     return;
                 }
 
-                if (string.IsNullOrEmpty(phone))
+                if (string.IsNullOrEmpty(phone) || phone == "(00)00000-0000")
                 {
                     MessageBox.Show("Por favor, preencha o telefone do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     phoneTxt.Focus();
                     return;
                 }
 
-                if (string.IsNullOrEmpty(address))
+                if (string.IsNullOrEmpty(address) || address == "Endereço do cliente")
                 {
                     MessageBox.Show("Por favor, preencha o endereço do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     addressTxtBox.Focus();
@@ -219,7 +220,7 @@ namespace FashionTrack
                     {
                         connection.Open();
 
-                        string checkCustomerQuery = "SELECT COUNT(*) FROM Cliente WHERE CPF = @CPF";
+                        string checkCustomerQuery = "SELECT COUNT(*) FROM Customer WHERE CPF = @CPF";
                         SqlCommand checkCustomerCommand = new SqlCommand(checkCustomerQuery, connection);
                         checkCustomerCommand.Parameters.AddWithValue("@CPF", cpf);
 
@@ -232,7 +233,7 @@ namespace FashionTrack
                         }
                         else
                         {
-                            string saveCustomerQuery = "INSERT INTO Cliente (Nome, Sobrenome, CPF, Telefone, Endereco, ID_Cidade) " +
+                            string saveCustomerQuery = "INSERT INTO Customer (Name, Surname, CPF, Cellphone, Address, ID_City) " +
                                                         "VALUES (@firstName, @secundName, @CPF, @phone, @address, @selectCityId)";
 
                             SqlCommand saveCustomerCommand = new SqlCommand(saveCustomerQuery, connection);
@@ -268,7 +269,7 @@ namespace FashionTrack
             }
         }
 
-        private void addCityBtn_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Add_city_btn(object sender, RoutedEventArgs e)
         {
             CityRegister cityRegister = new CityRegister();
             cityRegister.Show();
