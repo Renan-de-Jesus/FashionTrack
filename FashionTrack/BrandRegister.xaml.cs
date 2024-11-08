@@ -12,8 +12,8 @@ namespace FashionTrack
     public partial class BrandRegister : Window
     {
         string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
-        private bool isEditMode = false; // Flag para identificar o modo de edição
-        private int currentBrandId = -1; // Armazena o ID da marca atual
+        private bool isEditMode = false; 
+        private int currentBrandId = -1; 
 
         private void RemoveText(object sender, RoutedEventArgs e)
         {

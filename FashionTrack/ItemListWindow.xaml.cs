@@ -37,14 +37,17 @@ namespace FashionTrack
                             p.Description, 
                             p.Price, 
                             p.BrandCode, 
-                            p.Gender, 
-                            c.ColorName, 
-                            s.SizeDescription, 
+                            p.Gender,
+                            p.ColorId,
+                            c.ColorName,
+                            p.SizeId,
+                            s.SizeDescription,
+                            p.BrandId,
                             b.BrandName
                         FROM Product p
                         LEFT JOIN Color c ON p.ColorId = c.ColorId
                         LEFT JOIN Size s ON p.SizeId = s.SizeId
-                        LEFT JOIN Brand b ON p.BrandId = b.BrandId"; // Usando LEFT JOINs
+                        LEFT JOIN Brand b ON p.BrandId = b.BrandId";
 
                     using (SqlDataAdapter adapter = new SqlDataAdapter(query, conn))
                     {

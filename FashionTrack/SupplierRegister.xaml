@@ -7,215 +7,448 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     Title="Cadastro de Fornecedores"
-    Width="1280"
-    Height="766"
+    Width="600"
+    Height="712"
     Activated="Window_Activated"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
+    <Window.Resources>
+        <SolidColorBrush x:Key="DisabledForegroundBrush" Color="White" />
+        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="White" />
+        <SolidColorBrush x:Key="SolidBorderBrush" Color="Gray" />
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+            <Border
+                x:Name="Border"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="10">
+                <Path
+                    x:Name="Arrow"
+                    Margin="0,5,8,5"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Data="M 0 0 L 4 4 L 8 0 Z"
+                    Fill="Black" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="LightGray" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="LightGray" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter TargetName="Arrow" Property="Fill" Value="Gray" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
 
-    <Grid x:Name="CusotmerRegister">
-        <Grid.Background>
-            <ImageBrush />
-        </Grid.Background>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
+            <Border
+                x:Name="PART_ContentHost"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="10" />
+        </ControlTemplate>
+        <Style x:Key="HoverButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="LightGray" />
+            <Setter Property="Foreground" Value="Black" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation
+                                    Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
+                                    To="#1B8FFC"
+                                    Duration="0:0:0.1" />
+                                <DoubleAnimation
+                                    Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Opacity)"
+                                    To="0.69"
+                                    Duration="0:0:0.1" />
+                                <ColorAnimation
+                                    Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"
+                                    To="White"
+                                    Duration="0:0:0.1" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation
+                                    Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
+                                    To="#2888E3"
+                                    Duration="0:0:0.1" />
+                                <DoubleAnimation
+                                    Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Opacity)"
+                                    To="1.0"
+                                    Duration="0:0:0.1" />
+                                <ColorAnimation
+                                    Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"
+                                    To="White"
+                                    Duration="0:0:0.1" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <ControlTemplate x:Key="CustomComboBoxTemplate" TargetType="ComboBox">
+            <Grid>
+                <ToggleButton
+                    x:Name="ToggleButton"
+                    ClickMode="Press"
+                    Focusable="False"
+                    IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                    Template="{StaticResource ComboBoxToggleButton}">
+                    <ToggleButton.Style>
+                        <Style TargetType="ToggleButton">
+                            <Setter Property="Background" Value="White" />
+                            <Setter Property="BorderBrush" Value="LightGray" />
+                            <Setter Property="BorderThickness" Value="1" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="LightGray" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Background" Value="White" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+                <ContentPresenter
+                    x:Name="ContentSite"
+                    Margin="7,3,23,3"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="{TemplateBinding SelectionBoxItem}"
+                    ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                    ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                    IsHitTestVisible="False" />
+                <Popup
+                    x:Name="Popup"
+                    AllowsTransparency="True"
+                    Focusable="False"
+                    IsOpen="{TemplateBinding IsDropDownOpen}"
+                    Placement="Bottom"
+                    PopupAnimation="Slide">
+                    <Grid
+                        x:Name="DropDown"
+                        MinWidth="{TemplateBinding ActualWidth}"
+                        MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                        SnapsToDevicePixels="True">
+                        <Border
+                            x:Name="DropDownBorder"
+                            Background="White"
+                            BorderBrush="LightGray"
+                            BorderThickness="1"
+                            CornerRadius="4" />
+                        <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                        </ScrollViewer>
+                    </Grid>
+                </Popup>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="HasItems" Value="False">
+                    <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="White" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="ToggleButton" Property="Background" Value="White" />
+                </Trigger>
+                <Trigger Property="IsDropDownOpen" Value="True">
+                    <Setter TargetName="DropDownBorder" Property="Background" Value="White" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
 
-        <TextBox
-            x:Name="corporateReasonTxtBox"
+        <Style x:Key="CustomComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Template" Value="{StaticResource CustomComboBoxTemplate}" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="Foreground" Value="Black" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="LightGray" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Foreground" Value="DarkGray" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <StackPanel
             Width="500"
-            Height="42"
-            Margin="378,161,0,0"
-            Padding="5"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Left"
-            VerticalContentAlignment="Center"
-            Panel.ZIndex="1"
-            FontSize="16"
-            GotFocus="removeTextCorporateReason"
-            LostFocus="removeTextCorporateReason"
-            Opacity="0.6"
-            RenderTransformOrigin="0.716,-0.919"
-            Text="RAZÃO SOCIAL"
-            TextWrapping="Wrap">
-            <TextBox.Template>
-                <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Border
-                        Background="White"
-                        BorderBrush="Gray"
-                        BorderThickness="1"
-                        CornerRadius="10">
-                        <ScrollViewer x:Name="PART_ContentHost" />
-                    </Border>
-                </ControlTemplate>
-            </TextBox.Template>
-        </TextBox>
-        <TextBox
-            x:Name="addressTxtBox"
-            Width="500"
-            Height="42"
-            Margin="378,310,0,0"
-            Padding="5"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Left"
-            VerticalContentAlignment="Center"
-            FontSize="16"
-            GotFocus="removeTextAddress"
-            LostFocus="addTextAddress"
-            Opacity="0.6"
-            Text="ENDEREÇO DO FORNECEDOR"
-            TextWrapping="Wrap">
-            <TextBox.Template>
-                <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Border
-                        Background="white"
-                        BorderBrush="Gray"
-                        BorderThickness="1"
-                        CornerRadius="10">
-                        <ScrollViewer x:Name="PART_ContentHost" />
-                    </Border>
-                </ControlTemplate>
-            </TextBox.Template>
-        </TextBox>
+            Height="694"
+            Margin="50,-8,50,0"
+            VerticalAlignment="Top">
+            <TextBlock
+                Width="194"
+                Height="29"
+                Margin="5,10,5,5"
+                HorizontalAlignment="Center"
+                FontSize="25"
+                Text="Novo Fornecedor"
+                TextWrapping="Wrap" />
+            <TextBlock
+                Margin="20,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                FontSize="16"
+                Text="Representante"
+                TextWrapping="Wrap" />
+            <TextBox
+                x:Name="representativeTxtBox"
+                Width="420"
+                Height="42"
+                Margin="5,0,5,30"
+                Padding="5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="top"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                FontSize="16"
+                GotFocus="RemoveText"
+                LostFocus="AddText"
+                Opacity="0.6"
+                Text="Nome do representante"
+                TextWrapping="Wrap">
+                <TextBox.Template>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border
+                            Background="white"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            CornerRadius="08">
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </TextBox.Template>
+            </TextBox>
+            <TextBlock
+                Width="92"
+                Height="23"
+                Margin="20,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                FontSize="16"
+                Text="Razão Social"
+                TextWrapping="Wrap" />
+            <TextBox
+                x:Name="corporateReasonTxtBox"
+                Width="420"
+                Height="42"
+                Margin="5,0,5,30"
+                Padding="5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="top"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                FontSize="16"
+                GotFocus="RemoveText"
+                LostFocus="AddText"
+                Opacity="0.6"
+                RenderTransformOrigin="0.716,-0.919"
+                Text="Razão social"
+                TextWrapping="Wrap">
+                <TextBox.Template>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border
+                            Background="White"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            CornerRadius="08">
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </TextBox.Template>
+            </TextBox>
+            <TextBlock
+                Margin="20,0,0,0"
+                HorizontalAlignment="Left"
+                FontSize="16"
+                TextWrapping="Wrap"><Run Language="pt-br" Text="Endereço" /></TextBlock>
+            <TextBox
+                x:Name="addressTxtBox"
+                Width="420"
+                Height="42"
+                Margin="5,0,5,30"
+                Padding="5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="top"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                FontSize="16"
+                GotFocus="RemoveText"
+                LostFocus="AddText"
+                Opacity="0.6"
+                Text="Endereço do fornecedor"
+                TextWrapping="Wrap">
+                <TextBox.Template>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border
+                            Background="white"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            CornerRadius="08">
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </TextBox.Template>
+            </TextBox>
+            <TextBlock
+                Margin="20,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                FontSize="16"
+                Text="CNPJ"
+                TextWrapping="Wrap" />
+            <TextBox
+                x:Name="cnpjTxtBox"
+                Width="420"
+                Height="42"
+                Margin="5,0,5,30"
+                Padding="5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                FontSize="16"
+                GotFocus="RemoveText"
+                LostFocus="AddText"
+                Opacity="0.6"
+                Text="00.000.000/0000-00"
+                TextChanged="TextBox_TextChanged">
+                <TextBox.Template>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border
+                            Background="white"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </TextBox.Template>
+            </TextBox>
 
-        <TextBox
-            x:Name="representativeTxtBox"
-            Width="500"
-            Height="42"
-            Margin="378,463,0,0"
-            Padding="5"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Left"
-            VerticalContentAlignment="Center"
-            FontSize="16"
-            GotFocus="removeTextRepresentative"
-            LostFocus="addTextRepresentative"
-            Opacity="0.6"
-            Text="NOME DO REPRESENTANTE"
-            TextWrapping="Wrap">
-            <TextBox.Template>
-                <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Border
-                        Background="white"
-                        BorderBrush="Gray"
-                        BorderThickness="1"
-                        CornerRadius="10">
-                        <ScrollViewer x:Name="PART_ContentHost" />
-                    </Border>
-                </ControlTemplate>
-            </TextBox.Template>
-        </TextBox>
 
-        <ComboBox
-            x:Name="cityCbx"
-            Width="447"
-            Height="40"
-            Margin="378,546,0,0"
-            Padding="5"
+            <TextBlock
+                Margin="20,0,0,0"
+                HorizontalAlignment="Left"
+                FontSize="16"
+                Text="Telefone"
+                TextWrapping="Wrap" />
+            <TextBox
+                x:Name="phoneTxt"
+                Width="420"
+                Height="42"
+                Margin="5,0,5,30"
+                Padding="5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="top"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                FontSize="16"
+                GotFocus="RemoveText"
+                LostFocus="AddText"
+                Opacity="0.6"
+                Text="(00)00000-0000"
+                TextChanged="TextBox_TextChanged">
+                <TextBox.Template>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border
+                            Background="White"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            CornerRadius="08">
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </TextBox.Template>
+            </TextBox>
+            <TextBlock
+                Margin="20,0,0,0"
+                HorizontalAlignment="Left"
+                FontSize="16"
+                Text="Cidade"
+                TextWrapping="Wrap" />
+            <ComboBox
+                x:Name="cityCbx"
+                Width="420"
+                Height="42"
+                Margin="5,0,5,30"
+                Padding="5"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                FontSize="16"
+                MaxDropDownHeight="180"
+                SelectedIndex="1"
+                Style="{StaticResource CustomComboBoxStyle}" />
+
+            <Button
+                x:Name="save_btn"
+                Width="250"
+                Height="50"
+                Margin="5,10,5,20"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#2888E3"
+                Click="saveBtn_Click"
+                Content="Salvar"
+                FontSize="16"
+                Foreground="White"
+                IsEnabled="{Binding IsModified}"
+                RenderTransformOrigin="0.511,0.535"
+                Style="{StaticResource HoverButtonStyle}">
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border
+                            Padding="5"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness=".5"
+                            CornerRadius="08">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+        <Button
+            x:Name="addCityBtn"
+            Width="36"
+            Height="36"
+            Margin="524,529,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
-            AutomationProperties.HelpText="dasdsadsa"
-            Cursor="Hand"
-            FontSize="16"
-            MaxDropDownHeight="180"
-            RenderTransformOrigin="0.502,1.238"
-            SelectedIndex="1" />
-
-        <xctk:MaskedTextBox
-            x:Name="cnpjTxtBox"
-            Width="500"
-            Height="42"
-            Margin="378,239,0,0"
-            Padding="5"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Left"
-            VerticalContentAlignment="Center"
-            FontSize="16"
-            GotFocus="removeTextCNPJ"
-            LostFocus="removeTextCNPJ"
-            Mask="00,000,000/0000-00"
-            Opacity="0.6"
-            PromptChar=" "
-            Text="00000000000000">
-            <xctk:MaskedTextBox.Template>
-                <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Border
-                        Background="White"
-                        BorderBrush="Gray"
-                        BorderThickness="1"
-                        CornerRadius="10">
-                        <ScrollViewer x:Name="PART_ContentHost" />
-                    </Border>
-                </ControlTemplate>
-            </xctk:MaskedTextBox.Template>
-        </xctk:MaskedTextBox>
-
-        <xctk:MaskedTextBox
-            x:Name="phoneTxt"
-            Width="500"
-            Height="42"
-            Margin="378,386,0,0"
-            Padding="5"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Left"
-            VerticalContentAlignment="Center"
-            FontSize="16"
-            GotFocus="removeTextPhone"
-            LostFocus="addTextPhone"
-            Mask="(00)00000-0000"
-            Opacity="0.6"
-            PromptChar=" "
-            Text="99999999999">
-            <xctk:MaskedTextBox.Template>
-                <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Border
-                        Background="White"
-                        BorderBrush="Gray"
-                        BorderThickness="1"
-                        CornerRadius="10">
-                        <ScrollViewer x:Name="PART_ContentHost" />
-                    </Border>
-                </ControlTemplate>
-            </xctk:MaskedTextBox.Template>
-        </xctk:MaskedTextBox>
-
-        <Rectangle
-            Width="550"
-            Height="644"
-            Margin="354,46,0,62"
-            HorizontalAlignment="Left"
-            Panel.ZIndex="-1"
-            RadiusX="10"
-            RadiusY="10"
-            Stroke="Black" />
-
-        <Button
-            x:Name="saveBtn"
-            Width="250"
-            Height="50"
-            Margin="503,614,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
             Background="#2888E3"
-            Click="saveBtn_Click"
-            Content="Cadastrar"
-            Cursor="Hand"
+            Click="Add_city_btn"
+            Content="+"
             FontSize="16"
-            Foreground="White">
+            Foreground="White"
+            RenderTransformOrigin="0.511,0.535"
+            Style="{StaticResource HoverButtonStyle}">
             <Button.Template>
-                <ControlTemplate TargetType="Button">
+                <ControlTemplate TargetType="{x:Type Button}">
                     <Border
                         Padding="5"
                         Background="{TemplateBinding Background}"
@@ -227,74 +460,5 @@
                 </ControlTemplate>
             </Button.Template>
         </Button>
-        <TextBlock
-            Width="284"
-            Height="60"
-            Margin="486,66,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            FontSize="35"
-            FontWeight="light"
-            RenderTransformOrigin="0.505,0.284"
-            Text="Novo Fornecedor"
-            TextWrapping="Wrap" />
-
-        <TextBlock
-            Width="92"
-            Height="23"
-            Margin="375,138,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            FontSize="16"
-            Text="Razão Social"
-            TextWrapping="Wrap" />
-
-        <TextBlock
-            Margin="375,213,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            FontSize="16"
-            Text="CNPJ"
-            TextWrapping="Wrap" />
-
-        <TextBlock
-            Margin="375,289,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            FontSize="16"
-            RenderTransformOrigin="1.368,0.542"
-            TextWrapping="Wrap"><Run Language="pt-br" Text="Endereço" /></TextBlock>
-
-        <TextBlock
-            Margin="375,0,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            FontSize="16"
-            Text="Telefone"
-            TextWrapping="Wrap" />
-
-        <TextBlock
-            Margin="375,442,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            FontSize="16"
-            Text="Representante"
-            TextWrapping="Wrap" />
-        <Image
-            x:Name="addCityBtn"
-            Width="36"
-            Height="28"
-            Margin="850,552,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Panel.ZIndex="1"
-            Cursor="Hand"
-            MouseDown="addCityBtn_MouseDown"
-            Source="/add128.png">
-            <Image.OpacityMask>
-                <ImageBrush ImageSource="/add128.png" Stretch="Uniform" />
-            </Image.OpacityMask>
-        </Image>
-
     </Grid>
 </Window>

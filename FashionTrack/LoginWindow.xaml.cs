@@ -23,7 +23,7 @@ namespace FashionTrack
             lblUser.Focus();
         }
 
-private void RemoveText(object sender, RoutedEventArgs e)
+        private void RemoveText(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             if (textBox.Text == "Usuário")
@@ -77,14 +77,15 @@ private void RemoveText(object sender, RoutedEventArgs e)
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
+
                 try
                 {
                     connection.Open();
-                    string query = "SELECT COUNT(1) FROM Usuarios WHERE Usuario = @username AND Senha =  HASHBYTES('SHA2_256', @password)";
+                    string query = "SELECT COUNT(1) FROM Users WHERE Users = @Username AND Password =  HASHBYTES('SHA2_256', @Password)";
 
                     SqlCommand comando = new SqlCommand(query, connection);
-                    comando.Parameters.AddWithValue("@username", username);
-                    comando.Parameters.AddWithValue("@password", password);
+                    comando.Parameters.AddWithValue("@Username", username);
+                    comando.Parameters.AddWithValue("@Password", password);
 
                     int count = Convert.ToInt32(comando.ExecuteScalar());
 
@@ -96,9 +97,9 @@ private void RemoveText(object sender, RoutedEventArgs e)
                     }
                     else
                     {
-                        MessageBox.Show("Usuário ou senha incorretos. Tente novamente!", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                        lblUser.Text = "";
-                        passwordText.Password = "";
+                        MessageBox.Show("Incorrect username or password. Please try again!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        lblUser.Text = "Usuário";
+                        passwordPlaceholder.Text = "";
                         lblUser.Focus();
                     }
                 }

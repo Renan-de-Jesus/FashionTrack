@@ -1,7 +1,7 @@
 ﻿<Window x:Class="FashionTrack.ItemListWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Lista de Itens" Height="500" Width="600">
+        Title="Lista de Itens" Height="500" Width="800">
     <Grid>
         <DataGrid x:Name="ItemsDataGrid" AutoGenerateColumns="False" SelectionMode="Single" 
           SelectionChanged="ItemsDataGrid_SelectionChanged" Margin="10,35,10,10" 
@@ -12,8 +12,11 @@
                 <DataGridTextColumn Header="Preço" Binding="{Binding Price}" />
                 <DataGridTextColumn Header="Código Marca" Binding="{Binding BrandCode}" />
                 <DataGridTextColumn Header="Genero" Binding="{Binding Gender}" />
+                <DataGridTextColumn Header="ID Marca" Binding="{Binding BrandId}"/>
                 <DataGridTextColumn Header="Marca" Binding="{Binding BrandName}" />
+                <DataGridTextColumn Header="ID Cor" Binding="{Binding ColorId}" />
                 <DataGridTextColumn Header="Cor" Binding="{Binding ColorName}" />
+                <DataGridTextColumn Header="ID Tamanho" Binding="{Binding SizeId}"/>
                 <DataGridTextColumn Header="Tamanho" Binding="{Binding SizeDescription}" />
             </DataGrid.Columns>
         </DataGrid>
