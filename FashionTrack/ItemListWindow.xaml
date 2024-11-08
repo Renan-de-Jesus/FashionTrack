@@ -7,7 +7,7 @@
           SelectionChanged="ItemsDataGrid_SelectionChanged" Margin="10,35,10,10" 
           IsReadOnly="True" MouseDoubleClick="ItemsDataGrid_MouseDoubleClick">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID Produto" Binding="{Binding ID_Produto}" />
+                <DataGridTextColumn Header="ID Produto" Binding="{Binding ID_Product}" />
                 <DataGridTextColumn Header="Descrição" Binding="{Binding Description}" />
                 <DataGridTextColumn Header="Preço" Binding="{Binding Price}" />
                 <DataGridTextColumn Header="Código Marca" Binding="{Binding BrandCode}" />
@@ -17,6 +17,7 @@
                 <DataGridTextColumn Header="Tamanho" Binding="{Binding SizeDescription}" />
             </DataGrid.Columns>
         </DataGrid>
+        <Button Content="Relatório" Width="100" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="109,10,0,0" Click="GenerateReportButton_Click" />
         <Button Content="Excluir Item" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Click="DeleteButton_Click" />
         <Button Content="Cadastrar Item" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Click="RegisterButton_Click" />
     </Grid>
