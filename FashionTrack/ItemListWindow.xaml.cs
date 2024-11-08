@@ -16,6 +16,11 @@ namespace FashionTrack
             InitializeComponent();
             LoadItems();
         }
+        private void GenerateReportButton_Click(object sender, RoutedEventArgs e)
+        {
+            ProductReportWindow reportWindow = new ProductReportWindow();
+            reportWindow.ShowDialog();
+        }
 
         private void LoadItems()
         {
