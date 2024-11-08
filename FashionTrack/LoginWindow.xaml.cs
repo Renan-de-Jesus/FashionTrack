@@ -17,6 +17,8 @@ namespace FashionTrack
 
     public partial class LoginWindow : Window
     {
+
+        public static int LoggedInUserId { get; private set; }
         public LoginWindow()
         {
             InitializeComponent();
@@ -81,7 +83,7 @@ private void RemoveText(object sender, RoutedEventArgs e)
                 try
                 {
                     connection.Open();
-                    string query = "SELECT COUNT(1) FROM Users WHERE Username = @username AND Password = HASHBYTES('SHA2_256', @password)";
+                    string query = "SELECT ID_Users FROM Users WHERE Username = @username AND Password = HASHBYTES('SHA2_256', @password)";
 
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@username", username);
@@ -91,19 +93,24 @@ private void RemoveText(object sender, RoutedEventArgs e)
                     passwordParam.Value = passwordBytes;
                     command.Parameters.Add(passwordParam);
 
-                    int count = Convert.ToInt32(command.ExecuteScalar());
+                    var userIdResult = command.ExecuteScalar();
 
-                    if (count > 0)
+                    if (userIdResult != null)
                     {
-                        HomePage homePage = new HomePage();
-                        homePage.Show();
+                        LoggedInUserId = Convert.ToInt32(userIdResult);
+                        
+                        StockMoviment stoc = new StockMoviment();
+                        stoc.Show();
+                        //HomePage homePage = new HomePage();
+                       // homePage.Show();
                         Close();
                     }
                     else
                     {
                         MessageBox.Show("Incorrect username or password. Please try again!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         lblUser.Text = "Usuário";
-                        passwordPlaceholder.Text = "";
+                        passwordPlaceholder.Text = "Senha";
+                        passwordText.Password = String.Empty;
                         lblUser.Focus();
                     }
                 }
@@ -121,6 +128,12 @@ private void RemoveText(object sender, RoutedEventArgs e)
                 btnLogin_Click(sender, e);
             }
         }
+
+        public int GetUserId()
+        {
+            return LoggedInUserId;
+        }
+
     }
 
 }

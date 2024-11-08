@@ -112,7 +112,6 @@ namespace FashionTrack
             selectedProductsDgv.ItemsSource = SelectedProducts;
             CustomerResults.ItemsSource = Customers;
             SelectedProducts.CollectionChanged += SelectedProducts_CollectionChanged;
-            DataContext = this;
 
             SelectedProducts.CollectionChanged += (s, e) =>
             {
@@ -338,7 +337,7 @@ namespace FashionTrack
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             bool sucessul = false;
-            DateTime date = DateTime.Today;
+            DateTime date = DateTime.Now;
             decimal totalPrice = Convert.ToDecimal(fullPriceLbl.Content.ToString());
             if (string.IsNullOrEmpty(idCustomerTxt.Text) || !int.TryParse(idCustomerTxt.Text, out int ID_Customer))
             {
