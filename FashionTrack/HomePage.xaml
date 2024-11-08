@@ -9,6 +9,7 @@
     Title="Vendas"
     Width="1280"
     Height="768"
+    ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
@@ -58,21 +59,20 @@
         </Style>
     </Window.Resources>
     <Grid x:Name="HomeScreen" Background="White">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
         <TextBox
             x:Name="SearchTextBox"
             Width="666"
             Height="40"
-            Margin="97,222,0,0"
+            Margin="173,222,0,0"
             Padding="5"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
+            GotFocus="RemoveText"
             KeyDown="TextBox_KeyDown"
+            LostFocus="AddText"
+            Opacity=".6"
             Text="Numero do comprador"
             TextWrapping="Wrap">
             <TextBox.Style>
@@ -96,7 +96,7 @@
         <Button
             Width="40"
             Height="40"
-            Margin="723,222,0,0"
+            Margin="799,223,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Click="ClearSearch"
@@ -135,7 +135,7 @@
         <ListBox
             x:Name="SearchResults"
             Width="673"
-            Margin="90,267,0,31"
+            Margin="166,267,0,356"
             HorizontalAlignment="Left"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -216,30 +216,31 @@
         <TextBlock
             Width="69"
             Height="16"
-            Margin="144,428,0,0"
+            Margin="221,420,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Text="Selecionados"
             TextWrapping="Wrap" />
 
         <Image
-            Grid.RowSpan="2"
             Width="47"
             Height="48"
-            Margin="97,412,0,0"
+            Margin="174,404,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             RenderTransformOrigin="-0.354,-7.312"
             Source="pack://application:,,,/images/lightBox.png" />
 
         <Rectangle
-            Grid.RowSpan="2"
             Width="256"
-            Height="736"
-            Margin="946,8,0,0"
+            Height="674"
+            Margin="956,17,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Stroke="Black" />
+            RadiusX="10"
+            RadiusY="10"
+            Stroke="Black"
+            StrokeThickness=".5" />
 
         <Rectangle
             Grid.Row="1"
@@ -252,8 +253,7 @@
 
         <DataGrid
             x:Name="selectedProductsDgv"
-            Grid.RowSpan="2"
-            Margin="118,481,517,10"
+            Margin="194,465,441,26"
             AutoGenerateColumns="False"
             CanUserAddRows="False"
             CellEditEnding="selectedProductsDgv_CellEditEnding_1"
@@ -312,65 +312,21 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Label
-            Grid.Row="1"
-            Width="118"
-            Margin="956,76,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="Total R$"
-            FontSize="22"
-            FontWeight="Bold" />
 
-        <Label
-            x:Name="fullPriceLbl"
-            Grid.Row="1"
-            Margin="1044,76,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="0,00"
-            FontSize="22"
-            FontWeight="Bold" />
-
-        <Button
-            x:Name="btnLogin"
-            Grid.Row="1"
-            Width="242"
-            Height="50"
-            Margin="953,144,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Background="#2888E3"
-            Click="btnLogin_Click"
-            Content="Finalizar Compra"
-            FontSize="16"
-            Foreground="White"
-            RenderTransformOrigin="0.5,0.5"
-            Style="{StaticResource HoverButtonStyle}">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border
-                        Padding="5"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness=".5"
-                        CornerRadius="08">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
         <TextBox
             x:Name="SearchCustomer"
             Width="666"
             Height="40"
-            Margin="100,11,0,0"
+            Margin="173,17,0,0"
             Padding="5"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
+            GotFocus="RemoveText"
             KeyDown="SearchCustomer_KeyDown"
+            LostFocus="AddText"
+            Opacity=".6"
             Text="Cliente"
             TextWrapping="Wrap">
             <TextBox.Style>
@@ -395,7 +351,7 @@
             x:Name="deleteBtn"
             Width="40"
             Height="40"
-            Margin="726,11,0,0"
+            Margin="799,17,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Click="deleteBtn_Click"
@@ -433,7 +389,8 @@
         <ListBox
             x:Name="CustomerResults"
             Width="672"
-            Margin="94,56,0,242"
+            MaxHeight="672"
+            Margin="167,62,0,535"
             HorizontalAlignment="Left"
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
@@ -498,116 +455,247 @@
 
         <TextBox
             x:Name="idCustomerTxt"
-            Width="46"
-            Margin="49,22,0,0"
+            Width="76"
+            Height="40"
+            Margin="106,17,0,0"
+            Padding="5"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            KeyDown="idCustomerTxt_KeyDown"
-            Text=""
-            TextWrapping="Wrap" />
-
-        <RadioButton
-            x:Name="creditoRdBtn"
-            Margin="1002,319,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Checked="creditoRdBtn_Checked"
-            Content="Crédito" />
-
-        <RadioButton
-            x:Name="moneyRdBtn"
-            Margin="1002,360,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Checked="moneyRdBtn_Checked"
-            Content="Dinheiro" />
-
-        <RadioButton
-            x:Name="debitoRdBtn"
-            Margin="1002,299,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Checked="debitoRdBtn_Checked"
-            Content="Débito" />
-
-        <RadioButton
-            x:Name="pixRdBtn"
-            Margin="1002,340,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Checked="pixRdBtn_Checked"
-            Content="Pix" />
-
-        <TextBox
-            x:Name="idProductTxt"
-            Width="51"
-            Height="21"
-            Margin="41,231,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            KeyDown="idProductTxt_KeyDown"
-            TextWrapping="Wrap" />
-
-        <ListBox
-            x:Name="ViewProducts"
-            Width="232"
-            Height="182"
-            Margin="958,60,0,202"
-            HorizontalAlignment="Left"
-            HorizontalContentAlignment="Center"
+            HorizontalContentAlignment="Left"
             VerticalContentAlignment="Center"
-            d:ItemsSource="{d:SampleData ItemCount=5}"
-            Background="Transparent"
-            BorderBrush="Transparent">
-            <ListBox.Resources>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="BorderBrush" Value="Transparent" />
+            GotFocus="RemoveText"
+            KeyDown="idCustomerTxt_KeyDown"
+            LostFocus="AddText"
+            Opacity=".6"
+            Text="Id"
+            TextWrapping="Wrap">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
                     <Setter Property="Template">
                         <Setter.Value>
-                            <ControlTemplate TargetType="ListBoxItem">
-                                <Grid Background="{TemplateBinding Background}">
-                                    <ContentPresenter />
-                                </Grid>
+                            <ControlTemplate TargetType="{x:Type TextBox}">
+                                <Border
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="8">
+                                    <ScrollViewer x:Name="PART_ContentHost" />
+                                </Border>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
                 </Style>
-            </ListBox.Resources>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border
-                        Margin="5"
-                        Padding="5"
-                        BorderBrush="#565656"
-                        BorderThickness="1"
-                        CornerRadius="8">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background" Value="Transparent" />
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#B5B5B5" />
-                                        <Setter Property="BorderBrush" Value="#B5B5B5" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                                Height="30"
-                                Margin="5"
-                                VerticalAlignment="Center"
-                                Text="{Binding Description}" />
-                            <TextBlock
-                                Height="30"
-                                Margin="5"
-                                VerticalAlignment="Center"
-                                Text="{Binding Quantity}" />
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            </TextBox.Style>
+        </TextBox>
+        <TextBox
+            x:Name="idProductTxt"
+            Width="70"
+            Height="40"
+            Margin="98,222,0,0"
+            Padding="5"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            GotFocus="RemoveText"
+            KeyDown="idCustomerTxt_KeyDown"
+            LostFocus="AddText"
+            Opacity=".6"
+            Text="Id"
+            TextWrapping="Wrap">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TextBox}">
+                                <Border
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="8">
+                                    <ScrollViewer x:Name="PART_ContentHost" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <StackPanel
+            Width="256"
+            Height="674"
+            Margin="956,17,68,61">
+            <Border
+                Width="186"
+                BorderBrush="Gray"
+                BorderThickness="0,0,0,1">
+                <Label
+                    Width="64"
+                    Margin="0,20,0,0"
+                    HorizontalAlignment="Center"
+                    Content="Total"
+                    FontSize="22"
+                    FontWeight="Bold" />
+            </Border>
+
+            <ListBox
+                x:Name="ViewProducts"
+                Width="252"
+                Height="189"
+                Margin="0,0,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                d:ItemsSource="{d:SampleData ItemCount=5}"
+                Background="Transparent"
+                BorderBrush="Transparent">
+                <ListBox.Resources>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Grid Background="{TemplateBinding Background}">
+                                        <ContentPresenter />
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.Resources>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Margin="5"
+                            Padding="5"
+                            BorderBrush="#565656"
+                            BorderThickness="0,0,0,1"
+                            CornerRadius="0">
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#B5B5B5" />
+                                            <Setter Property="BorderBrush" Value="#B5B5B5" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Height="30"
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    Text="-" />
+                                <TextBlock
+                                    Height="30"
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Description}" />
+                                <TextBlock
+                                    Height="30"
+                                    Margin="50,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Text="X" />
+                                <TextBlock
+                                    Height="30"
+                                    Margin="5,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Quantity}" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Border
+                Width="186"
+                Height="1"
+                Margin="0,10,0,0"
+                BorderBrush="Gray"
+                BorderThickness="0,0,0,1" />
+            <RadioButton
+                x:Name="creditoRdBtn"
+                Margin="20,30,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Checked="creditoRdBtn_Checked"
+                Content="Crédito"
+                FontSize="16" />
+
+            <RadioButton
+                x:Name="moneyRdBtn"
+                Margin="20,10,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                HorizontalContentAlignment="Center"
+                Checked="moneyRdBtn_Checked"
+                Content="Dinheiro"
+                FontSize="16" />
+
+            <RadioButton
+                x:Name="debitoRdBtn"
+                Margin="20,10,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Checked="debitoRdBtn_Checked"
+                Content="Débito"
+                FontSize="16" />
+
+            <RadioButton
+                x:Name="pixRdBtn"
+                Height="18"
+                Margin="20,10,0,0"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Center"
+                Checked="pixRdBtn_Checked"
+                Content="Pix"
+                FontSize="16" />
+
+            <Border
+                Width="186"
+                Height="30"
+                Margin="0,70,0,0"
+                BorderBrush="Gray"
+                BorderThickness="0,0,0,1">
+                <Label
+                    x:Name="fullPriceLbl"
+                    Grid.Row="1"
+                    HorizontalAlignment="Left"
+                    Content="R$0,00"
+                    FontSize="16" />
+            </Border>
+
+            <Button
+                Grid.Row="1"
+                Width="200"
+                Height="45"
+                Margin="0,50,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Background="#2888E3"
+                Click="btnLogin_Click"
+                Content="Finalizar Compra"
+                FontSize="16"
+                Foreground="White"
+                RenderTransformOrigin="0.5,0.5"
+                Style="{StaticResource HoverButtonStyle}">
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border
+                            Padding="5"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness=".5"
+                            CornerRadius="08">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
     </Grid>
 </Window>
