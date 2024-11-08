@@ -20,6 +20,8 @@ namespace FashionTrack
 {
     public partial class CustomerRegistration : Window
     {
+        private int customerId;
+
         public CustomerRegistration()
         {
             InitializeComponent();
@@ -43,7 +45,7 @@ namespace FashionTrack
 
             textBox.TextChanged -= TextBox_TextChanged;
 
-           if (textBox.Name == "phoneTxt")
+            if (textBox.Name == "phoneTxt")
             {
                 // Avoid formatting placeholder text
                 if (textBox.Text != "(00)00000-0000")
@@ -161,7 +163,7 @@ namespace FashionTrack
             try
             {
                 string firstName = firstNameTxtBox.Text;
-                string secundName = secundNameTxtBox.Text;
+                string surnameName = surnameNameTxtBox.Text;
                 string cpf = cpfTxtBox.Text;
                 string phone = phoneTxt.Text;
                 string address = addressTxtBox.Text;
@@ -179,11 +181,11 @@ namespace FashionTrack
                 if (string.IsNullOrEmpty(secundName) || secundName == "Sobrenome")
                 {
                     MessageBox.Show("Por favor, preencha o sobrenome do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    secundNameTxtBox.Focus();
+                    surnameNameTxtBox.Focus();
                     return;
                 }
 
-                if (string.IsNullOrEmpty(cpf)|| cpf == "000.000.000-00")
+                if (string.IsNullOrEmpty(cpf) || cpf == "000.000.000-00")
                 {
                     MessageBox.Show("Por favor, preencha o CPF do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     cpfTxtBox.Focus();
@@ -221,6 +223,7 @@ namespace FashionTrack
                         connection.Open();
 
                         string checkCustomerQuery = "SELECT COUNT(*) FROM Customer WHERE CPF = @CPF";
+                        string checkCustomerQuery = "SELECT COUNT(*) FROM Customer WHERE CPF = @CPF";
                         SqlCommand checkCustomerCommand = new SqlCommand(checkCustomerQuery, connection);
                         checkCustomerCommand.Parameters.AddWithValue("@CPF", cpf);
 
@@ -238,11 +241,11 @@ namespace FashionTrack
 
                             SqlCommand saveCustomerCommand = new SqlCommand(saveCustomerQuery, connection);
 
-                            saveCustomerCommand.Parameters.AddWithValue("@firstName", firstName);
-                            saveCustomerCommand.Parameters.AddWithValue("@secundName", secundName);
+                            saveCustomerCommand.Parameters.AddWithValue("@Name", firstName);
+                            saveCustomerCommand.Parameters.AddWithValue("@Surname", surnameName);
                             saveCustomerCommand.Parameters.AddWithValue("@CPF", cpf);
-                            saveCustomerCommand.Parameters.AddWithValue("@phone", phone);
-                            saveCustomerCommand.Parameters.AddWithValue("@address", address);
+                            saveCustomerCommand.Parameters.AddWithValue("@Telephone", phone);
+                            saveCustomerCommand.Parameters.AddWithValue("@Address", address);
                             saveCustomerCommand.Parameters.AddWithValue("@selectCityId", selectCityId);
 
                             int rowsAffected = saveCustomerCommand.ExecuteNonQuery();

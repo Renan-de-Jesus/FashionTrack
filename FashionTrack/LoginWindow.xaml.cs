@@ -81,11 +81,11 @@ namespace FashionTrack
                 try
                 {
                     connection.Open();
-                    string query = "SELECT COUNT(1) FROM Users WHERE Username = @username AND Password = HASHBYTES('SHA2_256', @password)";
+                    string query = "SELECT COUNT(1) FROM Users WHERE Users = @Username AND Password =  HASHBYTES('SHA2_256', @Password)";
 
                     SqlCommand comando = new SqlCommand(query, connection);
-                    comando.Parameters.AddWithValue("@username", username);
-                    comando.Parameters.AddWithValue("@password", password);
+                    comando.Parameters.AddWithValue("@Username", username);
+                    comando.Parameters.AddWithValue("@Password", password);
 
                     int count = Convert.ToInt32(comando.ExecuteScalar());
 

@@ -28,18 +28,21 @@ namespace FashionTrack
                     conn.Open();
                     string query = @"
                         SELECT 
-                            p.ID_Produto, 
+                            p.ID_Product, 
                             p.Description, 
                             p.Price, 
                             p.BrandCode, 
-                            p.Gender, 
-                            c.ColorName, 
-                            s.SizeDescription, 
+                            p.Gender,
+                            p.ColorId,
+                            c.ColorName,
+                            p.SizeId,
+                            s.SizeDescription,
+                            p.BrandId,
                             b.BrandName
-                        FROM Produto p
+                        FROM Product p
                         LEFT JOIN Color c ON p.ColorId = c.ColorId
                         LEFT JOIN Size s ON p.SizeId = s.SizeId
-                        LEFT JOIN Brand b ON p.BrandId = b.BrandId"; // Usando LEFT JOINs
+                        LEFT JOIN Brand b ON p.BrandId = b.BrandId";
 
                     using (SqlDataAdapter adapter = new SqlDataAdapter(query, conn))
                     {
@@ -68,15 +71,15 @@ namespace FashionTrack
         {
             if (ItemsDataGrid.SelectedItem is DataRowView selectedRow)
             {
-                int productId = Convert.ToInt32(selectedRow["ID_Produto"]); // Ajuste o nome da coluna conforme necessário
+                int productId = Convert.ToInt32(selectedRow["ID_Product"]); // Ajuste o nome da coluna conforme necessário
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "DELETE FROM Produto WHERE ID_Produto = @ID_Produto"; // Ajuste conforme necessário
+                    string query = "DELETE FROM Product WHERE ID_Product = @ID_Product"; // Ajuste conforme necessário
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@ID_Produto", productId);
+                        cmd.Parameters.AddWithValue("@ID_Product", productId);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -103,7 +106,7 @@ namespace FashionTrack
         {
             if (ItemsDataGrid.SelectedItem is DataRowView selectedRow)
             {
-                int productId = Convert.ToInt32(selectedRow["ID_Produto"]);
+                int productId = Convert.ToInt32(selectedRow["ID_Product"]);
 
                 // Abre a janela de cadastro e passe os dados do item selecionado
                 ProductRegister productRegister = new ProductRegister(productId);

@@ -14,10 +14,14 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
-        <SolidColorBrush x:Key="DisabledForegroundBrush" Color="White" />
-        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="White" />
-        <SolidColorBrush x:Key="SolidBorderBrush" Color="Gray" />
-        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+        <SolidColorBrush x:Key="DisabledForegroundBrush"
+                Color="White"/>
+        <SolidColorBrush x:Key="WindowBackgroundBrush"
+                Color="White"/>
+        <SolidColorBrush x:Key="SolidBorderBrush"
+                Color="Gray"/>
+        <ControlTemplate x:Key="ComboBoxToggleButton"
+                TargetType="ToggleButton">
             <Border
                 x:Name="Border"
                 Background="{TemplateBinding Background}"
@@ -30,49 +34,63 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Data="M 0 0 L 4 4 L 8 0 Z"
-                    Fill="Black" />
+                    Fill="Black"/>
             </Border>
             <ControlTemplate.Triggers>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter TargetName="Border" Property="Background" Value="LightGray" />
+                <Trigger Property="IsChecked"
+                        Value="True">
+                    <Setter TargetName="Border"
+                            Property="Background"
+                            Value="LightGray"/>
                 </Trigger>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter TargetName="Border" Property="Background" Value="LightGray" />
+                <Trigger Property="IsMouseOver"
+                        Value="True">
+                    <Setter TargetName="Border"
+                            Property="Background"
+                            Value="LightGray"/>
                 </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter TargetName="Arrow" Property="Fill" Value="Gray" />
+                <Trigger Property="IsEnabled"
+                        Value="False">
+                    <Setter TargetName="Arrow"
+                            Property="Fill"
+                            Value="Gray"/>
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
-        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
+        <ControlTemplate x:Key="ComboBoxTextBox"
+                TargetType="TextBox">
             <Border
                 x:Name="PART_ContentHost"
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="1"
-                CornerRadius="10" />
+                CornerRadius="10"/>
         </ControlTemplate>
-        <Style x:Key="HoverButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="LightGray" />
-            <Setter Property="Foreground" Value="Black" />
+        <Style x:Key="HoverButtonStyle"
+                TargetType="Button">
+            <Setter Property="Background"
+                    Value="LightGray"/>
+            <Setter Property="Foreground"
+                    Value="Black"/>
             <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
+                <Trigger Property="IsMouseOver"
+                        Value="True">
                     <Trigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
                                     To="#1B8FFC"
-                                    Duration="0:0:0.1" />
+                                    Duration="0:0:0.1"/>
                                 <DoubleAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Opacity)"
                                     To="0.69"
-                                    Duration="0:0:0.1" />
+                                    Duration="0:0:0.1"/>
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"
                                     To="White"
-                                    Duration="0:0:0.1" />
+                                    Duration="0:0:0.1"/>
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.EnterActions>
@@ -82,22 +100,23 @@
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
                                     To="#2888E3"
-                                    Duration="0:0:0.1" />
+                                    Duration="0:0:0.1"/>
                                 <DoubleAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Opacity)"
                                     To="1.0"
-                                    Duration="0:0:0.1" />
+                                    Duration="0:0:0.1"/>
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"
                                     To="White"
-                                    Duration="0:0:0.1" />
+                                    Duration="0:0:0.1"/>
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.ExitActions>
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <ControlTemplate x:Key="CustomComboBoxTemplate" TargetType="ComboBox">
+        <ControlTemplate x:Key="CustomComboBoxTemplate"
+                TargetType="ComboBox">
             <Grid>
                 <ToggleButton
                     x:Name="ToggleButton"
@@ -107,15 +126,22 @@
                     Template="{StaticResource ComboBoxToggleButton}">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton">
-                            <Setter Property="Background" Value="White" />
-                            <Setter Property="BorderBrush" Value="LightGray" />
-                            <Setter Property="BorderThickness" Value="1" />
+                            <Setter Property="Background"
+                                    Value="White"/>
+                            <Setter Property="BorderBrush"
+                                    Value="LightGray"/>
+                            <Setter Property="BorderThickness"
+                                    Value="1"/>
                             <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="LightGray" />
+                                <Trigger Property="IsMouseOver"
+                                        Value="True">
+                                    <Setter Property="Background"
+                                            Value="LightGray"/>
                                 </Trigger>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="Background" Value="White" />
+                                <Trigger Property="IsEnabled"
+                                        Value="False">
+                                    <Setter Property="Background"
+                                            Value="White"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -129,7 +155,7 @@
                     Content="{TemplateBinding SelectionBoxItem}"
                     ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                     ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                    IsHitTestVisible="False" />
+                    IsHitTestVisible="False"/>
                 <Popup
                     x:Name="Popup"
                     AllowsTransparency="True"
@@ -147,43 +173,68 @@
                             Background="White"
                             BorderBrush="LightGray"
                             BorderThickness="1"
-                            CornerRadius="4" />
-                        <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
-                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                            CornerRadius="4"/>
+                        <ScrollViewer Margin="4,6,4,6"
+                                SnapsToDevicePixels="True">
+                            <StackPanel IsItemsHost="True"
+                                    KeyboardNavigation.DirectionalNavigation="Contained"/>
                         </ScrollViewer>
                     </Grid>
                 </Popup>
             </Grid>
             <ControlTemplate.Triggers>
-                <Trigger Property="HasItems" Value="False">
-                    <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95" />
+                <Trigger Property="HasItems"
+                        Value="False">
+                    <Setter TargetName="DropDownBorder"
+                            Property="MinHeight"
+                            Value="95"/>
                 </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Foreground" Value="White" />
+                <Trigger Property="IsEnabled"
+                        Value="False">
+                    <Setter Property="Foreground"
+                            Value="White"/>
                 </Trigger>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter TargetName="ToggleButton" Property="Background" Value="White" />
+                <Trigger Property="IsMouseOver"
+                        Value="True">
+                    <Setter TargetName="ToggleButton"
+                            Property="Background"
+                            Value="White"/>
                 </Trigger>
-                <Trigger Property="IsDropDownOpen" Value="True">
-                    <Setter TargetName="DropDownBorder" Property="Background" Value="White" />
+                <Trigger Property="IsDropDownOpen"
+                        Value="True">
+                    <Setter TargetName="DropDownBorder"
+                            Property="Background"
+                            Value="White"/>
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
-        <Style x:Key="CustomComboBoxStyle" TargetType="ComboBox">
-            <Setter Property="Template" Value="{StaticResource CustomComboBoxTemplate}" />
-            <Setter Property="Background" Value="White" />
-            <Setter Property="BorderBrush" Value="Gray" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Padding" Value="4" />
-            <Setter Property="Foreground" Value="Black" />
+        <Style x:Key="CustomComboBoxStyle"
+                TargetType="ComboBox">
+            <Setter Property="Template"
+                    Value="{StaticResource CustomComboBoxTemplate}"/>
+            <Setter Property="Background"
+                    Value="White"/>
+            <Setter Property="BorderBrush"
+                    Value="Gray"/>
+            <Setter Property="BorderThickness"
+                    Value="1"/>
+            <Setter Property="Padding"
+                    Value="4"/>
+            <Setter Property="Foreground"
+                    Value="Black"/>
             <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="LightGray" />
+                <Trigger Property="IsMouseOver"
+                        Value="True">
+                    <Setter Property="Background"
+                            Value="LightGray"/>
                 </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background" Value="White" />
-                    <Setter Property="Foreground" Value="DarkGray" />
+                <Trigger Property="IsEnabled"
+                        Value="False">
+                    <Setter Property="Background"
+                            Value="White"/>
+                    <Setter Property="Foreground"
+                            Value="DarkGray"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -201,14 +252,14 @@
                 HorizontalAlignment="Center"
                 FontSize="25"
                 Text="Novo Cliente"
-                TextWrapping="Wrap" />
+                TextWrapping="Wrap"/>
             <TextBlock
                 Margin="20,0,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 FontSize="16"
                 Text="Representante"
-                TextWrapping="Wrap" />
+                TextWrapping="Wrap"/>
             <TextBox
                 x:Name="firstNameTxtBox"
                 Width="420"
@@ -232,7 +283,7 @@
                             BorderBrush="Gray"
                             BorderThickness="1"
                             CornerRadius="08">
-                            <ScrollViewer x:Name="PART_ContentHost" />
+                            <ScrollViewer x:Name="PART_ContentHost"/>
                         </Border>
                     </ControlTemplate>
                 </TextBox.Template>
@@ -245,7 +296,7 @@
                 VerticalAlignment="Top"
                 FontSize="16"
                 Text="Sobrenome"
-                TextWrapping="Wrap" />
+                TextWrapping="Wrap"/>
             <TextBox
                 x:Name="secundNameTxtBox"
                 Width="420"
@@ -270,7 +321,7 @@
                             BorderBrush="Gray"
                             BorderThickness="1"
                             CornerRadius="08">
-                            <ScrollViewer x:Name="PART_ContentHost" />
+                            <ScrollViewer x:Name="PART_ContentHost"/>
                         </Border>
                     </ControlTemplate>
                 </TextBox.Template>
@@ -279,7 +330,8 @@
                 Margin="20,0,0,0"
                 HorizontalAlignment="Left"
                 FontSize="16"
-                TextWrapping="Wrap"><Run Language="pt-br" Text="Endereço" /></TextBlock>
+                TextWrapping="Wrap"><Run Language="pt-br"
+                        Text="Endereço"/></TextBlock>
             <TextBox
                 x:Name="addressTxtBox"
                 Width="420"
@@ -303,7 +355,7 @@
                             BorderBrush="Gray"
                             BorderThickness="1"
                             CornerRadius="08">
-                            <ScrollViewer x:Name="PART_ContentHost" />
+                            <ScrollViewer x:Name="PART_ContentHost"/>
                         </Border>
                     </ControlTemplate>
                 </TextBox.Template>
@@ -314,7 +366,7 @@
                 VerticalAlignment="Top"
                 FontSize="16"
                 Text="CPF"
-                TextWrapping="Wrap" />
+                TextWrapping="Wrap"/>
             <TextBox
                 x:Name="cpfTxtBox"
                 Width="420"
@@ -337,7 +389,7 @@
                             BorderBrush="Gray"
                             BorderThickness="1"
                             CornerRadius="8">
-                            <ScrollViewer x:Name="PART_ContentHost" />
+                            <ScrollViewer x:Name="PART_ContentHost"/>
                         </Border>
                     </ControlTemplate>
                 </TextBox.Template>
@@ -349,7 +401,7 @@
                 HorizontalAlignment="Left"
                 FontSize="16"
                 Text="Telefone"
-                TextWrapping="Wrap" />
+                TextWrapping="Wrap"/>
             <TextBox
                 x:Name="phoneTxt"
                 Width="420"
@@ -373,7 +425,7 @@
                             BorderBrush="Gray"
                             BorderThickness="1"
                             CornerRadius="08">
-                            <ScrollViewer x:Name="PART_ContentHost" />
+                            <ScrollViewer x:Name="PART_ContentHost"/>
                         </Border>
                     </ControlTemplate>
                 </TextBox.Template>
@@ -383,7 +435,7 @@
                 HorizontalAlignment="Left"
                 FontSize="16"
                 Text="Cidade"
-                TextWrapping="Wrap" />
+                TextWrapping="Wrap"/>
             <ComboBox
                 x:Name="cityCbx"
                 Width="420"
@@ -397,7 +449,7 @@
                 FontSize="16"
                 MaxDropDownHeight="180"
                 SelectedIndex="1"
-                Style="{StaticResource CustomComboBoxStyle}" />
+                Style="{StaticResource CustomComboBoxStyle}"/>
 
             <Button
                 x:Name="save_btn"
@@ -424,7 +476,8 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness=".5"
                             CornerRadius="08">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <ContentPresenter HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Button.Template>
@@ -453,7 +506,8 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness=".5"
                         CornerRadius="08">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <ContentPresenter HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Button.Template>
