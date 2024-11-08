@@ -49,7 +49,6 @@ namespace FashionTrack
                 {
                     connection.Open();
                     string cityQuery = "SELECT ID_City, Description FROM City";
-                    string cityQuery = "SELECT ID_City, Description FROM City";
                     SqlCommand cityCommand = new SqlCommand(cityQuery, connection);
                     DataTable dt = new DataTable();
                     SqlDataAdapter adapter = new SqlDataAdapter(cityCommand);

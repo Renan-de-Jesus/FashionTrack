@@ -22,7 +22,7 @@ namespace FashionTrack
     {
         private int customerId;
 
-        public CustomerRegistration()
+        public CustomerRegistration(int customerId)
         {
             InitializeComponent();
             fillComboBox();
@@ -163,7 +163,7 @@ namespace FashionTrack
             try
             {
                 string firstName = firstNameTxtBox.Text;
-                string surnameName = surnameNameTxtBox.Text;
+                string secondName = secondNameTxtBox.Text;
                 string cpf = cpfTxtBox.Text;
                 string phone = phoneTxt.Text;
                 string address = addressTxtBox.Text;
@@ -178,10 +178,10 @@ namespace FashionTrack
                     return;
                 }
 
-                if (string.IsNullOrEmpty(secundName) || secundName == "Sobrenome")
+                if (string.IsNullOrEmpty(secondName) || secondName == "Sobrenome")
                 {
                     MessageBox.Show("Por favor, preencha o sobrenome do cliente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    surnameNameTxtBox.Focus();
+                    secondNameTxtBox.Focus();
                     return;
                 }
 
@@ -223,7 +223,6 @@ namespace FashionTrack
                         connection.Open();
 
                         string checkCustomerQuery = "SELECT COUNT(*) FROM Customer WHERE CPF = @CPF";
-                        string checkCustomerQuery = "SELECT COUNT(*) FROM Customer WHERE CPF = @CPF";
                         SqlCommand checkCustomerCommand = new SqlCommand(checkCustomerQuery, connection);
                         checkCustomerCommand.Parameters.AddWithValue("@CPF", cpf);
 
@@ -242,7 +241,7 @@ namespace FashionTrack
                             SqlCommand saveCustomerCommand = new SqlCommand(saveCustomerQuery, connection);
 
                             saveCustomerCommand.Parameters.AddWithValue("@Name", firstName);
-                            saveCustomerCommand.Parameters.AddWithValue("@Surname", surnameName);
+                            saveCustomerCommand.Parameters.AddWithValue("@Surname", secondName);
                             saveCustomerCommand.Parameters.AddWithValue("@CPF", cpf);
                             saveCustomerCommand.Parameters.AddWithValue("@Telephone", phone);
                             saveCustomerCommand.Parameters.AddWithValue("@Address", address);

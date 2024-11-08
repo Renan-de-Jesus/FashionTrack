@@ -92,14 +92,14 @@ namespace FashionTrack
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            CustomerRegistration customerRegister = new CustomerRegistration();
-            customerRegister.Closed += (s, args) => LoadCustomer();
-            customerRegister.ShowDialog();
+            //CustomerRegistration customerRegister = new CustomerRegistration();
+            //customerRegister.Closed += (s, args) => LoadCustomer();
+            //customerRegister.ShowDialog();
         }
 
         private void CustomerDataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (CustomerDataGrid.SelectedItem is DataRowView selectedRow)
+            /*if (CustomerDataGrid.SelectedItem is DataRowView selectedRow)
             {
                 int customerId = Convert.ToInt32(selectedRow["ID_Customer"]);
 
@@ -107,6 +107,7 @@ namespace FashionTrack
                 customerRegister.Closed += (s, args) => LoadCustomer();
                 customerRegister.ShowDialog();
             }
+            */
         }
     }
 }

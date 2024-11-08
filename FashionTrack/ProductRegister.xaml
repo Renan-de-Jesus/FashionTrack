@@ -11,7 +11,7 @@
     WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
-        <SolidColorBrush x:Key="DisabledForegroundBrush" Color="Gray" />
+        <SolidColorBrush x:Key="DisabledForegroundBrush" Color="White" />
         <SolidColorBrush x:Key="WindowBackgroundBrush" Color="White" />
         <SolidColorBrush x:Key="SolidBorderBrush" Color="Gray" />
         <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
@@ -23,7 +23,8 @@
                 CornerRadius="10">
                 <Path
                     x:Name="Arrow"
-                    HorizontalAlignment="Center"
+                    Margin="0,5,8,5"
+                    HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Data="M 0 0 L 4 4 L 8 0 Z"
                     Fill="Black" />
@@ -103,7 +104,7 @@
                     Template="{StaticResource ComboBoxToggleButton}">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton">
-                            <Setter Property="Background" Value="#DFDCDC" />
+                            <Setter Property="Background" Value="White" />
                             <Setter Property="BorderBrush" Value="LightGray" />
                             <Setter Property="BorderThickness" Value="1" />
                             <Style.Triggers>
@@ -111,7 +112,7 @@
                                     <Setter Property="Background" Value="LightGray" />
                                 </Trigger>
                                 <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="Background" Value="#DFDCDC" />
+                                    <Setter Property="Background" Value="White" />
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -142,7 +143,8 @@
                             x:Name="DropDownBorder"
                             Background="White"
                             BorderBrush="LightGray"
-                            BorderThickness="1" />
+                            BorderThickness="1"
+                            CornerRadius="4" />
                         <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
                             <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
                         </ScrollViewer>
@@ -154,13 +156,13 @@
                     <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95" />
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Foreground" Value="Gray" />
+                    <Setter Property="Foreground" Value="White" />
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter TargetName="ToggleButton" Property="Background" Value="DarkGray" />
+                    <Setter TargetName="ToggleButton" Property="Background" Value="White" />
                 </Trigger>
                 <Trigger Property="IsDropDownOpen" Value="True">
-                    <Setter TargetName="DropDownBorder" Property="Background" Value="LightGray" />
+                    <Setter TargetName="DropDownBorder" Property="Background" Value="White" />
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -177,14 +179,12 @@
                     <Setter Property="Background" Value="LightGray" />
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background" Value="Gray" />
+                    <Setter Property="Background" Value="White" />
                     <Setter Property="Foreground" Value="DarkGray" />
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Resources>
-
-
 
     <Grid>
         <StackPanel
@@ -222,7 +222,7 @@
                 LostFocus="AddText"
                 Opacity="0.6"
                 Text="Código da Marca">
-            <TextBox.Template>
+                <TextBox.Template>
                     <ControlTemplate TargetType="{x:Type TextBox}">
                         <Border
                             Background="White"
