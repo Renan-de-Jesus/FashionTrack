@@ -458,7 +458,7 @@
             VerticalContentAlignment="Center"
             Background="White"
             BorderBrush="White"
-            Click="RegisterButton_Click"
+            Click="GenerateReportButton_Click"
             FontSize="16"
             Foreground="White"
             IsEnabled="{Binding IsModified}"
@@ -473,7 +473,7 @@
                 StrokeEndLineCap="Round"
                 StrokeLineJoin="Round"
                 StrokeStartLineCap="Round"
-                StrokeThickness="2"/>
+                StrokeThickness="2" RenderTransformOrigin="0.5,0.551"/>
             <Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border

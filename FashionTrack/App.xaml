@@ -4,7 +4,4 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:FashionTrack"
     StartupUri="ItemListWindow.xaml">
-    <Application.Resources/>
-    StartupUri="ItemListWindow.xaml">
-    <Application.Resources/>
 </Application>

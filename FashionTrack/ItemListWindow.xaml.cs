@@ -119,5 +119,6 @@ namespace FashionTrack
                 productRegister.ShowDialog();
             }
         }
+
     }
 }
