@@ -235,7 +235,7 @@ namespace FashionTrack
             }
         }
 
-        private void ClearSearch(object sender, RoutedEventArgs e)
+        private void ClearBtn(object sender, RoutedEventArgs e)
         {
             SearchTextBox.Text = string.Empty;
             idProductTxt.Text = string.Empty;
@@ -255,11 +255,13 @@ namespace FashionTrack
         private void prohibitedRdBt_Checked(object sender, RoutedEventArgs e)
         {
             movimentType = "Entrada";
+            releaseOfComponents();
         }
 
         private void exitRdBt_Checked(object sender, RoutedEventArgs e)
         {
             movimentType = "Saida";
+            releaseOfComponents();
         }
 
         private void OperationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -369,7 +371,7 @@ namespace FashionTrack
                                 {
                                     Exit();
                                 }
-                                
+
                                 stockMovimentCommand2.ExecuteNonQuery();
                             }
                         }
@@ -379,6 +381,7 @@ namespace FashionTrack
                         }
                         if (sucefull)
                         {
+                            ClearScreen();
                             MessageBox.Show("Movimentação realizada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                         }
                     }
@@ -481,6 +484,64 @@ namespace FashionTrack
                     }
                 }
             }
+        }
+
+        private void ClearScreen()
+        {
+            SelectedProducts.Clear();
+            idProductTxt.Text = string.Empty;
+            SearchTextBox.Text = string.Empty;
+            descriptionTxt.Text = string.Empty;
+            prohibitedRdBt.IsChecked = false;
+            exitRdBt.IsChecked = false;
+            OperationComboBox.SelectedIndex = 0;
+            documentTxt.Text = string.Empty;
+        }
+
+        private void selectedProductsDgv_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (movimentType == "Saida")
+            {
+                if (e.EditAction == DataGridEditAction.Commit)
+                {
+                    var editedProduct = e.Row.Item as SelectedProduct;
+                    if (editedProduct != null)
+                    {
+                        var textBox = e.EditingElement as TextBox;
+                        if (textBox != null)
+                        {
+                            if (int.TryParse(textBox.Text, out int quantity))
+                            {
+                                if (quantity > editedProduct.StockQuantity)
+                                {
+                                    MessageBox.Show($"A quantidade não pode ser maior que o estoque ({editedProduct.StockQuantity} unidades).", "Erro de Validação", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    editedProduct.Quantity = editedProduct.StockQuantity;
+                                }
+                                else
+                                {
+                                    editedProduct.Quantity = quantity;
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Digite uma quantidade válida.", "Erro de Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                editedProduct.Quantity = 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void releaseOfComponents() {
+            idProductTxt.IsEnabled = true;
+            SearchResults.IsEnabled = true;
+            SearchTextBox.IsEnabled = true;
+            descriptionTxt.IsEnabled = true;
+            OperationComboBox.IsEnabled = true;
+            clearBtn.IsEnabled = true;
+            documentTxt.IsEnabled = true;
+            selectedProductsDgv.IsEnabled = true;
         }
     }
 }
