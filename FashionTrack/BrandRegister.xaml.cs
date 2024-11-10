@@ -41,27 +41,23 @@ namespace FashionTrack
 
         private void BrandIdTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            // Permitir apenas números inteiros
             e.Handled = !IsTextAllowedForId(e.Text);
         }
 
         private void BrandNameTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            // Permitir letras e números
             e.Handled = !IsTextAllowedForName(e.Text);
         }
 
         private static bool IsTextAllowedForId(string text)
         {
-            // Verifica se o texto é um número inteiro
-            Regex regex = new Regex("[^0-9]+"); // Apenas números
+            Regex regex = new Regex("[^0-9]+");
             return !regex.IsMatch(text);
         }
 
         private static bool IsTextAllowedForName(string text)
         {
-            // Verifica se o texto contém apenas letras e números
-            Regex regex = new Regex("[^a-zA-Z0-9]+"); // Apenas letras e números
+            Regex regex = new Regex("[^a-zA-Z0-9]+");
             return !regex.IsMatch(text);
         }
 
@@ -92,13 +88,11 @@ namespace FashionTrack
 
                 if (isEditMode && currentBrandId != -1)
                 {
-                    // Atualizar o registro existente
                     cmd = new SqlCommand("UPDATE Brand SET BrandName = @BrandName WHERE BrandId = @BrandId", conn);
                     cmd.Parameters.AddWithValue("@BrandId", currentBrandId);
                 }
                 else
                 {
-                    // Inserir um novo registro
                     cmd = new SqlCommand("INSERT INTO Brand (BrandName) VALUES (@BrandName)", conn);
                 }
 
@@ -126,12 +120,11 @@ namespace FashionTrack
 
         private void ResetForm()
         {
-            
+
             isEditMode = false;
             currentBrandId = -1;
             SaveButton.IsEnabled = false;
         }
-
        
     }
 }

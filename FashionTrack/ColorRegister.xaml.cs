@@ -20,8 +20,8 @@ namespace FashionTrack
     public partial class ColorRegister : Window
     {
         string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
-        private bool isEditMode = false; // Flag para identificar o modo de edição
-        private int currentColorId = -1; // Armazena o ID da cor atual
+        private bool isEditMode = false;
+        private int currentColorId = -1;
 
         private void RemoveText(object sender, RoutedEventArgs e)
         {
@@ -49,27 +49,23 @@ namespace FashionTrack
 
         private void ColorIdTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            // Permitir apenas números inteiros
             e.Handled = !IsTextAllowedForId(e.Text);
         }
 
         private void ColorNameTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            // Permitir apenas letras
             e.Handled = !IsTextAllowedForName(e.Text);
         }
 
         private static bool IsTextAllowedForId(string text)
         {
-            // Verifica se o texto é um número inteiro
-            Regex regex = new Regex("[^0-9]+"); // Apenas números
+            Regex regex = new Regex("[^0-9]+");
             return !regex.IsMatch(text);
         }
 
         private static bool IsTextAllowedForName(string text)
         {
-            // Verifica se o texto contém apenas letras
-            Regex regex = new Regex("[^a-zA-Z]+"); // Apenas letras
+            Regex regex = new Regex("[^a-zA-Z]+");
             return !regex.IsMatch(text);
         }
 
@@ -100,14 +96,12 @@ namespace FashionTrack
 
                 if (isEditMode && currentColorId != -1)
                 {
-                    // Atualizar o registro existente
-                    cmd = new SqlCommand("UPDATE Cor SET ColorName = @ColorName WHERE ColorId = @ColorId", conn);
+                    cmd = new SqlCommand("UPDATE Color SET ColorName = @ColorName WHERE ColorId = @ColorId", conn);
                     cmd.Parameters.AddWithValue("@CorId", currentColorId);
                 }
                 else
                 {
-                    // Inserir um novo registro
-                    cmd = new SqlCommand("INSERT INTO Cor (ColorName) VALUES (@ColorName)", conn);
+                    cmd = new SqlCommand("INSERT INTO Color (ColorName) VALUES (@ColorName)", conn);
                 }
 
                 cmd.Parameters.AddWithValue("@ColorName", ColorNameTextBox.Text);
@@ -127,7 +121,7 @@ namespace FashionTrack
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Cor WHERE ColorName = @ColorName", conn);
+                SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Color WHERE ColorName = @ColorName", conn);
                 cmd.Parameters.AddWithValue("@ColorName", colorName);
                 int count = (int)cmd.ExecuteScalar();
                 return count > 0;

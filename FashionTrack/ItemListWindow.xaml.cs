@@ -61,7 +61,7 @@ namespace FashionTrack
                 }
                 else
                 {
-                    MessageBox.Show("No items found.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Nenhum item encontrado.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
             catch (Exception ex)
@@ -76,29 +76,37 @@ namespace FashionTrack
         {
             if (ItemsDataGrid.SelectedItem is DataRowView selectedRow)
             {
-                int productId = Convert.ToInt32(selectedRow["ID_Product"]); // Ajuste o nome da coluna conforme necessário
-
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                int productId = Convert.ToInt32(selectedRow["ID_Product"]);
+                MessageBoxResult result = MessageBox.Show("Tem certeza de que deseja excluir este item?", "Confirmação", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
                 {
-                    conn.Open();
-                    string query = "DELETE FROM Product WHERE ID_Product = @ID_Product"; // Ajuste conforme necessário
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    try
                     {
-                        cmd.Parameters.AddWithValue("@ID_Product", productId);
-                        cmd.ExecuteNonQuery();
+                        using (SqlConnection conn = new SqlConnection(connectionString))
+                        {
+                            conn.Open();
+                            string query = "DELETE FROM Product WHERE ID_Product = @ID_Product";
+                            using (SqlCommand cmd = new SqlCommand(query, conn))
+                            {
+                                cmd.Parameters.AddWithValue("@ID_Product", productId);
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        MessageBox.Show("Item deletado com sucesso.", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                        LoadItems();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Erro ao deletar o item: " + ex.Message, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
-
-                MessageBox.Show("Item deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                LoadItems(); // Reload items after deletion
             }
             else
             {
-                MessageBox.Show("Please select an item to delete.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Por favor, selecione um item para excluir.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        private void ItemsDataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e){ /*something*/ }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
@@ -112,8 +120,6 @@ namespace FashionTrack
             if (ItemsDataGrid.SelectedItem is DataRowView selectedRow)
             {
                 int productId = Convert.ToInt32(selectedRow["ID_Product"]);
-
-                // Abre a janela de cadastro e passe os dados do item selecionado
                 ProductRegister productRegister = new ProductRegister(productId);
                 productRegister.Closed += (s, args) => LoadItems();
                 productRegister.ShowDialog();

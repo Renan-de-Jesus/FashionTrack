@@ -5,7 +5,8 @@
     Title="Lista de Itens"
     Width="1320"
     Height="720"
-    ResizeMode="NoResize">
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Geometry x:Key="TrashIconGeometry">
             M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z
@@ -36,41 +37,26 @@
             M12 15 L15 12
         </Geometry>
 
-        <SolidColorBrush x:Key="DisabledForegroundBrush"
-                Color="White"/>
-        <SolidColorBrush x:Key="WindowBackgroundBrush"
-                Color="White"/>
-        <SolidColorBrush x:Key="SolidBorderBrush"
-                Color="Gray"/>
-        <Style x:Key="HoverListViewItemStyle"
-                TargetType="ListViewItem">
-            <Setter Property="Background"
-                    Value="White"/>
-            <Setter Property="Padding"
-                    Value="5"/>
-            <Setter Property="Margin"
-                    Value="5"/>
-            <Setter Property="HorizontalContentAlignment"
-                    Value="Stretch"/>
+        <SolidColorBrush x:Key="DisabledForegroundBrush" Color="White" />
+        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="White" />
+        <SolidColorBrush x:Key="SolidBorderBrush" Color="Gray" />
+        <Style x:Key="HoverListViewItemStyle" TargetType="ListViewItem">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Style.Triggers>
-                <Trigger Property="IsMouseOver"
-                        Value="True">
-                    <Setter Property="Background"
-                            Value="LightGray"/>
-                    <Setter Property="Cursor"
-                            Value="Hand"/>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="LightGray" />
+                    <Setter Property="Cursor" Value="Hand" />
                 </Trigger>
-                <Trigger Property="IsSelected"
-                        Value="True">
-                    <Setter Property="Background"
-                            Value="LightBlue"/>
-                    <Setter Property="Foreground"
-                            Value="Black"/>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="LightBlue" />
+                    <Setter Property="Foreground" Value="Black" />
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <ControlTemplate x:Key="ComboBoxToggleButton"
-                TargetType="ToggleButton">
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
             <Border
                 x:Name="Border"
                 Background="{TemplateBinding Background}"
@@ -83,63 +69,49 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Data="M 0 0 L 4 4 L 8 0 Z"
-                    Fill="Black"/>
+                    Fill="Black" />
             </Border>
             <ControlTemplate.Triggers>
-                <Trigger Property="IsChecked"
-                        Value="True">
-                    <Setter TargetName="Border"
-                            Property="Background"
-                            Value="LightGray"/>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="LightGray" />
                 </Trigger>
-                <Trigger Property="IsMouseOver"
-                        Value="True">
-                    <Setter TargetName="Border"
-                            Property="Background"
-                            Value="LightGray"/>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="LightGray" />
                 </Trigger>
-                <Trigger Property="IsEnabled"
-                        Value="False">
-                    <Setter TargetName="Arrow"
-                            Property="Fill"
-                            Value="Gray"/>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter TargetName="Arrow" Property="Fill" Value="Gray" />
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
-        <ControlTemplate x:Key="ComboBoxTextBox"
-                TargetType="TextBox">
+        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
             <Border
                 x:Name="PART_ContentHost"
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="1"
-                CornerRadius="10"/>
+                CornerRadius="10" />
         </ControlTemplate>
-        <Style x:Key="HoverButtonStyle"
-                TargetType="Button">
-            <Setter Property="Background"
-                    Value="LightGray"/>
-            <Setter Property="Foreground"
-                    Value="Black"/>
+        <Style x:Key="HoverButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="LightGray" />
+            <Setter Property="Foreground" Value="Black" />
             <Style.Triggers>
-                <Trigger Property="IsMouseOver"
-                        Value="True">
+                <Trigger Property="IsMouseOver" Value="True">
                     <Trigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
                                     To="#1B8FFC"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                                 <DoubleAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Opacity)"
                                     To="0.69"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"
                                     To="White"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.EnterActions>
@@ -149,23 +121,22 @@
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
                                     To="#2888E3"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                                 <DoubleAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Opacity)"
                                     To="1.0"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"
                                     To="White"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.ExitActions>
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <ControlTemplate x:Key="CustomComboBoxTemplate"
-                TargetType="ComboBox">
+        <ControlTemplate x:Key="CustomComboBoxTemplate" TargetType="ComboBox">
             <Grid>
                 <ToggleButton
                     x:Name="ToggleButton"
@@ -175,22 +146,15 @@
                     Template="{StaticResource ComboBoxToggleButton}">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton">
-                            <Setter Property="Background"
-                                    Value="White"/>
-                            <Setter Property="BorderBrush"
-                                    Value="LightGray"/>
-                            <Setter Property="BorderThickness"
-                                    Value="1"/>
+                            <Setter Property="Background" Value="White" />
+                            <Setter Property="BorderBrush" Value="LightGray" />
+                            <Setter Property="BorderThickness" Value="1" />
                             <Style.Triggers>
-                                <Trigger Property="IsMouseOver"
-                                        Value="True">
-                                    <Setter Property="Background"
-                                            Value="LightGray"/>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="LightGray" />
                                 </Trigger>
-                                <Trigger Property="IsEnabled"
-                                        Value="False">
-                                    <Setter Property="Background"
-                                            Value="White"/>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Background" Value="White" />
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -204,7 +168,7 @@
                     Content="{TemplateBinding SelectionBoxItem}"
                     ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                     ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                    IsHitTestVisible="False"/>
+                    IsHitTestVisible="False" />
                 <Popup
                     x:Name="Popup"
                     AllowsTransparency="True"
@@ -222,95 +186,66 @@
                             Background="White"
                             BorderBrush="LightGray"
                             BorderThickness="1"
-                            CornerRadius="4"/>
-                        <ScrollViewer Margin="4,6,4,6"
-                                SnapsToDevicePixels="True">
-                            <StackPanel IsItemsHost="True"
-                                    KeyboardNavigation.DirectionalNavigation="Contained"/>
+                            CornerRadius="4" />
+                        <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
                         </ScrollViewer>
                     </Grid>
                 </Popup>
             </Grid>
             <ControlTemplate.Triggers>
-                <Trigger Property="HasItems"
-                        Value="False">
-                    <Setter TargetName="DropDownBorder"
-                            Property="MinHeight"
-                            Value="95"/>
+                <Trigger Property="HasItems" Value="False">
+                    <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95" />
                 </Trigger>
-                <Trigger Property="IsEnabled"
-                        Value="False">
-                    <Setter Property="Foreground"
-                            Value="White"/>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="White" />
                 </Trigger>
-                <Trigger Property="IsMouseOver"
-                        Value="True">
-                    <Setter TargetName="ToggleButton"
-                            Property="Background"
-                            Value="White"/>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="ToggleButton" Property="Background" Value="White" />
                 </Trigger>
-                <Trigger Property="IsDropDownOpen"
-                        Value="True">
-                    <Setter TargetName="DropDownBorder"
-                            Property="Background"
-                            Value="White"/>
+                <Trigger Property="IsDropDownOpen" Value="True">
+                    <Setter TargetName="DropDownBorder" Property="Background" Value="White" />
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
-        <Style x:Key="CustomComboBoxStyle"
-                TargetType="ComboBox">
-            <Setter Property="Template"
-                    Value="{StaticResource CustomComboBoxTemplate}"/>
-            <Setter Property="Background"
-                    Value="White"/>
-            <Setter Property="BorderBrush"
-                    Value="Gray"/>
-            <Setter Property="BorderThickness"
-                    Value="1"/>
-            <Setter Property="Padding"
-                    Value="4"/>
-            <Setter Property="Foreground"
-                    Value="Black"/>
+        <Style x:Key="CustomComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Template" Value="{StaticResource CustomComboBoxTemplate}" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="Foreground" Value="Black" />
             <Style.Triggers>
-                <Trigger Property="IsMouseOver"
-                        Value="True">
-                    <Setter Property="Background"
-                            Value="LightGray"/>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="LightGray" />
                 </Trigger>
-                <Trigger Property="IsEnabled"
-                        Value="False">
-                    <Setter Property="Background"
-                            Value="White"/>
-                    <Setter Property="Foreground"
-                            Value="DarkGray"/>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="White" />
+                    <Setter Property="Foreground" Value="DarkGray" />
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="RedButtonStyle"
-                TargetType="Button">
-            <Setter Property="Background"
-                    Value="LightGray"/>
-            <Setter Property="Foreground"
-                    Value="Black"/>
+        <Style x:Key="RedButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="LightGray" />
+            <Setter Property="Foreground" Value="Black" />
             <Style.Triggers>
-                <Trigger Property="IsMouseOver"
-                        Value="True">
+                <Trigger Property="IsMouseOver" Value="True">
                     <Trigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
                                     To="DarkRed"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                                 <DoubleAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Opacity)"
                                     To="0.69"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"
                                     To="White"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.EnterActions>
@@ -320,45 +255,41 @@
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
                                     To="Red"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                                 <DoubleAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Opacity)"
                                     To="1.0"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"
                                     To="White"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.ExitActions>
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="Download"
-                TargetType="Button">
-            <Setter Property="Background"
-                    Value="LightGray"/>
-            <Setter Property="Foreground"
-                    Value="Black"/>
+        <Style x:Key="Download" TargetType="Button">
+            <Setter Property="Background" Value="LightGray" />
+            <Setter Property="Foreground" Value="Black" />
             <Style.Triggers>
-                <Trigger Property="IsMouseOver"
-                        Value="True">
+                <Trigger Property="IsMouseOver" Value="True">
                     <Trigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
                                     To="LightGray"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                                 <DoubleAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Opacity)"
                                     To="0.69"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"
                                     To="White"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.EnterActions>
@@ -368,15 +299,15 @@
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
                                     To="White"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                                 <DoubleAnimation
                                     Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Opacity)"
                                     To="1.0"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                                 <ColorAnimation
                                     Storyboard.TargetProperty="(Button.Foreground).(SolidColorBrush.Color)"
                                     To="White"
-                                    Duration="0:0:0.1"/>
+                                    Duration="0:0:0.1" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.ExitActions>
@@ -384,18 +315,12 @@
             </Style.Triggers>
         </Style>
         <Style TargetType="ListViewItem">
-            <Setter Property="Background"
-                    Value="Transparent"/>
-            <Setter Property="Foreground"
-                    Value="Black"/>
-            <Setter Property="Padding"
-                    Value="5"/>
-            <Setter Property="Margin"
-                    Value="2"/>
-            <Setter Property="BorderBrush"
-                    Value="Transparent"/>
-            <Setter Property="BorderThickness"
-                    Value="1"/>
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
@@ -405,41 +330,27 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter/>
+                            <ContentPresenter />
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver"
-                                    Value="True">
-                                <Setter TargetName="Border"
-                                        Property="Background"
-                                        Value="LightGray"/>
-                                <Setter TargetName="Border"
-                                        Property="BorderBrush"
-                                        Value="Gray"/>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="LightGray" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Gray" />
                             </Trigger>
-                            <Trigger Property="IsSelected"
-                                    Value="True">
-                                <Setter TargetName="Border"
-                                        Property="Background"
-                                        Value="LightGray"/>
-                                <Setter TargetName="Border"
-                                        Property="BorderBrush"
-                                        Value="Darkgray"/>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="LightGray" />
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Darkgray" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
-                <Trigger Property="IsMouseOver"
-                        Value="True">
-                    <Setter Property="Foreground"
-                            Value="Black"/>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="Black" />
                 </Trigger>
-                <Trigger Property="IsSelected"
-                        Value="True">
-                    <Setter Property="Foreground"
-                            Value="Black"/>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="Black" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -468,12 +379,13 @@
                 Width="25"
                 Height="25"
                 Data="{StaticResource ArrowGeometry}"
+                RenderTransformOrigin="0.5,0.551"
                 Stretch="Uniform"
                 Stroke="#000000"
                 StrokeEndLineCap="Round"
                 StrokeLineJoin="Round"
                 StrokeStartLineCap="Round"
-                StrokeThickness="2" RenderTransformOrigin="0.5,0.551"/>
+                StrokeThickness="2" />
             <Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border
@@ -482,8 +394,7 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="1"
                         CornerRadius="5">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                 </ControlTemplate>
             </Button.Template>
@@ -496,7 +407,7 @@
                 HorizontalAlignment="Center"
                 FontSize="35"
                 Text="Lista de produtos"
-                TextWrapping="Wrap"/>
+                TextWrapping="Wrap" />
 
             <StackPanel>
                 <Border
@@ -514,54 +425,53 @@
                             Margin="10"
                             FontSize="16"
                             Text="ID"
-                            TextAlignment="Center"/>
+                            TextAlignment="Center" />
                         <TextBlock
                             Width="150"
                             Margin="10"
                             FontSize="16"
                             Text="Descrição"
-                            TextAlignment="Center"/>
+                            TextAlignment="Center" />
                         <TextBlock
                             Width="70"
                             Margin="30,10,10,0"
                             FontSize="16"
                             Text="Preço"
-                            TextAlignment="Center"/>
+                            TextAlignment="Center" />
                         <TextBlock
                             Width="100"
                             Margin="30,10,0,0"
                             FontSize="16"
                             Text="Cod. Marca"
-                            TextAlignment="Center"/>
+                            TextAlignment="Center" />
                         <TextBlock
                             Width="120"
                             Margin="20,10,0,0"
                             FontSize="16"
                             Text="Marca"
-                            TextAlignment="Center"/>
+                            TextAlignment="Center" />
                         <TextBlock
                             Width="80"
                             Margin="20,10,0,0"
                             FontSize="16"
                             Text="Gênero"
-                            TextAlignment="Center"/>
+                            TextAlignment="Center" />
                         <TextBlock
                             Width="100"
                             Margin="15,10,20,0"
                             FontSize="16"
                             Text="Cor"
-                            TextAlignment="Center"/>
+                            TextAlignment="Center" />
                         <TextBlock
                             Width="100"
                             Margin="20,10,0,0"
                             FontSize="16"
                             Text="Tamanho"
-                            TextAlignment="Center"/>
+                            TextAlignment="Center" />
 
                     </StackPanel>
                 </Border>
-                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                        VerticalScrollBarVisibility="Auto">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                     <ListView
                         x:Name="ItemsDataGrid"
                         Width="1049"
@@ -569,78 +479,67 @@
                         Margin="10,10,10,60"
                         IsSynchronizedWithCurrentItem="True"
                         MouseDoubleClick="ItemsDataGrid_MouseDoubleClick"
-                        SelectionChanged="ItemsDataGrid_SelectionChanged"
                         SelectionMode="Single">
                         <ListView.ItemTemplate>
                             <DataTemplate>
 
-                                <StackPanel Margin="0"
-                                        Orientation="Horizontal">
-                                    <Border BorderBrush="Gray"
-                                            BorderThickness="0,0,1,1">
-                                        <!--  Stroke between TextBlocks  -->
+                                <StackPanel Margin="0" Orientation="Horizontal">
+                                    <Border BorderBrush="Gray" BorderThickness="0,0,1,1">
                                         <TextBlock
                                             Width="80"
                                             Margin="10"
                                             FontSize="14"
-                                            Text="{Binding ID_Product}"/>
+                                            Text="{Binding ID_Product}" />
                                     </Border>
-                                    <Border BorderBrush="Gray"
-                                            BorderThickness="0,0,1,1">
+                                    <Border BorderBrush="Gray" BorderThickness="0,0,1,1">
                                         <TextBlock
                                             Width="150"
                                             Margin="10"
                                             FontSize="14"
-                                            Text="{Binding Description}"/>
+                                            Text="{Binding Description}" />
                                     </Border>
-                                    <Border BorderBrush="Gray"
-                                            BorderThickness="0,0,1,1">
+                                    <Border BorderBrush="Gray" BorderThickness="0,0,1,1">
                                         <TextBlock
                                             Width="100"
                                             Margin="10"
                                             FontSize="14"
-                                            Text="{Binding Price, StringFormat='R$ {0}'}"/>
+                                            Text="{Binding Price, StringFormat='R$ {0}'}" />
                                     </Border>
-                                    <Border BorderBrush="Gray"
-                                            BorderThickness="0,0,1,1">
+                                    <Border BorderBrush="Gray" BorderThickness="0,0,1,1">
                                         <TextBlock
                                             Width="100"
                                             Margin="10"
                                             FontSize="14"
-                                            Text="{Binding BrandCode}"/>
+                                            Text="{Binding BrandCode}" />
                                     </Border>
 
-                                    <Border BorderBrush="Gray"
-                                            BorderThickness="0,0,1,1">
+                                    <Border BorderBrush="Gray" BorderThickness="0,0,1,1">
                                         <TextBlock
                                             Width="120"
                                             Margin="10"
                                             FontSize="14"
-                                            Text="{Binding BrandName}"/>
+                                            Text="{Binding BrandName}" />
                                     </Border>
-                                    <Border BorderBrush="Gray"
-                                            BorderThickness="0,0,1,1">
+                                    <Border BorderBrush="Gray" BorderThickness="0,0,1,1">
                                         <TextBlock
                                             Width="80"
                                             Margin="10"
                                             FontSize="14"
-                                            Text="{Binding Gender}"/>
+                                            Text="{Binding Gender}" />
                                     </Border>
-                                    <Border BorderBrush="Gray"
-                                            BorderThickness="0,0,1,1">
+                                    <Border BorderBrush="Gray" BorderThickness="0,0,1,1">
                                         <TextBlock
                                             Width="100"
                                             Margin="10"
                                             FontSize="14"
-                                            Text="{Binding ColorName}"/>
+                                            Text="{Binding ColorName}" />
                                     </Border>
-                                    <Border BorderBrush="Gray"
-                                            BorderThickness="0,0,0,1">
+                                    <Border BorderBrush="Gray" BorderThickness="0,0,0,1">
                                         <TextBlock
                                             Width="100"
                                             Margin="10"
                                             FontSize="14"
-                                            Text="{Binding SizeDescription}"/>
+                                            Text="{Binding SizeDescription}" />
                                     </Border>
                                 </StackPanel>
 
@@ -676,7 +575,7 @@
                     Height="20"
                     Data="{StaticResource AddIconGeometry}"
                     Fill="White"
-                    Stretch="Uniform"/>
+                    Stretch="Uniform" />
                 <Button.Template>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border
@@ -685,8 +584,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness=".5"
                             CornerRadius="08">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                     </ControlTemplate>
                 </Button.Template>
@@ -711,7 +609,7 @@
                     Height="20"
                     Data="{StaticResource TrashIconGeometry}"
                     Fill="White"
-                    Stretch="Uniform"/>
+                    Stretch="Uniform" />
                 <Button.Template>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border
@@ -720,8 +618,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="1"
                             CornerRadius="5">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                     </ControlTemplate>
                 </Button.Template>

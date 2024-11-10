@@ -77,7 +77,7 @@ namespace FashionTrack
         }
 
 
-        public StockMovement(int movementId)
+        public StockMovement()
         {
             InitializeComponent();
             DataContext = this;
@@ -342,65 +342,86 @@ namespace FashionTrack
                     connection.Open();
                     try
                     {
-                        string querry = "INSERT INTO StockMovement(MDescription, Document, MovementType, Operation, MovementDate, ID_Users) " +
-                                        "VALUES (@description, @document, @movementType, @operation, @date, @ID_Users) SELECT SCOPE_IDENTITY();";
-                        SqlCommand stockMovementCommand = new SqlCommand(querry, connection);
+                        string searchDocument = "SELECT COUNT(*) " +
+                            "FROM StockMovement " +
+                            "WHERE Document = @document";
+                        SqlCommand search = new SqlCommand(searchDocument, connection);
+                        search.Parameters.AddWithValue("@document", document);
 
-                        stockMovementCommand.Parameters.AddWithValue("@description", description);
-                        stockMovementCommand.Parameters.AddWithValue("@document", document);
-                        stockMovementCommand.Parameters.AddWithValue("@movementType", movimentType);
-                        stockMovementCommand.Parameters.AddWithValue("@operation", operation);
-                        stockMovementCommand.Parameters.AddWithValue("@date", date);
-                        stockMovementCommand.Parameters.AddWithValue("@ID_Users", userId);
+                        object result = search.ExecuteScalar();
+                        int documentRepited = result != null ? Convert.ToInt32(result) : 0;
 
-                        int idMovement = Convert.ToInt32(stockMovementCommand.ExecuteScalar());
-                        sucefull = true;
-
+                        if (documentRepited > 0)
+                        {
+                            MessageBox.Show("Já existe uma movimentação com esse número de documento.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                            return;
+                        }
                         try
                         {
-                            foreach (var selectedProduct in SelectedProducts)
+                            string querry = "INSERT INTO StockMovement(MDescription, Document, MovementType, Operation, MovementDate, ID_Users) " +
+                                            "VALUES (@description, @document, @movementType, @operation, @date, @ID_Users) SELECT SCOPE_IDENTITY();";
+                            SqlCommand stockMovementCommand = new SqlCommand(querry, connection);
+
+                            stockMovementCommand.Parameters.AddWithValue("@description", description);
+                            stockMovementCommand.Parameters.AddWithValue("@document", document);
+                            stockMovementCommand.Parameters.AddWithValue("@movementType", movimentType);
+                            stockMovementCommand.Parameters.AddWithValue("@operation", operation);
+                            stockMovementCommand.Parameters.AddWithValue("@date", date);
+                            stockMovementCommand.Parameters.AddWithValue("@ID_Users", userId);
+
+                            int idMovement = Convert.ToInt32(stockMovementCommand.ExecuteScalar());
+                            sucefull = true;
+
+                            try
                             {
-                                string querry2 = "INSERT INTO ITEM_MOV(ID_StockMovement, ID_Product, Qty_Mov) " +
-                                                 "VALUES (@ID_StockMovement, @ID_Product, @Qty)";
-                                SqlCommand stockMovementCommand2 = new SqlCommand(querry2, connection);
+                                foreach (var selectedProduct in SelectedProducts)
+                                {
+                                    string querry2 = "INSERT INTO ITEM_MOV(ID_StockMovement, ID_Product, Qty_Mov) " +
+                                                     "VALUES (@ID_StockMovement, @ID_Product, @Qty)";
+                                    SqlCommand stockMovementCommand2 = new SqlCommand(querry2, connection);
 
-                                stockMovementCommand2.Parameters.AddWithValue("@ID_StockMovement", idMovement);
-                                stockMovementCommand2.Parameters.AddWithValue("@ID_Product", selectedProduct.Id);
-                                stockMovementCommand2.Parameters.AddWithValue("@Qty", selectedProduct.Quantity);
+                                    stockMovementCommand2.Parameters.AddWithValue("@ID_StockMovement", idMovement);
+                                    stockMovementCommand2.Parameters.AddWithValue("@ID_Product", selectedProduct.Id);
+                                    stockMovementCommand2.Parameters.AddWithValue("@Qty", selectedProduct.Quantity);
 
-                                stockMovementCommand2.ExecuteNonQuery();
+                                    stockMovementCommand2.ExecuteNonQuery();
 
+                                    if (movimentType == "Entrada")
+                                    {
+                                        UpdateStock(selectedProduct.Id, selectedProduct.Quantity, true);
+                                    }
+                                    else
+                                    {
+                                        UpdateStock(selectedProduct.Id, selectedProduct.Quantity, false);
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("Erro ao passar as informações para o banco de dados!" + ex.Message, "Erro Itens Movimentação", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+
+                            if (sucefull)
+                            {
                                 if (movimentType == "Entrada")
                                 {
-                                    UpdateStock(selectedProduct.Id, selectedProduct.Quantity, true);
+                                    MessageBox.Show("Entrada realizada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
                                 }
                                 else
                                 {
-                                    UpdateStock(selectedProduct.Id, selectedProduct.Quantity, false);
+                                    MessageBox.Show("Saida realizada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
                                 }
+                                ClearScreen();
                             }
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show("Erro ao passar as informações para o banco de dados!" + ex.Message, "Erro Itens Movimentação", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-
-                        if (sucefull)
-                        {
-                            if(movimentType == "Entrada")
-                            {
-                                MessageBox.Show("Entrada realizada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-                            }
-                            else
-                            {
-                                MessageBox.Show("Saida realizada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-                            }
-                            ClearScreen();
+                            MessageBox.Show("Erro ao passar as informações para o banco de dados!" + ex.Message, "Erro Movimentação de Estoque", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Erro ao passar as informações para o banco de dados!" + ex.Message, "Erro Movimentação de Estoque", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Erro ao procurar documento repetido! " + ex.Message, "Erro de Procura", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 catch (Exception ex)

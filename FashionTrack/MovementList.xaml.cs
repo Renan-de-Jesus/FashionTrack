@@ -107,7 +107,7 @@ namespace FashionTrack
 
         private void NewMovButton_Click(object sender, RoutedEventArgs e)
         {
-            StockMovement stockMovement = new StockMovement(movementId);
+            StockMovement stockMovement = new StockMovement();
             stockMovement.Closed += (s, args) => LoadMovement();
             stockMovement.ShowDialog();
         }
@@ -118,7 +118,7 @@ namespace FashionTrack
             {
                 int supplierId = Convert.ToInt32(selectedRow["ID_StockMovement"]);
 
-                StockMovement movementRegister = new StockMovement(movementId);
+                StockMovement movementRegister = new StockMovement();
                 movementRegister.Closed += (s, args) => LoadMovement();
                 movementRegister.ShowDialog();
             }

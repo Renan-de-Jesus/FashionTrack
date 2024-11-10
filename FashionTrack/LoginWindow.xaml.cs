@@ -85,9 +85,9 @@ namespace FashionTrack
                     connection.Open();
                     string query = "SELECT ID_Users FROM Users WHERE Username = @username AND Password = HASHBYTES('SHA2_256', @password)";
 
-                    SqlCommand comando = new SqlCommand(query, connection);
-                    comando.Parameters.AddWithValue("@Username", username);
-                    comando.Parameters.AddWithValue("@Password", password);
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@Username", username);
+                    command.Parameters.AddWithValue("@Password", password);
 
                     var userIdResult = command.ExecuteScalar();
 
@@ -96,7 +96,7 @@ namespace FashionTrack
                         LoggedInUserId = Convert.ToInt32(userIdResult);
 
                         int movementId = 0;
-                        StockMovement stock = new StockMovement(movementId);
+                        StockMovement stock = new StockMovement();
                         stock.Show();
                         //HomePage homePage = new HomePage();
                        // homePage.Show();

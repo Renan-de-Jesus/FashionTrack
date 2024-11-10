@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Windows;
+using static FashionTrack.SellScreen;
 
 namespace FashionTrack
 {
@@ -32,8 +33,7 @@ namespace FashionTrack
                             c.Name, 
                             c.Surname,
                             c.CPF,
-                            c.Cellphone,  
-                            t.ID_City, 
+                            c.Cellphone,   
                             t.Description AS CCity,
                             t.UF
                         FROM Customer c
@@ -88,18 +88,16 @@ namespace FashionTrack
             }
         }
 
-        private void CustomerDataGrid_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e) { /*something*/ }
-
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            //CustomerRegistration customerRegister = new CustomerRegistration();
-            //customerRegister.Closed += (s, args) => LoadCustomer();
-            //customerRegister.ShowDialog();
+            CustomerRegistration customerRegister = new CustomerRegistration(0);
+            customerRegister.Closed += (s, args) => LoadCustomer();
+            customerRegister.ShowDialog();
         }
 
         private void CustomerDataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            /*if (CustomerDataGrid.SelectedItem is DataRowView selectedRow)
+            if (CustomerDataGrid.SelectedItem is DataRowView selectedRow)
             {
                 int customerId = Convert.ToInt32(selectedRow["ID_Customer"]);
 
@@ -107,7 +105,7 @@ namespace FashionTrack
                 customerRegister.Closed += (s, args) => LoadCustomer();
                 customerRegister.ShowDialog();
             }
-            */
+            
         }
     }
 }
