@@ -26,7 +26,89 @@ namespace FashionTrack
         {
             InitializeComponent();
             fillComboBox();
+            LoadCities();
+            this.customerId = customerId;
+
+            if (customerId > 0)
+            {
+                LoadCustomerData(customerId);
+            }
         }
+
+        private void LoadCities()
+        {
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT ID_City, Description FROM City";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            DataTable cities = new DataTable();
+                            cities.Load(reader);
+                            cityCbx.ItemsSource = cities.DefaultView;
+                            cityCbx.DisplayMemberPath = "Description";
+                            cityCbx.SelectedValuePath = "ID_City";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar as cidades: " + ex.Message);
+            }
+        }
+
+        private void LoadCustomerData(int customerId)
+        {
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = @"
+                    SELECT 
+                        C.Name, 
+                        C.Surname, 
+                        C.CPF, 
+                        C.Cellphone, 
+                        C.Address, 
+                        C.ID_City 
+                    FROM Customer AS C
+                    WHERE ID_Customer = @ID_Customer";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@ID_Customer", customerId);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                firstNameTxtBox.Text = reader["Name"].ToString();
+                                secondNameTxtBox.Text = reader["Surname"].ToString();
+                                cpfTxtBox.Text = reader["CPF"].ToString();
+                                phoneTxt.Text = reader["Cellphone"].ToString();
+                                addressTxtBox.Text = reader["Address"].ToString();
+                                cityCbx.SelectedValue = reader["ID_City"];
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar os dados do cliente: " + ex.Message);
+            }
+        }
+
+
         private void RemoveText(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
@@ -47,7 +129,6 @@ namespace FashionTrack
 
             if (textBox.Name == "phoneTxt")
             {
-                // Avoid formatting placeholder text
                 if (textBox.Text != "(00)00000-0000")
                 {
                     string formattedPhone = ApplyPhoneMask(textBox.Text, allowParenthesisErase: true);
@@ -55,7 +136,6 @@ namespace FashionTrack
                 }
             }
 
-            // Adjust the caret position accordingly
             int newLength = textBox.Text.Length;
             int adjustedCaretIndex = originalCaretIndex + (newLength - originalLength);
             adjustedCaretIndex = Math.Max(0, Math.Min(adjustedCaretIndex, textBox.Text.Length));
@@ -73,7 +153,7 @@ namespace FashionTrack
                     case "firstNameTxtBox":
                         textBox.Text = "Nome do cliente";
                         break;
-                    case "secundNameTxtBox":
+                    case "secondNameTxtBox":
                         textBox.Text = "Sobrenome";
                         break;
                     case "addressTxtBox":
@@ -92,17 +172,13 @@ namespace FashionTrack
 
         private string ApplyPhoneMask(string input, bool allowParenthesisErase)
         {
-            // Remove all non-digit characters
             string digits = new string(input.Where(char.IsDigit).ToArray());
 
-            // Limit to 11 digits
             if (digits.Length > 11)
                 digits = digits.Substring(0, 11);
 
-            // Return empty if no digits are present
             if (string.IsNullOrEmpty(digits)) return string.Empty;
 
-            // Format phone number
             string formattedNumber = "";
 
             if (digits.Length > 0)
@@ -129,6 +205,41 @@ namespace FashionTrack
 
             return formattedNumber;
         }
+
+        private string ApplyCpfMask(string input)
+        {
+            string digits = new string(input.Where(char.IsDigit).ToArray());
+
+            if (digits.Length > 11)
+                digits = digits.Substring(0, 11);
+
+                if (string.IsNullOrEmpty(digits)) return string.Empty;
+
+                    string formattedCpf = "";
+
+                    if (digits.Length > 0)
+                    {
+                        formattedCpf += digits.Substring(0, Math.Min(3, digits.Length));
+
+                        if (digits.Length > 3)
+                        {
+                            formattedCpf += "." + digits.Substring(3, Math.Min(3, digits.Length - 3));
+
+                            if (digits.Length > 6)
+                            {
+                                formattedCpf += "." + digits.Substring(6, Math.Min(3, digits.Length - 6));
+
+                                if (digits.Length > 9)
+                                {
+                                    formattedCpf += "-" + digits.Substring(9);
+                                }
+                            }
+                        }
+                    }
+
+            return formattedCpf;
+        }
+
         private void fillComboBox()
         {
             string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
@@ -160,6 +271,11 @@ namespace FashionTrack
 
         private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (customerId > 0)
+            {
+                UpdateCustomerData();
+                return;
+            }
             try
             {
                 string firstName = firstNameTxtBox.Text;
@@ -231,12 +347,12 @@ namespace FashionTrack
 
                         if (customerCount > 0)
                         {
-                            MessageBox.Show("Cliente já cadastrado com este CPF.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            MessageBox.Show("Cliente já cadastrado com este CPF.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                         }
                         else
                         {
                             string saveCustomerQuery = "INSERT INTO Customer (Name, Surname, CPF, Cellphone, Address, ID_City) " +
-                                                        "VALUES (@firstName, @secundName, @CPF, @phone, @address, @selectCityId)";
+                                                        "VALUES (@Name, @Surname, @CPF, @Telephone, @Address, @selectCityId)";
 
                             SqlCommand saveCustomerCommand = new SqlCommand(saveCustomerQuery, connection);
 
@@ -275,6 +391,79 @@ namespace FashionTrack
         {
             CityRegister cityRegister = new CityRegister();
             cityRegister.Show();
+        }
+
+        private void cpfTxtBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            int originalCaretIndex = textBox.CaretIndex;
+            int originalLength = textBox.Text.Length;
+
+            textBox.TextChanged -= cpfTxtBox_TextChanged;
+
+            if (textBox.Name == "cpfTxtBox")
+            {
+                if (textBox.Text != "000.000.000-00")
+                {
+                    string formattedCpf = ApplyCpfMask(textBox.Text);
+                    textBox.Text = formattedCpf;
+                    int newLength = textBox.Text.Length;
+                    int lengthDifference = newLength - originalLength;
+                    textBox.CaretIndex = originalCaretIndex + lengthDifference;
+                }
+            }
+
+            textBox.TextChanged += cpfTxtBox_TextChanged;
+        }
+
+        private void UpdateCustomerData()
+        {
+
+            string firstName = firstNameTxtBox.Text;
+            string secondName = secondNameTxtBox.Text;
+            string cpf = cpfTxtBox.Text;
+            string phone = phoneTxt.Text;
+            string address = addressTxtBox.Text;
+
+            cpf = cpf.Replace(".", "").Replace("-", "");
+            phone = phone.Replace("(", "").Replace(")", "").Replace("-", "");
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = @"
+                    UPDATE Customer
+                    SET 
+                    Name = @Name,
+                    Surname = @Surname,
+                    CPF = @CPF,
+                    Cellphone = @Cellphone,
+                    Address = @Address,
+                    ID_City = @ID_City
+                    WHERE ID_Customer = @ID_Customer";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Name", firstName);
+                        cmd.Parameters.AddWithValue("@Surname", secondName);
+                        cmd.Parameters.AddWithValue("@CPF", cpf);
+                        cmd.Parameters.AddWithValue("@Cellphone", phone);
+                        cmd.Parameters.AddWithValue("@Address", address);
+                        cmd.Parameters.AddWithValue("@ID_City", cityCbx.SelectedValue);
+                        cmd.Parameters.AddWithValue("@ID_Customer", customerId);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                MessageBox.Show("Dados do cliente atualizados com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao atualizar os dados do cliente: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
         }
     }
 }

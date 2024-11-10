@@ -12,49 +12,14 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace FashionTrack
 {
-    public partial class HomePage : Window
+    public partial class SellScreen : Window
     {
-
+        private int sellId;
         string paymentMethod;
         public static DateTime Today { get; }
         public ObservableCollection<Product> Products { get; set; } = new ObservableCollection<Product>();
         public ObservableCollection<SelectedProduct> SelectedProducts { get; set; } = new ObservableCollection<SelectedProduct>();
         public ObservableCollection<Customer> Customers { get; set; } = new ObservableCollection<Customer>();
-
-
-        private void RemoveText(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "Cliente" || textBox.Text == "Selecione o item" || textBox.Text == "Id")
-            {
-                textBox.Text = "";
-                textBox.Opacity = 1;
-            }
-        }
-
-        private void AddText(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                switch (textBox.Name)
-                {
-                    case "SearchTextBox":
-                        textBox.Text = "Selecione o item";
-                        break;
-                    case "SearchCustomer":
-                        textBox.Text = "Cliente";
-                        break;
-                    case "idCustomerTxt":
-                        textBox.Text = "Id";
-                        break;
-                    case "idProductTxt":
-                        textBox.Text = "Id";
-                        break;
-                }
-                textBox.Opacity = 0.6;
-            }
-        }
 
         public class Customer
         {
@@ -140,15 +105,14 @@ namespace FashionTrack
             }
         }
 
-        public HomePage()
+        public SellScreen()
         {
             InitializeComponent();
-
             DataContext = this;
-
             SearchResults.ItemsSource = Products;
             selectedProductsDgv.ItemsSource = SelectedProducts;
             CustomerResults.ItemsSource = Customers;
+            SelectedProducts.CollectionChanged += SelectedProducts_CollectionChanged;
 
             SelectedProducts.CollectionChanged += (s, e) =>
             {
@@ -161,6 +125,12 @@ namespace FashionTrack
                 }
                 UpdateTotalPrice();
             };
+        }
+
+        public SellScreen(int sellId)
+        {
+            InitializeComponent();
+            this.sellId = sellId;
         }
 
         private void ClearScreen()
@@ -265,11 +235,6 @@ namespace FashionTrack
                 string searchText = ((TextBox)sender).Text;
                 SearchCustomers(searchText);
             }
-        }
-        private void ShowCustomerResults(bool show)
-        {
-            CustomerResults.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
-            SearchResults.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void CustomerResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -379,7 +344,7 @@ namespace FashionTrack
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             bool sucessul = false;
-            DateTime date = DateTime.Today;
+            DateTime date = DateTime.Now;
             decimal totalPrice = Convert.ToDecimal(fullPriceLbl.Content.ToString());
             if (string.IsNullOrEmpty(idCustomerTxt.Text) || !int.TryParse(idCustomerTxt.Text, out int ID_Customer))
             {
@@ -612,15 +577,34 @@ namespace FashionTrack
                     }
             }
         }
-        private void SelectedProductsListView_CellEditEnding(object sender, TextChangedEventArgs e)
+        private void SelectedProducts_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            var listView = sender as ListView;
-            if (listView?.SelectedItem is SelectedProduct editedProduct)
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
-                var textBox = e.OriginalSource as TextBox;
-                if (textBox != null)
+                foreach (SelectedProduct product in e.NewItems)
                 {
-                    if (textBox.Name == "QuantityTextBox")
+                    ViewProducts.Items.Add(product);
+                }
+            }
+
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                foreach (SelectedProduct product in e.OldItems)
+                {
+                    ViewProducts.Items.Remove(product);
+                }
+            }
+        }
+
+        private void selectedProductsDgv_CellEditEnding_1(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                var editedProduct = e.Row.Item as SelectedProduct;
+                if (editedProduct != null)
+                {
+                    var textBox = e.EditingElement as TextBox;
+                    if (textBox != null)
                     {
                         if (int.TryParse(textBox.Text, out int quantity))
                         {
@@ -640,51 +624,6 @@ namespace FashionTrack
                             editedProduct.Quantity = 1;
                         }
                     }
-                    else if (textBox.Name == "PriceTextBox")
-                    {
-                        if (decimal.TryParse(textBox.Text, out decimal price))
-                        {
-                            if (price < 0)
-                            {
-                                MessageBox.Show("O preço não pode ser negativo.", "Erro de Validação", MessageBoxButton.OK, MessageBoxImage.Error);
-                                editedProduct.Price = 0;
-                            }
-                            else
-                            {
-                                editedProduct.Price = price;
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show("Digite um preço válido.", "Erro de Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            editedProduct.Price = 0;
-                        }
-                    }
-                }
-            }
-        }
-
-        private void SetupListViewBinding()
-        {
-            SelectedProducts.CollectionChanged += SelectedProducts_CollectionChanged;
-            ViewProducts.ItemsSource = SelectedProducts;
-        }
-
-        private void SelectedProducts_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-            {
-                foreach (SelectedProduct product in e.NewItems)
-                {
-                    ViewProducts.Items.Add(product);
-                }
-            }
-
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-            {
-                foreach (SelectedProduct product in e.OldItems)
-                {
-                    ViewProducts.Items.Remove(product);
                 }
             }
         }

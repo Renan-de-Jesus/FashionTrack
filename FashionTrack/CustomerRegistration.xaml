@@ -207,8 +207,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 FontSize="16"
-                Text="Representante"
-                TextWrapping="Wrap" />
+                TextWrapping="Wrap"><Run Language="pt-br" Text="Nome" /></TextBlock>
             <TextBox
                 x:Name="firstNameTxtBox"
                 Width="420"
@@ -329,7 +328,8 @@
                 GotFocus="RemoveText"
                 LostFocus="AddText"
                 Opacity="0.6"
-                Text="000.000.000-00">
+                Text="000.000.000-00"
+                TextChanged="cpfTxtBox_TextChanged">
                 <TextBox.Template>
                     <ControlTemplate TargetType="{x:Type TextBox}">
                         <Border
@@ -394,6 +394,8 @@
                 VerticalAlignment="Top"
                 HorizontalContentAlignment="Left"
                 VerticalContentAlignment="Center"
+                DisplayMemberPath="Description"
+                SelectedValuePath="ID_City"
                 FontSize="16"
                 MaxDropDownHeight="180"
                 SelectedIndex="1"

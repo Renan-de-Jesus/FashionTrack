@@ -9,6 +9,7 @@
     Width="450"
     Height="300"
     ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
         <Style x:Key="HoverButtonStyle" TargetType="Button">
@@ -60,16 +61,14 @@
         <StackPanel
             Width="450"
             Height="300"
-            VerticalAlignment="Top" >
+            VerticalAlignment="Top">
             <TextBlock
                 Width="241"
                 Height="35"
                 Margin="5,20,5,5"
                 FontSize="25"
                 Text="Cadastro de Cidade" />
-            <StackPanel
-                Orientation="Horizontal"
-                HorizontalAlignment="Center">
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <TextBox
                     x:Name="ufTxt"
                     Width="50"
