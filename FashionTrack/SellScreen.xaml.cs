@@ -12,8 +12,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace FashionTrack
 {
-    public partial class HomePage : Window
+    public partial class SellScreen : Window
     {
+        private int sellId;
         string paymentMethod;
         public static DateTime Today { get; }
         public ObservableCollection<Product> Products { get; set; } = new ObservableCollection<Product>();
@@ -104,7 +105,7 @@ namespace FashionTrack
             }
         }
 
-        public HomePage()
+        public SellScreen()
         {
             InitializeComponent();
             DataContext = this;
@@ -124,6 +125,12 @@ namespace FashionTrack
                 }
                 UpdateTotalPrice();
             };
+        }
+
+        public SellScreen(int sellId)
+        {
+            InitializeComponent();
+            this.sellId = sellId;
         }
 
         private void ClearScreen()

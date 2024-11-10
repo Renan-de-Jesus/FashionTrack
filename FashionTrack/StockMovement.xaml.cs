@@ -14,14 +14,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using static FashionTrack.HomePage;
+using static FashionTrack.SellScreen;
 using System.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace FashionTrack
 {
-    public partial class StockMoviment : Window
+    public partial class StockMovement : Window
     {
+        private int movementId;
         string movimentType;
         string operation;
         public static DateTime Today { get; }
@@ -76,7 +77,7 @@ namespace FashionTrack
         }
 
 
-        public StockMoviment()
+        public StockMovement(int movementId)
         {
             InitializeComponent();
             DataContext = this;
@@ -340,16 +341,16 @@ namespace FashionTrack
 
                         string querry = "INSERT INTO StockMovement(MDescription, Document, MovementType, Operation, MovementDate, ID_Users) " +
                           "VALUES (@description, @document, @movementType, @operation, @date, @ID_Users) SELECT SCOPE_IDENTITY();";
-                        SqlCommand stockMovimentCommand = new SqlCommand(querry, connection);
+                        SqlCommand stockMovementCommand = new SqlCommand(querry, connection);
 
-                        stockMovimentCommand.Parameters.AddWithValue("@description", description);
-                        stockMovimentCommand.Parameters.AddWithValue("@document", document);
-                        stockMovimentCommand.Parameters.AddWithValue("@movementType", movimentType);
-                        stockMovimentCommand.Parameters.AddWithValue("@operation", operation);
-                        stockMovimentCommand.Parameters.AddWithValue("@date", date);
-                        stockMovimentCommand.Parameters.AddWithValue("@ID_Users", userId);
+                        stockMovementCommand.Parameters.AddWithValue("@description", description);
+                        stockMovementCommand.Parameters.AddWithValue("@document", document);
+                        stockMovementCommand.Parameters.AddWithValue("@movementType", movimentType);
+                        stockMovementCommand.Parameters.AddWithValue("@operation", operation);
+                        stockMovementCommand.Parameters.AddWithValue("@date", date);
+                        stockMovementCommand.Parameters.AddWithValue("@ID_Users", userId);
 
-                        int idMovement = Convert.ToInt32(stockMovimentCommand.ExecuteScalar());
+                        int idMovement = Convert.ToInt32(stockMovementCommand.ExecuteScalar());
                         sucefull = true;
                         try
                         {
@@ -357,11 +358,11 @@ namespace FashionTrack
                             {
                                 string querry2 = "INSERT INTO ITEM_MOV(ID_StockMovement, ID_Product, Qty_Mov) " +
                                 "VALUES (@ID_StockMovement, @ID_Product, @Qty)";
-                                SqlCommand stockMovimentCommand2 = new SqlCommand(querry2, connection);
+                                SqlCommand stockMovementCommand2 = new SqlCommand(querry2, connection);
 
-                                stockMovimentCommand2.Parameters.AddWithValue("@ID_StockMovement", idMovement);
-                                stockMovimentCommand2.Parameters.AddWithValue("@ID_Product", selectedProduct.Id);
-                                stockMovimentCommand2.Parameters.AddWithValue("Qty", selectedProduct.Quantity);
+                                stockMovementCommand2.Parameters.AddWithValue("@ID_StockMovement", idMovement);
+                                stockMovementCommand2.Parameters.AddWithValue("@ID_Product", selectedProduct.Id);
+                                stockMovementCommand2.Parameters.AddWithValue("Qty", selectedProduct.Quantity);
 
                                 if (movimentType == "Entrada")
                                 {
@@ -372,7 +373,7 @@ namespace FashionTrack
                                     Exit();
                                 }
 
-                                stockMovimentCommand2.ExecuteNonQuery();
+                                stockMovementCommand2.ExecuteNonQuery();
                             }
                         }
                         catch (Exception ex)

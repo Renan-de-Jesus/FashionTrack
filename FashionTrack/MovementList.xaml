@@ -1,0 +1,25 @@
+﻿<Window x:Class="FashionTrack.MovementList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Movimentações de estoque" Height="500" Width="960">
+    <Grid>
+        <DataGrid x:Name="MovementDataGrid" AutoGenerateColumns="False" SelectionMode="Single" Margin="10,35,10,10" 
+          IsReadOnly="True" MouseDoubleClick="MovementDataGrid_MouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID Movimentação" Binding="{Binding ID_StockMovement}" />
+                <DataGridTextColumn Header="ID Produto" Binding="{Binding ID_Product}" />
+                <DataGridTextColumn Header="Produto" Binding="{Binding Description}" />
+                <DataGridTextColumn Header="Descrição" Binding="{Binding MDescription}" />
+                <DataGridTextColumn Header="Documento" Binding="{Binding Document}" />
+                <DataGridTextColumn Header="Tipo Movimento" Binding="{Binding MovementType}" />
+                <DataGridTextColumn Header="Operação" Binding="{Binding Operation}" />
+                <DataGridTextColumn Header="Quantidade" Binding="{Binding Qty}" />
+                <DataGridTextColumn Header="Data" Binding="{Binding MovementDate}"/>
+                <DataGridTextColumn Header="ID Usuário" Binding="{Binding ID_users}" />
+                <DataGridTextColumn Header="Usuário" Binding="{Binding UserName}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Excluir Movimentação" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Click="DeleteMovButton_Click" />
+        <Button Content="Nova Movimentação" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Click="NewMovButton_Click" />
+    </Grid>
+</Window>

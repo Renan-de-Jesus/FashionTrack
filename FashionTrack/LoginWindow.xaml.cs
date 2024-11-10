@@ -98,9 +98,10 @@ private void RemoveText(object sender, RoutedEventArgs e)
                     if (userIdResult != null)
                     {
                         LoggedInUserId = Convert.ToInt32(userIdResult);
-                        
-                        StockMoviment stoc = new StockMoviment();
-                        stoc.Show();
+
+                        int movementId = 0;
+                        StockMovement stock = new StockMovement(movementId);
+                        stock.Show();
                         //HomePage homePage = new HomePage();
                        // homePage.Show();
                         Close();
