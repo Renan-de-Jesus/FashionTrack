@@ -121,8 +121,8 @@ CREATE TABLE Sell (
     CONSTRAINT FK_Sell_Customer FOREIGN KEY (ID_Customer) REFERENCES Customer(ID_Customer) ON DELETE CASCADE
 );
 
-INSERT INTO Sell (ID_Customer, Sell_Document, TotalPrice) 
-VALUES (1, 1, 59.90);
+INSERT INTO Sell (ID_Customer, Sell_Document, SellDate, PaymentMethod, TotalPrice) 
+VALUES (1, 1, '31/10/2024', 'Debito', 59.90);
 
 CREATE TABLE ItemSell (
     ID_ItemSell INT IDENTITY(1,1),
