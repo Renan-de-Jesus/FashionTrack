@@ -17,6 +17,8 @@ namespace FashionTrack
 
     public partial class LoginWindow : Window
     {
+
+        public static int LoggedInUserId { get; private set; }
         public LoginWindow()
         {
             InitializeComponent();
@@ -81,25 +83,31 @@ namespace FashionTrack
                 try
                 {
                     connection.Open();
-                    string query = "SELECT COUNT(1) FROM Users WHERE Users = @Username AND Password =  HASHBYTES('SHA2_256', @Password)";
+                    string query = "SELECT ID_Users FROM Users WHERE Username = @username AND Password = HASHBYTES('SHA2_256', @password)";
 
                     SqlCommand comando = new SqlCommand(query, connection);
                     comando.Parameters.AddWithValue("@Username", username);
                     comando.Parameters.AddWithValue("@Password", password);
 
-                    int count = Convert.ToInt32(comando.ExecuteScalar());
+                    var userIdResult = command.ExecuteScalar();
 
-                    if (count > 0)
+                    if (userIdResult != null)
                     {
-                        HomePage homePage = new HomePage();
-                        homePage.Show();
+                        LoggedInUserId = Convert.ToInt32(userIdResult);
+
+                        int movementId = 0;
+                        StockMovement stock = new StockMovement(movementId);
+                        stock.Show();
+                        //HomePage homePage = new HomePage();
+                       // homePage.Show();
                         Close();
                     }
                     else
                     {
-                        MessageBox.Show("Incorrect username or password. Please try again!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Usuário ou senha incorretos. Por favor, tente novamente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         lblUser.Text = "Usuário";
-                        passwordPlaceholder.Text = "";
+                        passwordPlaceholder.Text = "Senha";
+                        passwordText.Password = String.Empty;
                         lblUser.Focus();
                     }
                 }
@@ -117,6 +125,12 @@ namespace FashionTrack
                 btnLogin_Click(sender, e);
             }
         }
+
+        public int GetUserId()
+        {
+            return LoggedInUserId;
+        }
+
     }
 
 }

@@ -1,0 +1,20 @@
+﻿<Window x:Class="FashionTrack.SellList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Movimentações de estoque" Height="500" Width="960">
+    <Grid>
+        <DataGrid x:Name="SellDataGrid" AutoGenerateColumns="False" SelectionMode="Single" Margin="10,35,10,10" 
+          IsReadOnly="True" MouseDoubleClick="SellDataGrid_MouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID Venda" Binding="{Binding ID_Sell}" />
+                <DataGridTextColumn Header="ID Cliente" Binding="{Binding ID_Customer}" />
+                <DataGridTextColumn Header="Cliente" Binding="{Binding CustomerName}" />
+                <DataGridTextColumn Header="Documento" Binding="{Binding Sell_Document}" />
+                <DataGridTextColumn Header="Tipo de Pagamento" Binding="{Binding PaymentMethod}" />
+                <DataGridTextColumn Header="Preço total" Binding="{Binding TotalPrice}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Excluir Venda" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Click="DeleteSellButton_Click" />
+        <Button Content="Nova Venda" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Click="NewSellButton_Click" />
+    </Grid>
+</Window>
