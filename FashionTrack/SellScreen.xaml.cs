@@ -609,34 +609,16 @@ namespace FashionTrack
                     }
             }
         }
-        private void SelectedProducts_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-            {
-                foreach (SelectedProduct product in e.NewItems)
-                {
-                    ViewProducts.Items.Add(product);
-                }
-            }
 
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-            {
-                foreach (SelectedProduct product in e.OldItems)
-                {
-                    ViewProducts.Items.Remove(product);
-                }
-            }
-        }
-
-        private void selectedProductsDgv_CellEditEnding_1(object sender, DataGridCellEditEndingEventArgs e)
+        private void SelectedProductsListView_CellEditEnding(object sender, TextChangedEventArgs e)
         {
-            if (e.EditAction == DataGridEditAction.Commit)
+            var listView = sender as ListView;
+            if (listView?.SelectedItem is SelectedProduct editedProduct)
             {
-                var editedProduct = e.Row.Item as SelectedProduct;
-                if (editedProduct != null)
+                var textBox = e.OriginalSource as TextBox;
+                if (textBox != null)
                 {
-                    var textBox = e.EditingElement as TextBox;
-                    if (textBox != null)
+                    if (textBox.Name == "QuantityTextBox")
                     {
                         if (int.TryParse(textBox.Text, out int quantity))
                         {
@@ -656,8 +638,40 @@ namespace FashionTrack
                             editedProduct.Quantity = 1;
                         }
                     }
+                    else if (textBox.Name == "PriceTextBox")
+                    {
+                        if (decimal.TryParse(textBox.Text, out decimal price))
+                        {
+                            if (price < 0)
+                            {
+                                MessageBox.Show("O preço não pode ser negativo.", "Erro de Validação", MessageBoxButton.OK, MessageBoxImage.Error);
+                                editedProduct.Price = 0;
+                            }
+                            else
+                            {
+                                editedProduct.Price = price;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Digite um preço válido.", "Erro de Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            editedProduct.Price = 0;
+                        }
+                    }
                 }
             }
+        }
+
+        private void SetupListViewBinding()
+        {
+            SelectedProducts.CollectionChanged += SelectedProducts_CollectionChanged;
+            ViewProducts.ItemsSource = SelectedProducts;
+        }
+
+        private void SelectedProducts_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+          //Em branco
+
         }
     }
 }
