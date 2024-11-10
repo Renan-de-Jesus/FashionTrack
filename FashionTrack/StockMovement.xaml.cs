@@ -29,6 +29,41 @@ namespace FashionTrack
         public ObservableCollection<Product> Products { get; set; } = new ObservableCollection<Product>();
         public ObservableCollection<SelectedProduct> SelectedProducts { get; set; } = new ObservableCollection<SelectedProduct>();
 
+
+        private void RemoveText(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (textBox.Text == "Id" || textBox.Text == "Produto" || textBox.Text == "Descrição" || textBox.Text == "Documento")
+            {
+                textBox.Text = "";
+                textBox.Opacity = 1;
+            }
+        }
+
+        private void AddText(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                if (textBox.Name == "SearchTextBox")
+                {
+                    textBox.Text = "Produto";
+                }
+                else if (textBox.Name == "descriptionTxt")
+                {
+                    textBox.Text = "Descrição";
+                }
+                else if (textBox.Name == "idProductTxt")
+                {
+                    textBox.Text = "Id";
+                } else if (textBox.Name == "documentTxt")
+                {
+                    textBox.Text = "Documento";
+                }
+                textBox.Opacity = 0.6;
+            }
+        }
+
         public class SelectedProduct : INotifyPropertyChanged
         {
             private int quantity;
