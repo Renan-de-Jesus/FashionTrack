@@ -14,6 +14,7 @@ namespace FashionTrack
 {
     public partial class HomePage : Window
     {
+
         string paymentMethod;
         public static DateTime Today { get; }
         public ObservableCollection<Product> Products { get; set; } = new ObservableCollection<Product>();
@@ -24,7 +25,7 @@ namespace FashionTrack
         private void RemoveText(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "Cliente" || textBox.Text == "Numero do comprador" || textBox.Text == "Id")
+            if (textBox.Text == "Cliente" || textBox.Text == "Selecione o item" || textBox.Text == "Id")
             {
                 textBox.Text = "";
                 textBox.Opacity = 1;
@@ -39,7 +40,7 @@ namespace FashionTrack
                 switch (textBox.Name)
                 {
                     case "SearchTextBox":
-                        textBox.Text = "Numero do comprador";
+                        textBox.Text = "Selecione o item";
                         break;
                     case "SearchCustomer":
                         textBox.Text = "Cliente";
@@ -142,12 +143,12 @@ namespace FashionTrack
         public HomePage()
         {
             InitializeComponent();
+
             DataContext = this;
+
             SearchResults.ItemsSource = Products;
             selectedProductsDgv.ItemsSource = SelectedProducts;
             CustomerResults.ItemsSource = Customers;
-            SelectedProducts.CollectionChanged += SelectedProducts_CollectionChanged;
-            DataContext = this;
 
             SelectedProducts.CollectionChanged += (s, e) =>
             {
@@ -264,6 +265,11 @@ namespace FashionTrack
                 string searchText = ((TextBox)sender).Text;
                 SearchCustomers(searchText);
             }
+        }
+        private void ShowCustomerResults(bool show)
+        {
+            CustomerResults.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+            SearchResults.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void CustomerResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -606,34 +612,15 @@ namespace FashionTrack
                     }
             }
         }
-        private void SelectedProducts_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void SelectedProductsListView_CellEditEnding(object sender, TextChangedEventArgs e)
         {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            var listView = sender as ListView;
+            if (listView?.SelectedItem is SelectedProduct editedProduct)
             {
-                foreach (SelectedProduct product in e.NewItems)
+                var textBox = e.OriginalSource as TextBox;
+                if (textBox != null)
                 {
-                    ViewProducts.Items.Add(product);
-                }
-            }
-
-             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-             {
-                 foreach (SelectedProduct product in e.OldItems)
-                 {
-                     ViewProducts.Items.Remove(product);
-                 }
-             }
-        }
-
-        private void selectedProductsDgv_CellEditEnding_1(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            if (e.EditAction == DataGridEditAction.Commit)
-            {
-                var editedProduct = e.Row.Item as SelectedProduct;
-                if (editedProduct != null)
-                {
-                    var textBox = e.EditingElement as TextBox;
-                    if (textBox != null)
+                    if (textBox.Name == "QuantityTextBox")
                     {
                         if (int.TryParse(textBox.Text, out int quantity))
                         {
@@ -653,6 +640,51 @@ namespace FashionTrack
                             editedProduct.Quantity = 1;
                         }
                     }
+                    else if (textBox.Name == "PriceTextBox")
+                    {
+                        if (decimal.TryParse(textBox.Text, out decimal price))
+                        {
+                            if (price < 0)
+                            {
+                                MessageBox.Show("O preço não pode ser negativo.", "Erro de Validação", MessageBoxButton.OK, MessageBoxImage.Error);
+                                editedProduct.Price = 0;
+                            }
+                            else
+                            {
+                                editedProduct.Price = price;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Digite um preço válido.", "Erro de Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            editedProduct.Price = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void SetupListViewBinding()
+        {
+            SelectedProducts.CollectionChanged += SelectedProducts_CollectionChanged;
+            ViewProducts.ItemsSource = SelectedProducts;
+        }
+
+        private void SelectedProducts_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                foreach (SelectedProduct product in e.NewItems)
+                {
+                    ViewProducts.Items.Add(product);
+                }
+            }
+
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                foreach (SelectedProduct product in e.OldItems)
+                {
+                    ViewProducts.Items.Remove(product);
                 }
             }
         }
