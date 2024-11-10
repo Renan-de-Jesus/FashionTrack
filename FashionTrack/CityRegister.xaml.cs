@@ -76,7 +76,7 @@ namespace FashionTrack
 
                     try
                     {
-                        string checkCityQuery = "SELECT COUNT(*) FROM Cidade WHERE Descricao = @city AND UF = @UF";
+                        string checkCityQuery = "SELECT COUNT(*) FROM City WHERE Description = @city AND UF = @UF";
                         SqlCommand checkCityCommand = new SqlCommand(checkCityQuery, connection);
                         checkCityCommand.Parameters.AddWithValue("@city", city);
                         checkCityCommand.Parameters.AddWithValue("@UF", UF);
@@ -101,7 +101,7 @@ namespace FashionTrack
                         }
                         else
                         {
-                            string saveCityQuerry = "INSERT INTO Cidade(Descricao, UF) VALUES(@city, @UF)";
+                            string saveCityQuerry = "INSERT INTO City(Description, UF) VALUES(@city, @UF)";
                             SqlCommand cityCommand = new SqlCommand(saveCityQuerry, connection);
                             cityCommand.Parameters.AddWithValue("@city", city);
                             cityCommand.Parameters.AddWithValue("@UF", UF);

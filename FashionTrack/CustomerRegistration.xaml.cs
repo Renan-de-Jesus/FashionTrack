@@ -33,14 +33,14 @@ namespace FashionTrack
                 try
                 {
                     connection.Open();
-                    string cityQuery = "SELECT ID_Cidade, Descricao FROM Cidade";
+                    string cityQuery = "SELECT ID_City, Description FROM City";
                     SqlCommand cityCommand = new SqlCommand(cityQuery, connection);
                     DataTable dt = new DataTable();
                     SqlDataAdapter adapter = new SqlDataAdapter(cityCommand);
                     adapter.Fill(dt);
                     cityCbx.ItemsSource = dt.DefaultView;
-                    cityCbx.DisplayMemberPath = "Descricao";
-                    cityCbx.SelectedValuePath = "ID_Cidade";
+                    cityCbx.DisplayMemberPath = "Description";
+                    cityCbx.SelectedValuePath = "ID_City";
                 }
                 catch (Exception ex)
                 {

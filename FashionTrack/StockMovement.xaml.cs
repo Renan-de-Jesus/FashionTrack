@@ -108,7 +108,7 @@ namespace FashionTrack
                             "INNER JOIN Color AS C ON P.ColorId = C.ColorId " +
                             "INNER JOIN Size AS S ON P.SizeId = S.SizeId " +
                             "INNER JOIN Stock AS ST ON P.ID_Product = ST.ID_Product " +
-                            "WHERE P.ID_Product = @idProduct AND (ST.Qty > 0)";
+                            "WHERE P.ID_Product = @idProduct";
 
                             SqlCommand searchProductCommand = new SqlCommand(searchProduct, connection);
                             searchProductCommand.Parameters.AddWithValue("@idProduct", idProduct);
@@ -166,7 +166,7 @@ namespace FashionTrack
                         "INNER JOIN Color AS C ON P.ColorId = C.ColorId " +
                         "INNER JOIN Size AS S ON P.SizeId = S.SizeId " +
                         "INNER JOIN Stock AS ST ON P.ID_Product = ST.ID_Product " +
-                        "WHERE Description LIKE @searchText AND (ST.Qty >= 0)";
+                        "WHERE Description LIKE @searchText";
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@searchText", "%" + searchText + "%");
 
@@ -319,28 +319,31 @@ namespace FashionTrack
             if (SelectedProducts.Count == 0)
             {
                 MessageBox.Show("Por favor, selecione ao menos um item!", "Erro", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
             }
 
-            if (movimentType.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(movimentType))
             {
                 MessageBox.Show("Por favor, selecione o tipo de movimentação!", "Erro", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
             }
 
-            if (operation.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(operation))
             {
                 MessageBox.Show("Por favor, selecione o tipo de operação!", "Erro", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
             }
 
             string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
             using (SqlConnection connection = new SqlConnection(connectionString))
+            {
                 try
                 {
                     connection.Open();
                     try
                     {
-
                         string querry = "INSERT INTO StockMovement(MDescription, Document, MovementType, Operation, MovementDate, ID_Users) " +
-                          "VALUES (@description, @document, @movementType, @operation, @date, @ID_Users) SELECT SCOPE_IDENTITY();";
+                                        "VALUES (@description, @document, @movementType, @operation, @date, @ID_Users) SELECT SCOPE_IDENTITY();";
                         SqlCommand stockMovementCommand = new SqlCommand(querry, connection);
 
                         stockMovementCommand.Parameters.AddWithValue("@description", description);
@@ -352,38 +355,47 @@ namespace FashionTrack
 
                         int idMovement = Convert.ToInt32(stockMovementCommand.ExecuteScalar());
                         sucefull = true;
+
                         try
                         {
                             foreach (var selectedProduct in SelectedProducts)
                             {
                                 string querry2 = "INSERT INTO ITEM_MOV(ID_StockMovement, ID_Product, Qty_Mov) " +
-                                "VALUES (@ID_StockMovement, @ID_Product, @Qty)";
+                                                 "VALUES (@ID_StockMovement, @ID_Product, @Qty)";
                                 SqlCommand stockMovementCommand2 = new SqlCommand(querry2, connection);
 
                                 stockMovementCommand2.Parameters.AddWithValue("@ID_StockMovement", idMovement);
                                 stockMovementCommand2.Parameters.AddWithValue("@ID_Product", selectedProduct.Id);
-                                stockMovementCommand2.Parameters.AddWithValue("Qty", selectedProduct.Quantity);
+                                stockMovementCommand2.Parameters.AddWithValue("@Qty", selectedProduct.Quantity);
+
+                                stockMovementCommand2.ExecuteNonQuery();
 
                                 if (movimentType == "Entrada")
                                 {
-                                    Prohibited();
+                                    UpdateStock(selectedProduct.Id, selectedProduct.Quantity, true);
                                 }
                                 else
                                 {
-                                    Exit();
+                                    UpdateStock(selectedProduct.Id, selectedProduct.Quantity, false);
                                 }
-
-                                stockMovementCommand2.ExecuteNonQuery();
                             }
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show("Erro ao passar as informações para o banco de dados!" + ex.Message, "Erro Itens Movimentação", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
+
                         if (sucefull)
                         {
+                            if(movimentType == "Entrada")
+                            {
+                                MessageBox.Show("Entrada realizada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Saida realizada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
                             ClearScreen();
-                            MessageBox.Show("Movimentação realizada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                         }
                     }
                     catch (Exception ex)
@@ -395,94 +407,30 @@ namespace FashionTrack
                 {
                     MessageBox.Show("Erro ao conectar ao banco de dados! " + ex.Message, "Erro Banco de Dados", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-        }
-
-        private void Prohibited()
-        {
-            if (SelectedProducts.Count > 0)
-            {
-                string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    try
-                    {
-                        connection.Open();
-
-                        foreach (var item in SelectedProducts)
-                        {
-                            var selectedProduct = item as SelectedProduct;
-                            if (selectedProduct != null)
-                            {
-                                int productId = selectedProduct.Id;
-                                int quantitySold = selectedProduct.Quantity;
-
-                                try
-                                {
-                                    string updateStockString = "UPDATE Stock " +
-                                        "SET Qty = Qty + @quantitySold " +
-                                        "WHERE ID_Product = @idProduct";
-                                    SqlCommand updateCommand = new SqlCommand(updateStockString, connection);
-                                    updateCommand.Parameters.AddWithValue("@idProduct", productId);
-                                    updateCommand.Parameters.AddWithValue("@quantitySold", quantitySold);
-
-                                    int rowsAffected = updateCommand.ExecuteNonQuery();
-                                }
-                                catch (Exception ex)
-                                {
-                                    MessageBox.Show($"Erro ao atualizar o estoque para o produto ID: {productId}. {ex.Message}", "Erro Atualização Estoque", MessageBoxButton.OK, MessageBoxImage.Error);
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Erro ao conectar ao banco de dados! {ex.Message}", "Erro Banco de Dados", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
             }
         }
 
-        private void Exit()
+        private void UpdateStock(int productId, int quantity, bool isEntry)
         {
-            if (SelectedProducts.Count > 0)
+            string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                try
                 {
-                    try
-                    {
-                        connection.Open();
+                    connection.Open();
+                    string updateStockString = isEntry ?
+                        "UPDATE Stock SET Qty = Qty + @quantity WHERE ID_Product = @idProduct" :
+                        "UPDATE Stock SET Qty = Qty - @quantity WHERE ID_Product = @idProduct";
 
-                        foreach (var item in SelectedProducts)
-                        {
-                            var selectedProduct = item as SelectedProduct;
-                            if (selectedProduct != null)
-                            {
-                                int productId = selectedProduct.Id;
-                                int quantitySold = selectedProduct.Quantity;
+                    SqlCommand updateCommand = new SqlCommand(updateStockString, connection);
+                    updateCommand.Parameters.AddWithValue("@idProduct", productId);
+                    updateCommand.Parameters.AddWithValue("@quantity", quantity);
 
-                                try
-                                {
-                                    string updateStockString = "UPDATE Stock " +
-                                        "SET Qty = Qty - @quantitySold " +
-                                        "WHERE ID_Product = @idProduct";
-                                    SqlCommand updateCommand = new SqlCommand(updateStockString, connection);
-                                    updateCommand.Parameters.AddWithValue("@idProduct", productId);
-                                    updateCommand.Parameters.AddWithValue("@quantitySold", quantitySold);
-
-                                    int rowsAffected = updateCommand.ExecuteNonQuery();
-                                }
-                                catch (Exception ex)
-                                {
-                                    MessageBox.Show($"Erro ao atualizar o estoque para o produto ID: {productId}. {ex.Message}", "Erro Atualização Estoque", MessageBoxButton.OK, MessageBoxImage.Error);
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Erro ao conectar ao banco de dados! {ex.Message}", "Erro Banco de Dados", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    updateCommand.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao atualizar o estoque para o produto ID: {productId}. {ex.Message}", "Erro Atualização Estoque", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }

@@ -108,7 +108,7 @@ private void RemoveText(object sender, RoutedEventArgs e)
                     }
                     else
                     {
-                        MessageBox.Show("Incorrect username or password. Please try again!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Usuário ou senha incorretos. Por favor, tente novamente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         lblUser.Text = "Usuário";
                         passwordPlaceholder.Text = "Senha";
                         passwordText.Password = String.Empty;

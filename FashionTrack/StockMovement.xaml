@@ -8,6 +8,7 @@
     Title="Movimentação de Estoque"
     Width="1280"
     Height="768"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
         <Style x:Key="HoverButtonStyle" TargetType="Button">
@@ -216,9 +217,10 @@
             AutoGenerateColumns="False"
             CanUserAddRows="False"
             CellEditEnding="selectedProductsDgv_CellEditEnding"
+            IsEnabled="False"
             ItemsSource="{Binding SelectedProducts}"
             SelectionMode="Single"
-            SelectionUnit="FullRow" IsEnabled="False">
+            SelectionUnit="FullRow">
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Width="30"
