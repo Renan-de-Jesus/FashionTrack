@@ -26,6 +26,38 @@
             M3.27002 6.95996L12 12.01L20.73 6.95996
             M12 22.08V12
         </Geometry>
+        <Geometry x:Key="ArrowGeometry">
+            M17 17 H17.01
+            M17.4 14 H18 C18.9319 14 19.3978 14 19.7654 14.1522
+            C20.2554 14.3552 20.6448 14.7446 20.8478 15.2346
+            C21 15.6022 21 16.0681 21 17
+            C21 17.9319 21 18.3978 20.8478 18.7654
+            C20.6448 19.2554 20.2554 19.6448 19.7654 19.8478
+            C19.3978 20 18.9319 20 18 20 H6
+            C5.06812 20 4.60218 20 4.23463 19.8478
+            C3.74458 19.6448 3.35523 19.2554 3.15224 18.7654
+            C3 18.3978 3 17.9319 3 17
+            C3 16.0681 3 15.6022 3.15224 15.2346
+            C3.35523 14.7446 3.74458 14.3552 4.23463 14.1522
+            C4.60218 14 5.06812 14 6 14 H6.6
+            M12 15 V4
+            M12 15 L9 12
+            M12 15 L15 12
+        </Geometry>
+        <Geometry x:Key="twArrowGeometry">
+            M9 13 L8.29289 12.2929 L9 11.5858 L9.70711 12.2929 L9 13
+            M10 22 C10 22.5523 9.55229 23 9 23 C8.44772 23 8 22.5523 8 22 L10 22
+            M3.29289 17.2929 L8.29289 12.2929 L9.70711 13.7071 L4.70711 18.7071 L3.29289 17.2929
+            M9.70711 12.2929 L14.7071 17.2929 L13.2929 18.7071 L8.29289 13.7071 L9.70711 12.2929
+            M10 13 L10 22 L8 22 L8 13 L10 13
+            M15 11 L14.2929 11.7071 L15 12.4142 L15.7071 11.7071 L15 11
+            M16 2 C16 1.44772 15.5523 1 15 1 C14.4477 1 14 1.44771 14 2 L16 2
+            M9.29289 6.70711 L14.2929 11.7071 L15.7071 10.2929 L10.7071 5.29289 L9.29289 6.70711
+            M15.7071 11.7071 L20.7071 6.70711 L19.2929 5.29289 L14.2929 10.2929 L15.7071 11.7071
+            M16 11 L16 2 L14 2 L14 11 L16 11
+        </Geometry>
+
+
         <Style x:Key="HoverButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="LightGray" />
             <Setter Property="Foreground" Value="Black" />
@@ -265,7 +297,7 @@
     <Grid x:Name="HomeScreen" Background="White">
         <Border
             Width="75"
-            Height="220"
+            Height="370"
             Margin="2,0,0,150"
             HorizontalAlignment="Left"
             Background="#EBECF2"
@@ -274,7 +306,7 @@
             CornerRadius="10">
             <StackPanel
                 Width="70"
-                Height="220"
+                Height="370"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center">
                 <Button
@@ -351,7 +383,7 @@
                 <Button
                     Width="50"
                     Height="50"
-                    Margin="0,0,0,0"
+                    Margin="0,0,0,10"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Background="#EBECF2"
@@ -377,6 +409,85 @@
                         Fill="Black"
                         Stretch="Uniform"
                         Stroke="Black" />
+                </Button>
+                <Border
+                    Width="20"
+                    Height=".5"
+                    Margin="0,0,0,10"
+                    Background="Black" />
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="0,0,0,10"
+                    VerticalAlignment="Center"
+                    Background="#EBECF2"
+                    Click="btnLogin_Click"
+                    FontSize="16"
+                    Foreground="White"
+                    Style="{StaticResource HomeHoverButtonStyle}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border
+                                Padding="5"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="0"
+                                CornerRadius="08">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Path
+                        Width="25"
+                        Height="25"
+                        Data="{StaticResource twArrowGeometry}"
+                        Fill="Black"
+                        RenderTransformOrigin="0.5,0.551"
+                        Stretch="Uniform"
+                        StrokeEndLineCap="Round"
+                        StrokeLineJoin="Round"
+                        StrokeStartLineCap="Round"
+                        StrokeThickness="2" />
+                </Button>
+                <Border
+                    Width="20"
+                    Height=".5"
+                    Margin="0,0,0,10"
+                    Background="Black" />
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="0,0,0,10"
+                    VerticalAlignment="Center"
+                    Background="#EBECF2"
+                    Click="btnLogin_Click"
+                    FontSize="16"
+                    Foreground="White"
+                    RenderTransformOrigin="0.5,0.5"
+                    Style="{StaticResource HomeHoverButtonStyle}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border
+                                Padding="5"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="0"
+                                CornerRadius="08">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Path
+                        Width="25"
+                        Height="25"
+                        Data="{StaticResource ArrowGeometry}"
+                        RenderTransformOrigin="0.5,0.551"
+                        Stretch="Uniform"
+                        Stroke="#000000"
+                        StrokeEndLineCap="Round"
+                        StrokeLineJoin="Round"
+                        StrokeStartLineCap="Round"
+                        StrokeThickness="2" />
                 </Button>
             </StackPanel>
         </Border>
