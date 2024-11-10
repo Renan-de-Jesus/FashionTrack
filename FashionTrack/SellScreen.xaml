@@ -537,7 +537,7 @@
                         LostFocus="AddText"
                         Opacity=".6"
                         Text="Id"
-                        TextWrapping="Wrap">
+                        TextWrapping="Wrap" TextChanged="idCustomerTxt_TextChanged">
                         <TextBox.Style>
                             <Style TargetType="{x:Type TextBox}">
                                 <Setter Property="Template">
