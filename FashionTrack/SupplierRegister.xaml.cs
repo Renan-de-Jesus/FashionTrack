@@ -283,7 +283,7 @@ namespace FashionTrack
 
                     update.ExecuteNonQuery();
                 }
-               MessageBoxResult result = MessageBox.Show("Dados do cliente atualizados com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+               MessageBoxResult result = MessageBox.Show("Dados do fornecedor atualizados com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
                 if (result == MessageBoxResult.OK)
                 {
                     this.Close();
@@ -291,7 +291,7 @@ namespace FashionTrack
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao atualizar os dados do cliente: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show("Erro ao atualizar os dados do fornecedor: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
 

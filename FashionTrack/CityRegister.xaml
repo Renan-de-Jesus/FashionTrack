@@ -79,6 +79,7 @@
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
                     GotFocus="RemoveText"
+                    KeyDown="ufTxt_KeyDown"
                     LostFocus="AddText"
                     MaxLength="2"
                     Opacity=".6"
@@ -105,6 +106,7 @@
                     VerticalAlignment="Top"
                     VerticalContentAlignment="Center"
                     GotFocus="RemoveText"
+                    KeyDown="cityTxt_KeyDown"
                     LostFocus="AddText"
                     Opacity=".6"
                     Text="Cidade">

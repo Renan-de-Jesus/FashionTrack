@@ -136,5 +136,21 @@ namespace FashionTrack
                 }
             }
         }
+
+        private void cityTxt_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                saveBtn_Click(sender, e);
+            }
+        }
+
+        private void ufTxt_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                saveBtn_Click(sender, e);
+            }
+        }
     }
 }

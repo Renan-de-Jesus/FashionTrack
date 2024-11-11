@@ -125,6 +125,13 @@ namespace FashionTrack
             currentBrandId = -1;
             SaveButton.IsEnabled = false;
         }
-       
+
+        private void BrandNameTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                SaveButton_Click(sender, e);
+            }
+        }
     }
 }

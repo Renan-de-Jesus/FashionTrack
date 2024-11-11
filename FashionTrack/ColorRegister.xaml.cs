@@ -133,6 +133,14 @@ namespace FashionTrack
             isEditMode = false;
             currentColorId = -1;
             SaveButton.IsEnabled = false;
-        }   
+        }
+
+        private void ColorNameTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                SaveButton_Click(sender, e);
+            }
+        }
     }
 }

@@ -78,6 +78,7 @@
                 VerticalAlignment="Top"
                 VerticalContentAlignment="Center"
                 GotFocus="RemoveText"
+                KeyDown="SizeDescriptionTextBox_KeyDown"
                 LostFocus="AddText"
                 MaxLength="3"
                 Opacity=".6"

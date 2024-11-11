@@ -10,11 +10,13 @@ namespace FashionTrack
 {
     public partial class ProductRegister : Window
     {
+        private int productId;
+
         string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
         private bool isEditMode = false;
         private int currentProductID = -1;
 
-         private void RemoveText(object sender, RoutedEventArgs e)
+        private void RemoveText(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
             if (textBox.Text == "Código da Marca" || textBox.Text == "Cor" || textBox.Text == "Descrição" || textBox.Text == "Preço")
@@ -59,12 +61,13 @@ namespace FashionTrack
 
         public ProductRegister(int productId) : this()
         {
+            this.productId = productId;
             isEditMode = true;
             currentProductID = productId;
-            LoadProductData();
+            LoadProductData(productId);
         }
 
-        private void LoadProductData()
+        private void LoadProductData(int productId)
         {
             if (currentProductID == -1) return;
 
@@ -127,6 +130,50 @@ namespace FashionTrack
             }
         }
 
+        private void updateProduct(){
+            string brandCode = BrandCodeTextBox.Text;
+            decimal price = decimal.Parse(PriceTextBox.Text);
+            string description = DescriptionTextBox.Text;
+            int brandId = (int)(BrandComboBox.SelectedItem as ComboBoxItem)?.Tag;
+            int sizeId = (int)(SizeComboBox.SelectedItem as ComboBoxItem)?.Tag;
+            int colorId = (int)(ColorComboBox.SelectedItem as ComboBoxItem)?.Tag;
+            string gender = GenderComboBox.Text;
+            int supplierId = currentProductID;
+
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string updateProduct = "UPDATE Product SET BrandCode = @brandCode, BrandId = @brand, " +
+                        "ColorId = @color, Description = @description, SizeID = @size, Gender = @gender, Price = @price " +
+                        " WHERE ID_Product = @ID_Product";
+                    SqlCommand update = new SqlCommand(updateProduct, connection);
+
+                    update.Parameters.AddWithValue("@brandCode", brandCode);
+                    update.Parameters.AddWithValue("@brand", brandId);
+                    update.Parameters.AddWithValue("@color", colorId);
+                    update.Parameters.AddWithValue("@description", description);
+                    update.Parameters.AddWithValue("@size", sizeId);
+                    update.Parameters.AddWithValue("@gender", gender);
+                    update.Parameters.AddWithValue("@price", price);
+                    update.Parameters.AddWithValue("@ID_Product", productId);
+
+                    update.ExecuteNonQuery();
+                }
+                MessageBoxResult result = MessageBox.Show("Dados do produto atualizados com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (result == MessageBoxResult.OK)
+                {
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao atualizar os dados do produto: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+        }
+
         private void ProductIdTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !IsTextAllowedForId(e.Text);
@@ -151,6 +198,12 @@ namespace FashionTrack
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            if(productId > 0)
+            {
+                updateProduct();
+                return;
+            }
+
             if (!ValidateInputs(out string errorMessage))
             {
                 MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);

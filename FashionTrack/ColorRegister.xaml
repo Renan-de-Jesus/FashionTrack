@@ -79,6 +79,7 @@
                 VerticalAlignment="Top"
                 VerticalContentAlignment="Center"
                 GotFocus="RemoveText"
+                KeyDown="ColorNameTextBox_KeyDown"
                 LostFocus="AddText"
                 Opacity=".6"
                 PreviewTextInput="ColorNameTextBox_PreviewTextInput"
