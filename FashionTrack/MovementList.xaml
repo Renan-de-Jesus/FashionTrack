@@ -512,14 +512,14 @@
                                         Width="130"
                                         Margin="10"
                                         FontSize="14"
-                                        Text="{Binding MDescription}" />
+                                        Text="{Binding Description}" />
                                 </Border>
                                 <Border BorderBrush="Gray" BorderThickness="0,0,1,1">
                                     <TextBlock
                                         Width="130"
                                         Margin="10"
                                         FontSize="14"
-                                        Text="{Binding Description}" />
+                                        Text="{Binding MDescription}" />
                                 </Border>
 
                                 <Border BorderBrush="Gray" BorderThickness="0,0,1,1">
