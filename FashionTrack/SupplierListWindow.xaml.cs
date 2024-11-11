@@ -51,7 +51,7 @@ namespace FashionTrack
                 }
                 else
                 {
-                    MessageBox.Show("No suppliers found.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Fornecedores não encontrados.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
             catch (Exception ex)
@@ -79,12 +79,12 @@ namespace FashionTrack
                     }
                 }
 
-                MessageBox.Show("Supplier deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Fornecessor excluido com sucesso.", "Successo", MessageBoxButton.OK, MessageBoxImage.Information);
                 LoadSupplier();
             }
             else
             {
-                MessageBox.Show("Please select an supplier to delete.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Por favor, selecione um fornecedor para poder deletar.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

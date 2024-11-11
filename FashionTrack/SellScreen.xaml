@@ -315,11 +315,10 @@
                     Margin="0,15,0,10"
                     VerticalAlignment="Center"
                     Background="#EBECF2"
-                    Click="btnLogin_Click"
                     FontSize="16"
                     Foreground="White"
                     RenderTransformOrigin="0.5,0.5"
-                    Style="{StaticResource HomeHoverButtonStyle}">
+                    Style="{StaticResource HomeHoverButtonStyle}" Click="Button_Click">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border
@@ -351,11 +350,10 @@
                     Margin="0,0,0,10"
                     VerticalAlignment="Center"
                     Background="#EBECF2"
-                    Click="btnLogin_Click"
                     FontSize="16"
                     Foreground="White"
                     RenderTransformOrigin="0.5,0.5"
-                    Style="{StaticResource HomeHoverButtonStyle}">
+                    Style="{StaticResource HomeHoverButtonStyle}" Click="Button_Click_1">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border
@@ -387,11 +385,10 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Background="#EBECF2"
-                    Click="btnLogin_Click"
                     FontSize="16"
                     Foreground="White"
                     RenderTransformOrigin="0.5,0.5"
-                    Style="{StaticResource HomeHoverButtonStyle}">
+                    Style="{StaticResource HomeHoverButtonStyle}" Click="Button_Click_2">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border
@@ -421,10 +418,9 @@
                     Margin="0,0,0,10"
                     VerticalAlignment="Center"
                     Background="#EBECF2"
-                    Click="btnLogin_Click"
                     FontSize="16"
                     Foreground="White"
-                    Style="{StaticResource HomeHoverButtonStyle}">
+                    Style="{StaticResource HomeHoverButtonStyle}" Click="Button_Click_3">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border
@@ -460,11 +456,10 @@
                     Margin="0,0,0,10"
                     VerticalAlignment="Center"
                     Background="#EBECF2"
-                    Click="btnLogin_Click"
                     FontSize="16"
                     Foreground="White"
                     RenderTransformOrigin="0.5,0.5"
-                    Style="{StaticResource HomeHoverButtonStyle}">
+                    Style="{StaticResource HomeHoverButtonStyle}" Click="Button_Click_4">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border
@@ -734,7 +729,7 @@
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
                     GotFocus="RemoveText"
-                    KeyDown="idCustomerTxt_KeyDown"
+                    KeyDown="idProductTxt_KeyDown"
                     LostFocus="AddText"
                     Opacity=".6"
                     Text="Id"

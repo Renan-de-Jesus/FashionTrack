@@ -1,23 +1,66 @@
-﻿<Window x:Class="FashionTrack.SupplierListWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Lista de Fornecedores" Height="500" Width="700">
+﻿<Window
+    x:Class="FashionTrack.SupplierListWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Lista de Fornecedores"
+    Width="700"
+    Height="500"
+    WindowStartupLocation="CenterScreen">
     <Grid>
-        <DataGrid x:Name="SupplierDataGrid" AutoGenerateColumns="False" SelectionMode="Single" 
-          SelectionChanged="SupplierDataGrid_SelectionChanged" Margin="10,35,10,10" 
-          IsReadOnly="True" MouseDoubleClick="SupplierDataGrid_MouseDoubleClick">
+        <DataGrid
+            x:Name="SupplierDataGrid"
+            Margin="10,35,10,10"
+            AutoGenerateColumns="False"
+            IsReadOnly="True"
+            MouseDoubleClick="SupplierDataGrid_MouseDoubleClick"
+            SelectionChanged="SupplierDataGrid_SelectionChanged"
+            SelectionMode="Single">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID Fornecedor" Binding="{Binding ID_Supplier}" />
-                <DataGridTextColumn Header="Razão Social" Binding="{Binding CorporateName}" />
-                <DataGridTextColumn Header="CNPJ" Binding="{Binding CNPJ}" />
-                <DataGridTextColumn Header="Telefone" Binding="{Binding Telephone}" />
-                <DataGridTextColumn Header="Representante" Binding="{Binding Representative}" />
-                <DataGridTextColumn Header="ID Cidade" Binding="{Binding ID_City}" />
-                <DataGridTextColumn Header="Cidade" Binding="{Binding City}"/>
-                <DataGridTextColumn Header="UF" Binding="{Binding UF}" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding ID_Supplier}"
+                    Header="ID Fornecedor" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding CorporateName}"
+                    Header="Razão Social" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding CNPJ}"
+                    Header="CNPJ" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding Telephone}"
+                    Header="Telefone" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding Representative}"
+                    Header="Representante" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding ID_City}"
+                    Header="ID Cidade" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding City}"
+                    Header="Cidade" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding UF}"
+                    Header="UF" />
             </DataGrid.Columns>
         </DataGrid>
-        <Button Content="Excluir Fornecedor" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Click="DeleteButton_Click" />
-        <Button Content="Cadastrar Fornecedor" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Click="RegisterButton_Click" />
+        <Button
+            Margin="10"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Click="DeleteButton_Click"
+            Content="Excluir Fornecedor" />
+        <Button
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="RegisterButton_Click"
+            Content="Cadastrar Fornecedor" />
     </Grid>
 </Window>

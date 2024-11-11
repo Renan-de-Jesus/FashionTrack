@@ -15,6 +15,5 @@
             </DataGrid.Columns>
         </DataGrid>
         <Button Content="Excluir Venda" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10" Click="DeleteSellButton_Click" />
-        <Button Content="Nova Venda" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" Click="NewSellButton_Click" />
     </Grid>
 </Window>

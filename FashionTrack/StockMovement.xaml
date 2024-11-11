@@ -448,6 +448,8 @@
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
                     GotFocus="RemoveText"
+                    IsEnabled="False"
+                    KeyDown="idProductTxt_KeyDown"
                     LostFocus="AddText"
                     Opacity=".6"
                     Text="Id"
