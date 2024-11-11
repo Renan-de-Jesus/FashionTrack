@@ -9,6 +9,7 @@ using System.Linq;
 using System.ComponentModel;
 using System.Windows.Markup;
 using Microsoft.IdentityModel.Tokens;
+using System.Text.RegularExpressions;
 
 namespace FashionTrack
 {
@@ -17,7 +18,7 @@ namespace FashionTrack
         private void RemoveText(object sender, RoutedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "Cliente" || textBox.Text == "Selecione o item" || textBox.Text == "Id")
+            if (textBox.Text == "Cliente" || textBox.Text == "Selecione o item" || textBox.Text == "Id" || textBox.Text == "0.00")
             {
                 textBox.Text = "";
                 textBox.Opacity = 1;
@@ -41,6 +42,9 @@ namespace FashionTrack
                         break;
                     case "idProductTxt":
                         textBox.Text = "Id";
+                        break;
+                    case "0.00":
+                        textBox.Text = "0.00";
                         break;
                 }
                 textBox.Opacity = 0.6;

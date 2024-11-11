@@ -140,6 +140,7 @@ namespace FashionTrack
                         if (resultUpdate > 0)
                         {
                             MessageBox.Show("Usuário atualizado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            this.Close();
                         }
                         else
                         {

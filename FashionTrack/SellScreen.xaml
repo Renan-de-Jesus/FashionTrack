@@ -1013,7 +1013,7 @@
                                     Height="20"
                                     Margin="15,0,0,0"
                                     VerticalAlignment="Center"
-                                    Text="{Binding SizeDescription}" />
+                                    Text="{Binding Size}" />
                                 <Border
                                     Height="20"
                                     Margin="15,0,0,0"
@@ -1167,7 +1167,9 @@
                                     HorizontalContentAlignment="Left"
                                     VerticalContentAlignment="Center"
                                     FontSize="16"
-                                    Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}">
+                                    Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}"
+                                    GotFocus="RemoveText"
+                                    LostFocus="AddText">
                                     <TextBox.Style>
                                         <Style TargetType="{x:Type TextBox}">
                                             <Setter Property="Template">
