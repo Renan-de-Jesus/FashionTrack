@@ -670,7 +670,7 @@ namespace FashionTrack
 
         private void SelectedProducts_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-          //Em branco
+            //Em branco
 
         }
 

@@ -29,11 +29,10 @@ namespace FashionTrack
                 {
                     conn.Open();
                     string query = @"
-                        SELECT SM.ID_StockMovement, IM.ID_Product, P.Description, SM.MDescription, SM.Document, 
-                        SM.MovementType, SM.Operation, IM.Qty_Mov, SM.MovementDate, SM.ID_Users, U.Username
+                        SELECT SM.ID_StockMovement, SM.ID_Product, P.Description, SM.MDescription, SM.Document, 
+                        SM.MovementType, SM.Operation, SM.Qty, SM.MovementDate, SM.ID_Users, U.Username
                         FROM StockMovement AS SM
-                        INNER JOIN ITEM_MOV AS IM ON SM.ID_StockMovement = IM.ID_StockMovement
-                        INNER JOIN Product AS P ON IM.ID_Product = P.ID_Product
+                        INNER JOIN Product AS P ON SM.ID_Product = P.ID_Product
                         INNER JOIN Users AS U ON SM.ID_Users = U.ID_Users";
 
                     using (SqlDataAdapter adapter = new SqlDataAdapter(query, conn))
@@ -70,7 +69,7 @@ namespace FashionTrack
 
                     try
                     {
-                        string deleteItemMovQuery = "DELETE FROM ITEM_MOV WHERE ID_StockMovement = @ID_StockMovement";
+                        string deleteItemMovQuery = "DELETE FROM StockMovement WHERE ID_StockMovement = @ID_StockMovement";
                         using (SqlCommand deleteItemMovCmd = new SqlCommand(deleteItemMovQuery, conn, transaction))
                         {
                             deleteItemMovCmd.Parameters.AddWithValue("@ID_StockMovement", movementId);
