@@ -145,7 +145,9 @@ CREATE TABLE StockMovement (
     MovementType NVARCHAR(10) NOT NULL, CHECK (MovementType IN ('Entrada', 'Saida')),
     Operation NVARCHAR(2) NOT NULL, CHECK (Operation IN ('E', 'S', 'I', 'R', 'D', 'T')),
     MovementDate DATETIME NOT NULL DEFAULT GETDATE(),
-    CONSTRAINT FK_Movement_Product FOREIGN KEY (ID_Product) REFERENCES Product(ID_Product) ON DELETE CASCADE
+    ID_Users INT NULL,
+    CONSTRAINT FK_Movement_Product FOREIGN KEY (ID_Product) REFERENCES Product(ID_Product) ON DELETE CASCADE,
+    CONSTRAINT FK_Movement_User FOREIGN KEY (ID_Users) REFERENCES Users(ID_Users) ON DELETE CASCADE
 );
 
 INSERT INTO StockMovement (ID_Product, MDescription, Document, MovementType, Operation, Qty, ID_Users) 
