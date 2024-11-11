@@ -17,14 +17,24 @@ using System.Windows.Shapes;
 using static FashionTrack.SellScreen;
 using System.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using MigraDoc.DocumentObjectModel;
+using MigraDoc.Rendering;
+using System.Data;
+using Microsoft.Win32;
 
 namespace FashionTrack
 {
     public partial class StockMovement : Window
     {
+        string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         private int movementId;
-        string movimentType;
+        int productId;
+        string movementType;
         string operation;
+        int qty;
         public static DateTime Today { get; }
         public ObservableCollection<Product> Products { get; set; } = new ObservableCollection<Product>();
         public ObservableCollection<SelectedProduct> SelectedProducts { get; set; } = new ObservableCollection<SelectedProduct>();
@@ -290,13 +300,13 @@ namespace FashionTrack
 
         private void prohibitedRdBt_Checked(object sender, RoutedEventArgs e)
         {
-            movimentType = "Entrada";
+            movementType = "Entrada";
             releaseOfComponents();
         }
 
         private void exitRdBt_Checked(object sender, RoutedEventArgs e)
         {
-            movimentType = "Saida";
+            movementType = "Saida";
             releaseOfComponents();
         }
 
@@ -347,9 +357,8 @@ namespace FashionTrack
         {
             string description = descriptionTxt.Text;
             string document = documentTxt.Text;
-            int userId = LoginWindow.LoggedInUserId;
             DateTime date = DateTime.Now;
-            bool sucefull;
+            bool sucefull = false;
 
             if (SelectedProducts.Count == 0)
             {
@@ -357,7 +366,7 @@ namespace FashionTrack
                 return;
             }
 
-            if (string.IsNullOrEmpty(movimentType))
+            if (string.IsNullOrEmpty(movementType))
             {
                 MessageBox.Show("Por favor, selecione o tipo de movimentação!", "Erro", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
@@ -378,8 +387,8 @@ namespace FashionTrack
                     try
                     {
                         string searchDocument = "SELECT COUNT(*) " +
-                            "FROM StockMovement " +
-                            "WHERE Document = @document";
+                                                "FROM StockMovement " +
+                                                "WHERE Document = @document";
                         SqlCommand search = new SqlCommand(searchDocument, connection);
                         search.Parameters.AddWithValue("@document", document);
 
@@ -391,72 +400,72 @@ namespace FashionTrack
                             MessageBox.Show("Já existe uma movimentação com esse número de documento.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                             return;
                         }
-                        try
+
+                        foreach (var selectedProduct in SelectedProducts)
                         {
-                            string querry = "INSERT INTO StockMovement(MDescription, Document, MovementType, Operation, MovementDate, ID_Users) " +
-                                            "VALUES (@description, @document, @movementType, @operation, @date, @ID_Users) SELECT SCOPE_IDENTITY();";
+                            string checkProductQuery = "SELECT COUNT(*) FROM Product WHERE ID_Product = @ProductId";
+                            SqlCommand checkProductCommand = new SqlCommand(checkProductQuery, connection);
+                            checkProductCommand.Parameters.AddWithValue("@ProductId", selectedProduct.Id);
+                            int productCount = (int)checkProductCommand.ExecuteScalar();
+                            if (productCount == 0)
+                            {
+                                throw new Exception($"Produto com o ID {selectedProduct.Id} não existe.");
+                            }
+                        }
+
+                        foreach (var selectedProduct in SelectedProducts)
+                        {
+                            string querry = "INSERT INTO StockMovement(ID_Product, MDescription, Document, MovementType, Operation, Qty, MovementDate) " +
+                                            "VALUES (@ID_Product, @MDescription, @Document, @MovementType, @Operation, @Qty, @Date); SELECT SCOPE_IDENTITY();";
                             SqlCommand stockMovementCommand = new SqlCommand(querry, connection);
 
-                            stockMovementCommand.Parameters.AddWithValue("@description", description);
-                            stockMovementCommand.Parameters.AddWithValue("@document", document);
-                            stockMovementCommand.Parameters.AddWithValue("@movementType", movimentType);
-                            stockMovementCommand.Parameters.AddWithValue("@operation", operation);
-                            stockMovementCommand.Parameters.AddWithValue("@date", date);
-                            stockMovementCommand.Parameters.AddWithValue("@ID_Users", userId);
+                            stockMovementCommand.Parameters.AddWithValue("@ID_Product", selectedProduct.Id);
+                            stockMovementCommand.Parameters.AddWithValue("@MDescription", description);
+                            stockMovementCommand.Parameters.AddWithValue("@Document", document);
+                            stockMovementCommand.Parameters.AddWithValue("@MovementType", movementType);
+                            stockMovementCommand.Parameters.AddWithValue("@Operation", operation);
+                            stockMovementCommand.Parameters.AddWithValue("@Qty", selectedProduct.Quantity);
+                            stockMovementCommand.Parameters.AddWithValue("@Date", date);
 
                             int idMovement = Convert.ToInt32(stockMovementCommand.ExecuteScalar());
                             sucefull = true;
 
-                            try
+                            string querry2 = "INSERT INTO Stock( ID_Product, Qty) " +
+                                             "VALUES (@ID_Product, @Qty)";
+                            SqlCommand stockMovementCommand2 = new SqlCommand(querry2, connection);
+
+                            stockMovementCommand2.Parameters.AddWithValue("@ID_StockMovement", idMovement);
+                            stockMovementCommand2.Parameters.AddWithValue("@ID_Product", selectedProduct.Id);
+                            stockMovementCommand2.Parameters.AddWithValue("@Qty", selectedProduct.Quantity);
+
+                            stockMovementCommand2.ExecuteNonQuery();
+
+                            if (movementType == "Entrada")
                             {
-                                foreach (var selectedProduct in SelectedProducts)
-                                {
-                                    string querry2 = "INSERT INTO ITEM_MOV(ID_StockMovement, ID_Product, Qty_Mov) " +
-                                                     "VALUES (@ID_StockMovement, @ID_Product, @Qty)";
-                                    SqlCommand stockMovementCommand2 = new SqlCommand(querry2, connection);
-
-                                    stockMovementCommand2.Parameters.AddWithValue("@ID_StockMovement", idMovement);
-                                    stockMovementCommand2.Parameters.AddWithValue("@ID_Product", selectedProduct.Id);
-                                    stockMovementCommand2.Parameters.AddWithValue("@Qty", selectedProduct.Quantity);
-
-                                    stockMovementCommand2.ExecuteNonQuery();
-
-                                    if (movimentType == "Entrada")
-                                    {
-                                        UpdateStock(selectedProduct.Id, selectedProduct.Quantity, true);
-                                    }
-                                    else
-                                    {
-                                        UpdateStock(selectedProduct.Id, selectedProduct.Quantity, false);
-                                    }
-                                }
+                                UpdateStock(selectedProduct.Id, selectedProduct.Quantity, true);
                             }
-                            catch (Exception ex)
+                            else
                             {
-                                MessageBox.Show("Erro ao passar as informações para o banco de dados!" + ex.Message, "Erro Itens Movimentação", MessageBoxButton.OK, MessageBoxImage.Error);
-                            }
-
-                            if (sucefull)
-                            {
-                                if (movimentType == "Entrada")
-                                {
-                                    MessageBox.Show("Entrada realizada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Saida realizada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-                                }
-                                ClearScreen();
+                                UpdateStock(selectedProduct.Id, selectedProduct.Quantity, false);
                             }
                         }
-                        catch (Exception ex)
+
+                        if (sucefull)
                         {
-                            MessageBox.Show("Erro ao passar as informações para o banco de dados!" + ex.Message, "Erro Movimentação de Estoque", MessageBoxButton.OK, MessageBoxImage.Error);
+                            if (movementType == "Entrada")
+                            {
+                                MessageBox.Show("Entrada realizada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Saida realizada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                            ClearScreen();
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Erro ao procurar documento repetido! " + ex.Message, "Erro de Procura", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Erro ao passar as informações para o banco de dados!" + ex.Message, "Erro Movimentação de Estoque", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 catch (Exception ex)
@@ -505,7 +514,7 @@ namespace FashionTrack
 
         private void selectedProductsDgv_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            if (movimentType == "Saida")
+            if (movementType == "Saida")
             {
                 if (e.EditAction == DataGridEditAction.Commit)
                 {
@@ -535,6 +544,125 @@ namespace FashionTrack
                         }
                     }
                 }
+            }
+        }
+
+        private void ReportButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = @"
+         SELECT 
+             p.Description AS Product, 
+             m.MovementDate, 
+             m.Qty,
+             m.MovementType,
+             m.Operation,
+             m.Document,
+             m.MDescription
+         FROM StockMovement m
+         LEFT JOIN Product p ON m.ID_Product = p.ID_Product";
+
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(query, conn))
+                    {
+                        adapter.Fill(dataTable);
+                    }
+                }
+
+                if (dataTable.Rows.Count > 0)
+                {
+                    MigraDoc.DocumentObjectModel.Document document = new MigraDoc.DocumentObjectModel.Document();
+                    MigraDoc.DocumentObjectModel.Section section = document.AddSection();
+
+                    // Set page size to A4
+                    section.PageSetup.PageFormat = PageFormat.A4;
+                    section.PageSetup.LeftMargin = "1.7cm";
+                    section.PageSetup.RightMargin = "1cm";
+                    section.PageSetup.TopMargin = "2cm";
+                    section.PageSetup.BottomMargin = "2cm";
+
+                    // Add title
+                    MigraDoc.DocumentObjectModel.Paragraph title = section.AddParagraph("Relatório de Movimentações de Estoque");
+                    title.Format.Font.Size = 14;
+                    title.Format.Font.Bold = true;
+                    title.Format.SpaceAfter = 10;
+                    title.Format.Alignment = ParagraphAlignment.Center;
+
+                    // Add table
+                    MigraDoc.DocumentObjectModel.Tables.Table table = section.AddTable();
+                    table.Borders.Width = 0.75;
+
+                    // Define columns
+                    MigraDoc.DocumentObjectModel.Tables.Column dateColumn = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(3));
+                    MigraDoc.DocumentObjectModel.Tables.Column productColumn = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(5));
+                    MigraDoc.DocumentObjectModel.Tables.Column documentColumn = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(4));
+                    MigraDoc.DocumentObjectModel.Tables.Column qtyColumn = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(3));
+                    MigraDoc.DocumentObjectModel.Tables.Column movementTypeColumn = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(3));
+
+                    // Add header row
+                    MigraDoc.DocumentObjectModel.Tables.Row headerRow = table.AddRow();
+                    headerRow.Cells[0].AddParagraph("Data").Format.Alignment = ParagraphAlignment.Center;
+                    headerRow.Cells[1].AddParagraph("Produto").Format.Alignment = ParagraphAlignment.Center;
+                    headerRow.Cells[2].AddParagraph("Documento").Format.Alignment = ParagraphAlignment.Center;
+                    headerRow.Cells[3].AddParagraph("Quantidade").Format.Alignment = ParagraphAlignment.Center;
+                    headerRow.Cells[4].AddParagraph("Tipo de Movimento").Format.Alignment = ParagraphAlignment.Center;
+
+                    // Add data rows
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        MigraDoc.DocumentObjectModel.Tables.Row dataRow = table.AddRow();
+
+                        MigraDoc.DocumentObjectModel.Paragraph dateParagraph = dataRow.Cells[0].AddParagraph(Convert.ToDateTime(row["MovementDate"]).ToString("dd/MM/yyyy"));
+                        dateParagraph.Format.Alignment = ParagraphAlignment.Center;
+
+                        MigraDoc.DocumentObjectModel.Paragraph productParagraph = dataRow.Cells[1].AddParagraph(row["Product"].ToString());
+                        productParagraph.Format.Alignment = ParagraphAlignment.Center;
+
+                        MigraDoc.DocumentObjectModel.Paragraph documentParagraph = dataRow.Cells[2].AddParagraph(row["Document"].ToString());
+                        documentParagraph.Format.Alignment = ParagraphAlignment.Center;
+
+                        MigraDoc.DocumentObjectModel.Paragraph qtyParagraph = dataRow.Cells[3].AddParagraph(row["Qty"].ToString());
+                        qtyParagraph.Format.Alignment = ParagraphAlignment.Center;
+
+                        MigraDoc.DocumentObjectModel.Paragraph movementTypeParagraph = dataRow.Cells[4].AddParagraph(row["MovementType"].ToString());
+                        movementTypeParagraph.Format.Alignment = ParagraphAlignment.Center;
+                    }
+
+                    // Render PDF
+                    PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true);
+                    pdfRenderer.Document = document;
+                    pdfRenderer.RenderDocument();
+
+                    // Save PDF
+                    SaveFileDialog saveFileDialog = new SaveFileDialog
+                    {
+                        Filter = "PDF Files|*.pdf",
+                        Title = "Save Movement Report"
+                    };
+
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string fileName = saveFileDialog.FileName;
+                        pdfRenderer.PdfDocument.Save(fileName);
+                        MessageBox.Show("Report generated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        // Open the PDF file
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(fileName) { UseShellExecute = true });
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No movement data found.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error generating report: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

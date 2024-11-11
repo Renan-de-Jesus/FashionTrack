@@ -122,7 +122,7 @@ CREATE TABLE Sell (
 );
 
 INSERT INTO Sell (ID_Customer, Sell_Document, SellDate, PaymentMethod, TotalPrice) 
-VALUES (1, 1, '31/10/2024', 'Debito', 59.90);
+VALUES (1, 1, '31/10/2024', 'Debito',59.90);
 
 CREATE TABLE ItemSell (
     ID_ItemSell INT IDENTITY(1,1),
@@ -130,7 +130,7 @@ CREATE TABLE ItemSell (
     ID_Product INT NOT NULL,
     Qty INT NOT NULL, 
     PartialPrice DECIMAL(10, 2) NOT NULL,
-    CONSTRAINT FK_ITEMVENDAS PRIMARY KEY (ID_ItemSell),
+    CONSTRAINT PK_ITEMVENDAS PRIMARY KEY (ID_ItemSell),
     CONSTRAINT FK_ITEMVENDAS_PRODUTOS FOREIGN KEY (ID_Product) REFERENCES Product(ID_Product) ON DELETE CASCADE,
     CONSTRAINT FK_ITEMVENDAS_VENDAS FOREIGN KEY (ID_Sell) REFERENCES Sell(ID_Sell) ON DELETE CASCADE
 );
@@ -140,16 +140,12 @@ VALUES (1, 1, 1, 59.90);
 
 CREATE TABLE StockMovement (
     ID_StockMovement INT IDENTITY(1,1) PRIMARY KEY,
-    ID_Product INT NOT NULL,
     MDescription NVARCHAR(100) NOT NULL, 
     Document INT NULL,
     MovementType NVARCHAR(10) NOT NULL, CHECK (MovementType IN ('Entrada', 'Saida')),
     Operation NVARCHAR(2) NOT NULL, CHECK (Operation IN ('E', 'S', 'I', 'R', 'D', 'T')),
-    Qty INT NOT NULL,
     MovementDate DATETIME NOT NULL DEFAULT GETDATE(),
-    ID_Users INT NULL,
-    CONSTRAINT FK_Movement_Product FOREIGN KEY (ID_Product) REFERENCES Product(ID_Product) ON DELETE CASCADE,
-    CONSTRAINT FK_Movement_User FOREIGN KEY (ID_Users) REFERENCES Users(ID_Users) ON DELETE CASCADE
+    CONSTRAINT FK_Movement_Product FOREIGN KEY (ID_Product) REFERENCES Product(ID_Product) ON DELETE CASCADE
 );
 
 INSERT INTO StockMovement (ID_Product, MDescription, Document, MovementType, Operation, Qty, ID_Users) 
@@ -164,3 +160,15 @@ CREATE TABLE Stock (
 
 INSERT INTO Stock (ID_Product, Qty) 
 VALUES (1, 100);
+
+CREATE TABLE ITEM_MOV (
+    ID_Item_Mov INT IDENTITY (1,1), 
+    ID_StockMovement INT NOT NULL,
+    ID_Product INT NOT NULL,
+    Qty_Mov INT NOT NULL,
+    CONSTRAINT PK_Item_Mov PRIMARY KEY (ID_Item_Mov),
+    CONSTRAINT FK_Stock_Movement FOREIGN KEY (ID_StockMovement) REFERENCES StockMovement(ID_StockMovement),
+    CONSTRAINT FK_Mov_Product FOREIGN KEY (ID_Product) REFERENCES Product(ID_Product)
+);
+
+INSERT INTO ITEM_MOV (ID_StockMovement, ID_Product, Qty_Mov) VALUES (1, 1, 50);

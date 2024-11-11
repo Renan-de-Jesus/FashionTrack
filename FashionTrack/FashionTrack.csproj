@@ -37,8 +37,8 @@
     <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2025.1.0" />
     <PackageReference Include="iTextSharp" Version="5.5.13.4" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
-    <PackageReference Include="PDFsharp" Version="6.1.1" />
     <PackageReference Include="PDFsharp-MigraDoc-WPF" Version="6.1.1" />
+    <PackageReference Include="PDFsharp-WPF" Version="6.1.1" />
   </ItemGroup>
 
   <ItemGroup>
