@@ -510,35 +510,35 @@ namespace FashionTrack
             documentTxt.Text = string.Empty;
         }
 
-        private void selectedProductsDgv_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        private void QuantityTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             if (movementType == "Saida")
             {
-                if (e.EditAction == DataGridEditAction.Commit)
+                var textBox = sender as TextBox;
+                if (textBox != null)
                 {
-                    var editedProduct = e.Row.Item as SelectedProduct;
+                    var editedProduct = textBox.DataContext as SelectedProduct;
                     if (editedProduct != null)
                     {
-                        var textBox = e.EditingElement as TextBox;
-                        if (textBox != null)
+                        if (int.TryParse(textBox.Text, out int quantity))
                         {
-                            if (int.TryParse(textBox.Text, out int quantity))
+                            if (quantity > editedProduct.StockQuantity)
                             {
-                                if (quantity > editedProduct.StockQuantity)
-                                {
-                                    MessageBox.Show($"A quantidade não pode ser maior que o estoque ({editedProduct.StockQuantity} unidades).", "Erro de Validação", MessageBoxButton.OK, MessageBoxImage.Error);
-                                    editedProduct.Quantity = editedProduct.StockQuantity;
-                                }
-                                else
-                                {
-                                    editedProduct.Quantity = quantity;
-                                }
+                                MessageBox.Show($"A quantidade não pode ser maior que o estoque ({editedProduct.StockQuantity} unidades).",
+                                    "Erro de Validação", MessageBoxButton.OK, MessageBoxImage.Error);
+                                editedProduct.Quantity = editedProduct.StockQuantity;
+                                textBox.Text = editedProduct.StockQuantity.ToString();
                             }
                             else
                             {
-                                MessageBox.Show("Digite uma quantidade válida.", "Erro de Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
-                                editedProduct.Quantity = 1;
+                                editedProduct.Quantity = quantity;
                             }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Digite uma quantidade válida.", "Erro de Validação", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            editedProduct.Quantity = 1;
+                            textBox.Text = "1";
                         }
                     }
                 }

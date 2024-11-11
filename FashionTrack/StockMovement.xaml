@@ -791,6 +791,7 @@
                                     HorizontalContentAlignment="Left"
                                     VerticalContentAlignment="Center"
                                     FontSize="16"
+                                    LostFocus="QuantityTextBox_LostFocus"
                                     Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}">
                                     <TextBox.Style>
                                         <Style TargetType="{x:Type TextBox}">
