@@ -29,12 +29,22 @@ namespace FashionTrack
                 {
                     conn.Open();
                     string query = @"
-                        SELECT SM.ID_StockMovement, IM.ID_Product, P.Description, SM.MDescription, SM.Document, 
-                        SM.MovementType, SM.Operation, IM.Qty_Mov, SM.MovementDate, SM.ID_Users, U.Username
-                        FROM StockMovement AS SM
-                        INNER JOIN ITEM_MOV AS IM ON SM.ID_StockMovement = IM.ID_StockMovement
-                        INNER JOIN Product AS P ON IM.ID_Product = P.ID_Product
-                        INNER JOIN Users AS U ON SM.ID_Users = U.ID_Users";
+                SELECT 
+                    SM.ID_StockMovement,
+                    SM.MDescription,
+                    SM.Document,
+                    SM.MovementType,
+                    SM.Operation,
+                    SM.MovementDate,
+                    IM.ID_Product,
+                    P.Description AS ProductDescription,
+                    IM.Qty_Mov
+                FROM 
+                    StockMovement SM
+                INNER JOIN 
+                    ITEM_MOV IM ON SM.ID_StockMovement = IM.ID_StockMovement
+                INNER JOIN 
+                    Product P ON IM.ID_Product = P.ID_Product";
 
                     using (SqlDataAdapter adapter = new SqlDataAdapter(query, conn))
                     {
@@ -57,6 +67,9 @@ namespace FashionTrack
             }
         }
 
+
+
+
         private void DeleteMovButton_Click(object sender, RoutedEventArgs e)
         {
             if (MovementDataGrid.SelectedItem is DataRowView selectedRow)
@@ -70,18 +83,22 @@ namespace FashionTrack
 
                     try
                     {
-                        string deleteItemMovQuery = "DELETE FROM StockMovement WHERE ID_StockMovement = @ID_StockMovement";
+                        // Deletar registros na tabela ITEM_MOV
+                        string deleteItemMovQuery = "DELETE FROM ITEM_MOV WHERE ID_StockMovement = @ID_StockMovement";
                         using (SqlCommand deleteItemMovCmd = new SqlCommand(deleteItemMovQuery, conn, transaction))
                         {
                             deleteItemMovCmd.Parameters.AddWithValue("@ID_StockMovement", movementId);
                             deleteItemMovCmd.ExecuteNonQuery();
                         }
+
+                        // Deletar registros na tabela StockMovement
                         string deleteStockMovQuery = "DELETE FROM StockMovement WHERE ID_StockMovement = @ID_StockMovement";
                         using (SqlCommand deleteStockMovCmd = new SqlCommand(deleteStockMovQuery, conn, transaction))
                         {
                             deleteStockMovCmd.Parameters.AddWithValue("@ID_StockMovement", movementId);
                             deleteStockMovCmd.ExecuteNonQuery();
                         }
+
                         transaction.Commit();
 
                         MessageBox.Show("Movimentação deletada com sucesso.", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -104,6 +121,7 @@ namespace FashionTrack
                 MessageBox.Show("Por favor, selecione uma movimentação para deletar.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
         private void NewMovButton_Click(object sender, RoutedEventArgs e)
         {
