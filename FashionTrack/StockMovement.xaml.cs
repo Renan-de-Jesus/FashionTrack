@@ -415,28 +415,26 @@ namespace FashionTrack
 
                         foreach (var selectedProduct in SelectedProducts)
                         {
-                            string querry = "INSERT INTO StockMovement(ID_Product, MDescription, Document, MovementType, Operation, Qty, MovementDate) " +
-                                            "VALUES (@ID_Product, @MDescription, @Document, @MovementType, @Operation, @Qty, @Date); SELECT SCOPE_IDENTITY();";
+                            string querry = "INSERT INTO StockMovement(MDescription, Document, MovementType, Operation, MovementDate) " +
+                                            "VALUES (@MDescription, @Document, @MovementType, @Operation, @Date); SELECT SCOPE_IDENTITY();";
                             SqlCommand stockMovementCommand = new SqlCommand(querry, connection);
 
-                            stockMovementCommand.Parameters.AddWithValue("@ID_Product", selectedProduct.Id);
                             stockMovementCommand.Parameters.AddWithValue("@MDescription", description);
                             stockMovementCommand.Parameters.AddWithValue("@Document", document);
                             stockMovementCommand.Parameters.AddWithValue("@MovementType", movementType);
                             stockMovementCommand.Parameters.AddWithValue("@Operation", operation);
-                            stockMovementCommand.Parameters.AddWithValue("@Qty", selectedProduct.Quantity);
                             stockMovementCommand.Parameters.AddWithValue("@Date", date);
 
                             int idMovement = Convert.ToInt32(stockMovementCommand.ExecuteScalar());
                             sucefull = true;
 
-                            string querry2 = "INSERT INTO Stock( ID_Product, Qty) " +
-                                             "VALUES (@ID_Product, @Qty)";
+                            string querry2 = "INSERT INTO ITEM_MOV(ID_StockMovement, ID_Product, Qty_Mov) " +
+                                             "VALUES (@ID_StockMovement, @ID_Product, @Qty_Mov)";
                             SqlCommand stockMovementCommand2 = new SqlCommand(querry2, connection);
 
                             stockMovementCommand2.Parameters.AddWithValue("@ID_StockMovement", idMovement);
                             stockMovementCommand2.Parameters.AddWithValue("@ID_Product", selectedProduct.Id);
-                            stockMovementCommand2.Parameters.AddWithValue("@Qty", selectedProduct.Quantity);
+                            stockMovementCommand2.Parameters.AddWithValue("@Qty_Mov", selectedProduct.Quantity);
 
                             stockMovementCommand2.ExecuteNonQuery();
 
@@ -557,16 +555,13 @@ namespace FashionTrack
                 {
                     conn.Open();
                     string query = @"
-         SELECT 
-             p.Description AS Product, 
-             m.MovementDate, 
-             m.Qty,
+         SELECT
+             m.MovementDate,
              m.MovementType,
              m.Operation,
              m.Document,
              m.MDescription
-         FROM StockMovement m
-         LEFT JOIN Product p ON m.ID_Product = p.ID_Product";
+         FROM StockMovement m";
 
                     using (SqlDataAdapter adapter = new SqlDataAdapter(query, conn))
                     {
