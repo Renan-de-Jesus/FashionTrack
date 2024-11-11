@@ -293,12 +293,46 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Geometry x:Key="MyIconGeometry">
+            M12 8 V12 L14.5 14.5
+            M5.60423 5.60423 L5.0739 5.0739
+            M4.33785 6.87061 L3.58786 6.87438 C3.58992 7.28564 3.92281 7.61853 4.33408 7.6206 L4.33785 6.87061
+            M6.87963 7.63339 C7.29384 7.63547 7.63131 7.30138 7.63339 6.88717 C7.63547 6.47296 7.30138 6.13549 6.88717 6.13341 L6.87963 7.63339
+            M5.07505 4.32129 C5.07296 3.90708 4.7355 3.57298 4.32129 3.57506 C3.90708 3.57715 3.57298 3.91462 3.57507 4.32882 L5.07505 4.32129
+            M3.75 12 C3.75 11.5858 3.41421 11.25 3 11.25 C2.58579 11.25 2.25 11.5858 2.25 12 H3.75
+            M16.8755 20.4452 C17.2341 20.2378 17.3566 19.779 17.1492 19.4204 C16.9418 19.0619 16.483 18.9393 16.1245 19.1468 L16.8755 20.4452
+            M19.1468 16.1245 C18.9393 16.483 19.0619 16.9418 19.4204 17.1492 C19.779 17.3566 20.2378 17.2341 20.4452 16.8755 L19.1468 16.1245
+            M5.14033 5.07126 C4.84598 5.36269 4.84361 5.83756 5.13505 6.13191 C5.42648 6.42626 5.90134 6.42862 6.19569 6.13719 L5.14033 5.07126
+            M18.8623 5.13786 C15.0421 1.31766 8.86882 1.27898 5.0739 5.0739 L6.13456 6.13456 C9.33366 2.93545 14.5572 2.95404 17.8017 6.19852 L18.8623 5.13786
+            M5.0739 5.0739 L3.80752 6.34028 L4.86818 7.40094 L6.13456 6.13456 L5.0739 5.0739
+            M4.33408 7.6206 L6.87963 7.63339 L6.88717 6.13341 L4.34162 6.12062 L4.33408 7.6206
+            M5.08784 6.86684 L5.07505 4.32129 L3.57507 4.32882 L3.58786 6.87438 L5.08784 6.86684
+            M12 3.75 C16.5563 3.75 20.25 7.44365 20.25 12 H21.75 C21.75 6.61522 17.3848 2.25 12 2.25 V3.75
+            M12 20.25 C7.44365 20.25 3.75 16.5563 3.75 12 H2.25 C2.25 17.3848 6.61522 21.75 12 21.75 V20.25
+            M16.1245 19.1468 C14.9118 19.8483 13.5039 20.25 12 20.25 V21.75 C13.7747 21.75 15.4407 21.2752 16.8755 20.4452 L16.1245 19.1468
+            M20.25 12 C20.25 13.5039 19.8483 14.9118 19.1468 16.1245 L20.4452 16.8755 C21.2752 15.4407 21.75 13.7747 21.75 12 H20.25
+            M6.19569 6.13719 C7.68707 4.66059 9.73646 3.75 12 3.75 V2.25 C9.32542 2.25 6.90113 3.32791 5.14033 5.07126 L6.19569 6.13719
+        </Geometry>
+        <Geometry x:Key="oiCustomIconGeometry">
+            M18.5 18 C18.5 19.1046 17.6046 20 16.5 20 C15.3954 20 14.5 19.1046 14.5 18
+            M18.5 18 C18.5 16.8954 17.6046 16 16.5 16 C15.3954 16 14.5 16.8954 14.5 18
+            M18.5 18 H21.5
+            M14.5 18 H13.5
+            M8.5 18 C8.5 19.1046 7.60457 20 6.5 20 C5.39543 20 4.5 19.1046 4.5 18
+            M8.5 18 C8.5 16.8954 7.60457 16 6.5 16 C5.39543 16 4.5 16.8954 4.5 18
+            M8.5 18 H13.5
+            M4.5 18 C3.39543 18 2.5 17.1046 2.5 16 V7.2 C2.5 6.0799 2.5 5.51984 2.71799 5.09202 C2.90973 4.71569 3.21569 4.40973 3.59202 4.21799 C4.01984 4 4.5799 4 5.7 4 H10.3 C11.4201 4 11.9802 4 12.408 4.21799 C12.7843 4.40973 13.0903 4.71569 13.282 5.09202 C13.5 5.51984 13.5 6.0799 13.5 7.2 V18
+            M13.5 18 V8 H17.5 L20.5 12
+            M20.5 12 V18
+            M20.5 12 H13.5
+        </Geometry>
+
     </Window.Resources>
     <Grid x:Name="HomeScreen" Background="White">
         <Border
             Width="75"
-            Height="370"
-            Margin="2,0,0,150"
+            Height="510"
+            Margin="2,0,0,0"
             HorizontalAlignment="Left"
             Background="#EBECF2"
             BorderBrush="Transparent"
@@ -306,7 +340,7 @@
             CornerRadius="10">
             <StackPanel
                 Width="70"
-                Height="370"
+                Height="510"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center">
                 <Button
@@ -480,6 +514,85 @@
                     <Path
                         Width="25"
                         Height="25"
+                        Data="{StaticResource MyIconGeometry}"
+                        Stretch="Uniform"
+                        Stroke="#000000"
+                        StrokeEndLineCap="Round"
+                        StrokeLineJoin="Round"
+                        StrokeStartLineCap="Round"
+                        StrokeThickness="2" />
+                </Button>
+                <Border
+                    Width="20"
+                    Height=".5"
+                    Margin="0,0,0,10"
+                    Background="Black" />
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="0,0,0,10"
+                    VerticalAlignment="Center"
+                    Background="#EBECF2"
+                    Click="btnLogin_Click"
+                    FontSize="16"
+                    Foreground="White"
+                    RenderTransformOrigin="0.5,0.5"
+                    Style="{StaticResource HomeHoverButtonStyle}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border
+                                Padding="5"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="0"
+                                CornerRadius="08">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Path
+                        Width="25"
+                        Height="25"
+                        Data="{StaticResource oiCustomIconGeometry}"
+                        RenderTransformOrigin="0.5,0.551"
+                        Stretch="Uniform"
+                        Stroke="#000000"
+                        StrokeEndLineCap="Round"
+                        StrokeLineJoin="Round"
+                        StrokeStartLineCap="Round"
+                        StrokeThickness="2" />
+                </Button>
+                <Border
+                    Width="20"
+                    Height=".5"
+                    Margin="0,0,0,10"
+                    Background="Black" />
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="0,0,0,10"
+                    VerticalAlignment="Center"
+                    Background="#EBECF2"
+                    Click="btnLogin_Click"
+                    FontSize="16"
+                    Foreground="White"
+                    RenderTransformOrigin="0.5,0.5"
+                    Style="{StaticResource HomeHoverButtonStyle}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border
+                                Padding="5"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="0"
+                                CornerRadius="08">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Path
+                        Width="25"
+                        Height="25"
                         Data="{StaticResource ArrowGeometry}"
                         RenderTransformOrigin="0.5,0.551"
                         Stretch="Uniform"
@@ -537,7 +650,8 @@
                         LostFocus="AddText"
                         Opacity=".6"
                         Text="Id"
-                        TextWrapping="Wrap" TextChanged="idCustomerTxt_TextChanged">
+                        TextChanged="idCustomerTxt_TextChanged"
+                        TextWrapping="Wrap">
                         <TextBox.Style>
                             <Style TargetType="{x:Type TextBox}">
                                 <Setter Property="Template">
