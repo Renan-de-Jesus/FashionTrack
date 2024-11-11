@@ -164,7 +164,7 @@ namespace FashionTrack
 
             if (!decimal.TryParse(priceText, out decimal price))
             {
-                MessageBox.Show("Invalid price format.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Preço com formato inválido.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -201,7 +201,11 @@ namespace FashionTrack
                     }
 
                     transaction.Commit();
-                    MessageBox.Show("Produto salvo com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBoxResult result = MessageBox.Show("Produto salvo com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if(result == MessageBoxResult.OK)
+                    {
+                        this.Close();
+                    }
                 }
                 catch (Exception ex)
                 {

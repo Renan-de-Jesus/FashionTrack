@@ -161,6 +161,12 @@ namespace FashionTrack
                 }
                 UpdateTotalPrice();
             };
+            this.Closed += SellScreen_Closed;
+        }
+
+        private void SellScreen_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
         }
 
         public SellScreen(int sellId)

@@ -396,7 +396,7 @@
                 HorizontalContentAlignment="Left"
                 VerticalContentAlignment="Center"
                 FontSize="16"
-                MaxDropDownHeight="180"
+                MaxDropDownHeight="120"
                 SelectedIndex="1"
                 Style="{StaticResource CustomComboBoxStyle}" />
 
