@@ -8,6 +8,7 @@
     Title="Movimentação de Estoque"
     Width="1280"
     Height="768"
+    ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
@@ -390,9 +391,9 @@
             VerticalContentAlignment="Center"
             Background="White"
             BorderBrush="White"
+            Click="ReportButton_Click"
             FontSize="16"
             Foreground="White"
-            Click="ReportButton_Click"
             IsEnabled="{Binding IsModified}"
             RenderTransformOrigin="0.511,0.535"
             Style="{StaticResource Download}">
@@ -406,7 +407,7 @@
                 StrokeEndLineCap="Round"
                 StrokeLineJoin="Round"
                 StrokeStartLineCap="Round"
-                StrokeThickness="2"/>
+                StrokeThickness="2" />
             <Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border
@@ -627,7 +628,7 @@
                                     Height="20"
                                     Margin="15,0,0,0"
                                     VerticalAlignment="Center"
-                                    Text="{Binding SizeDescription}" />
+                                    Text="{Binding Size}" />
                                 <Border
                                     Height="20"
                                     Margin="15,0,0,0"

@@ -395,10 +395,10 @@
                 HorizontalContentAlignment="Left"
                 VerticalContentAlignment="Center"
                 DisplayMemberPath="Description"
-                SelectedValuePath="ID_City"
                 FontSize="16"
                 MaxDropDownHeight="180"
                 SelectedIndex="1"
+                SelectedValuePath="ID_City"
                 Style="{StaticResource CustomComboBoxStyle}" />
 
             <Button

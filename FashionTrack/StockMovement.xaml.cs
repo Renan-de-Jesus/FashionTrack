@@ -262,7 +262,6 @@ namespace FashionTrack
                     Size = size,
                     Gender = gender,
                     Quantity = 1,
-                    Price = price,
                     StockQuantity = stockQuantity
                 });
             }
@@ -415,23 +414,22 @@ namespace FashionTrack
 
                         foreach (var selectedProduct in SelectedProducts)
                         {
-                            string querry = "INSERT INTO StockMovement(ID_Product, MDescription, Document, MovementType, Operation, Qty, MovementDate) " +
-                                            "VALUES (@ID_Product, @MDescription, @Document, @MovementType, @Operation, @Qty, @Date); SELECT SCOPE_IDENTITY();";
+                            string querry = "INSERT INTO StockMovement(MDescription, Document, MovementType, Operation, MovementDate, ID_Users) " +
+                                            "VALUES (@description, @document, @movementType, @operation, @date, @ID_Users) SELECT SCOPE_IDENTITY();";
                             SqlCommand stockMovementCommand = new SqlCommand(querry, connection);
 
-                            stockMovementCommand.Parameters.AddWithValue("@ID_Product", selectedProduct.Id);
-                            stockMovementCommand.Parameters.AddWithValue("@MDescription", description);
-                            stockMovementCommand.Parameters.AddWithValue("@Document", document);
-                            stockMovementCommand.Parameters.AddWithValue("@MovementType", movementType);
-                            stockMovementCommand.Parameters.AddWithValue("@Operation", operation);
-                            stockMovementCommand.Parameters.AddWithValue("@Qty", selectedProduct.Quantity);
-                            stockMovementCommand.Parameters.AddWithValue("@Date", date);
+                            stockMovementCommand.Parameters.AddWithValue("@description", description);
+                            stockMovementCommand.Parameters.AddWithValue("@document", document);
+                            stockMovementCommand.Parameters.AddWithValue("@movementType", movementType);
+                            stockMovementCommand.Parameters.AddWithValue("@operation", operation);
+                            stockMovementCommand.Parameters.AddWithValue("@date", date);
+                            stockMovementCommand.Parameters.AddWithValue("@ID_Users", LoginWindow.LoggedInUserId);
 
                             int idMovement = Convert.ToInt32(stockMovementCommand.ExecuteScalar());
                             sucefull = true;
 
-                            string querry2 = "INSERT INTO Stock( ID_Product, Qty) " +
-                                             "VALUES (@ID_Product, @Qty)";
+                            string querry2 = "INSERT INTO ITEM_MOV(ID_StockMovement, ID_Product, Qty_Mov) " +
+                                                     "VALUES (@ID_StockMovement, @ID_Product, @Qty)";
                             SqlCommand stockMovementCommand2 = new SqlCommand(querry2, connection);
 
                             stockMovementCommand2.Parameters.AddWithValue("@ID_StockMovement", idMovement);
@@ -557,16 +555,13 @@ namespace FashionTrack
                 {
                     conn.Open();
                     string query = @"
-         SELECT 
-             p.Description AS Product, 
-             m.MovementDate, 
-             m.Qty,
-             m.MovementType,
-             m.Operation,
-             m.Document,
-             m.MDescription
-         FROM StockMovement m
-         LEFT JOIN Product p ON m.ID_Product = p.ID_Product";
+                        SELECT SM.ID_StockMovement, SM.MDescription, SM.Document, SM.MovementType, 
+                        SM.Operation, SM.MovementDate, U.Username, 
+                        IM.ID_Product, IM.Qty_Mov, P.Description
+                        FROM StockMovement AS SM
+                        INNER JOIN ITEM_MOV AS IM ON SM.ID_StockMovement = IM.ID_StockMovement
+                        INNER JOIN Product AS P ON IM.ID_Product = P.ID_Product
+                        INNER JOIN Users AS U ON SM.ID_Users = U.ID_Users";
 
                     using (SqlDataAdapter adapter = new SqlDataAdapter(query, conn))
                     {
@@ -620,13 +615,13 @@ namespace FashionTrack
                         MigraDoc.DocumentObjectModel.Paragraph dateParagraph = dataRow.Cells[0].AddParagraph(Convert.ToDateTime(row["MovementDate"]).ToString("dd/MM/yyyy"));
                         dateParagraph.Format.Alignment = ParagraphAlignment.Center;
 
-                        MigraDoc.DocumentObjectModel.Paragraph productParagraph = dataRow.Cells[1].AddParagraph(row["Product"].ToString());
+                        MigraDoc.DocumentObjectModel.Paragraph productParagraph = dataRow.Cells[1].AddParagraph(row["Description"].ToString());
                         productParagraph.Format.Alignment = ParagraphAlignment.Center;
 
                         MigraDoc.DocumentObjectModel.Paragraph documentParagraph = dataRow.Cells[2].AddParagraph(row["Document"].ToString());
                         documentParagraph.Format.Alignment = ParagraphAlignment.Center;
 
-                        MigraDoc.DocumentObjectModel.Paragraph qtyParagraph = dataRow.Cells[3].AddParagraph(row["Qty"].ToString());
+                        MigraDoc.DocumentObjectModel.Paragraph qtyParagraph = dataRow.Cells[3].AddParagraph(row["Qty_Mov"].ToString());
                         qtyParagraph.Format.Alignment = ParagraphAlignment.Center;
 
                         MigraDoc.DocumentObjectModel.Paragraph movementTypeParagraph = dataRow.Cells[4].AddParagraph(row["MovementType"].ToString());

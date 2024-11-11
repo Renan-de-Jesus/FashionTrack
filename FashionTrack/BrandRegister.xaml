@@ -5,7 +5,8 @@
     Title="Cadastrar Marca"
     Width="400"
     Height="300"
-    ResizeMode="NoResize">
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style x:Key="HoverButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="LightGray" />

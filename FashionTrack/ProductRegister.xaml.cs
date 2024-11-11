@@ -168,7 +168,6 @@ namespace FashionTrack
                 return;
             }
 
-            // Round the price to two decimal places
             price = Math.Round(price, 2);
 
             int brandId = GetSelectedItemId(BrandComboBox);
@@ -178,54 +177,38 @@ namespace FashionTrack
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
+                SqlTransaction transaction = conn.BeginTransaction();
                 try
                 {
-                    using (SqlCommand cmd = CreateCommand(conn, description, price, brandCode, gender, brandId, colorId, sizeId))
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Product (Description, Price, BrandCode, Gender, BrandId, ColorId, SizeId) OUTPUT INSERTED.ID_Product " +
+                                                           "VALUES (@Description, @Price, @BrandCode, @Gender, @BrandId, @ColorId, @SizeId)", conn, transaction))
                     {
-                        if (isEditMode && currentProductID != -1)
+                        cmd.Parameters.AddWithValue("@Description", description);
+                        cmd.Parameters.AddWithValue("@Price", price);
+                        cmd.Parameters.AddWithValue("@BrandCode", brandCode);
+                        cmd.Parameters.AddWithValue("@Gender", gender);
+                        cmd.Parameters.AddWithValue("@BrandId", brandId);
+                        cmd.Parameters.AddWithValue("@ColorId", colorId);
+                        cmd.Parameters.AddWithValue("@SizeId", sizeId);
+
+                        int newProductId = (int)cmd.ExecuteScalar();
+
+                        using (SqlCommand stockCmd = new SqlCommand("INSERT INTO Stock (ID_Product, Qty) VALUES (@ID_Product, 0)", conn, transaction))
                         {
-                            cmd.ExecuteNonQuery();
-                            MessageBox.Show("Produto salvo com sucesso!", "Boa deu certo!", MessageBoxButton.OK, MessageBoxImage.Information);
-                        }
-                        else
-                        {
-                            currentProductID = (int)cmd.ExecuteScalar();
-                            MessageBox.Show("Product salvo com sucesso!", "Boa deu certo!", MessageBoxButton.OK, MessageBoxImage.Information);
+                            stockCmd.Parameters.AddWithValue("@ID_Product", newProductId);
+                            stockCmd.ExecuteNonQuery();
                         }
                     }
+
+                    transaction.Commit();
+                    MessageBox.Show("Produto salvo com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {
+                    transaction.Rollback();
                     MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-        }
-
-        private SqlCommand CreateCommand(SqlConnection conn, string description, decimal price, string brandCode, string gender, int brandId, int colorId, int sizeId)
-        {
-            SqlCommand cmd;
-
-            if (isEditMode && currentProductID != -1)
-            {
-                cmd = new SqlCommand("UPDATE Product SET Description = @Description, Price = @Price, BrandCode = @BrandCode, " +
-                                        "Gender = @Gender, BrandId = @BrandId, ColorId = @ColorId, SizeId = @SizeId WHERE ID_Product = @ID_Product", conn);
-                cmd.Parameters.AddWithValue("@ID_Product", currentProductID);
-            }
-            else
-            {
-                cmd = new SqlCommand("INSERT INTO Product (Description, Price, BrandCode, Gender, BrandId, ColorId, SizeId) OUTPUT INSERTED.ID_Product " +
-                                        "VALUES (@Description, @Price, @BrandCode, @Gender, @BrandId, @ColorId, @SizeId) ", conn);
-            }
-
-            cmd.Parameters.AddWithValue("@Description", description);
-            cmd.Parameters.AddWithValue("@Price", price);
-            cmd.Parameters.AddWithValue("@BrandCode", brandCode);
-            cmd.Parameters.AddWithValue("@Gender", gender);
-            cmd.Parameters.AddWithValue("@BrandId", brandId);
-            cmd.Parameters.AddWithValue("@ColorId", colorId);
-            cmd.Parameters.AddWithValue("@SizeId", sizeId);
-
-            return cmd;
         }
 
         private bool ValidateInputs(out string errorMessage)

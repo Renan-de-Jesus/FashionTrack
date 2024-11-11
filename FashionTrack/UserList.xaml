@@ -5,6 +5,7 @@
     Title="Lista de Usuários"
     Width="1000"
     Height="600"
+    ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Geometry x:Key="TrashIconGeometry">
