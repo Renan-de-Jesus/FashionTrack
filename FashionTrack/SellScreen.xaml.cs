@@ -679,39 +679,6 @@ namespace FashionTrack
             //
         }
 
-        private void RemoveText(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "Cliente" || textBox.Text == "Selecione o item" || textBox.Text == "Id")
-            {
-                textBox.Text = "";
-                textBox.Opacity = 1;
-            }
-        }
-        private void AddText(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            if (string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                switch (textBox.Name)
-                {
-                    case "SearchTextBox":
-                        textBox.Text = "Selecione o item";
-                        break;
-                    case "SearchCustomer":
-                        textBox.Text = "Cliente";
-                        break;
-                    case "idCustomerTxt":
-                        textBox.Text = "Id";
-                        break;
-                    case "idProductTxt":
-                        textBox.Text = "Id";
-                        break;
-                }
-                textBox.Opacity = 0.6;
-            }
-        }
-
-
+      
     }
 }

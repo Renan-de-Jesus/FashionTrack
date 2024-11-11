@@ -84,8 +84,23 @@ namespace FashionTrack
             }
         }
 
+        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+            RegisterWindow userRegister = new RegisterWindow(0);
+            userRegister.Closed += (s, args) => LoadUser();
+            userRegister.ShowDialog();
+        }
 
+        private void UserDataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (UserDataGrid.SelectedItem is DataRowView selectedRow)
+            {
+                int userId = Convert.ToInt32(selectedRow["ID_Users"]);
+
+                RegisterWindow userRegister = new RegisterWindow(userId);
+                userRegister.Closed += (s, args) => LoadUser();
+                userRegister.ShowDialog();
+            }
+        }
     }
 }
-
-

@@ -12,6 +12,7 @@
             Margin="10,35,10,10"
             AutoGenerateColumns="False"
             IsReadOnly="True"
+            MouseDoubleClick="UserDataGrid_MouseDoubleClick"
             SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTextColumn
@@ -38,6 +39,7 @@
             Margin="10"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            Click="RegisterButton_Click"
             Content="Cadastrar Usuário" />
     </Grid>
 </Window>
