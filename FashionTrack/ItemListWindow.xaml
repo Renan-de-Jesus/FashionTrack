@@ -475,7 +475,7 @@
                     <ListView
                         x:Name="ItemsDataGrid"
                         Width="1049"
-                        MaxHeight="400"
+                            
                         Margin="10,10,10,60"
                         IsSynchronizedWithCurrentItem="True"
                         MouseDoubleClick="ItemsDataGrid_MouseDoubleClick"
