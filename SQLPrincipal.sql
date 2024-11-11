@@ -143,7 +143,7 @@ CREATE TABLE StockMovement (
     MDescription NVARCHAR(100) NOT NULL, 
     Document INT NULL,
     MovementType NVARCHAR(10) NOT NULL, CHECK (MovementType IN ('Entrada', 'Saida')),
-    Operation NVARCHAR(2) NOT NULL, CHECK (Operation IN ('E', 'S', 'I', 'R', 'D', 'T')),
+    Operation NVARCHAR(2) NOT NULL, CHECK (Operation IN ('E', 'S', 'T', 'A', 'P', 'R', 'D')),
     MovementDate DATETIME NOT NULL DEFAULT GETDATE(),
     ID_Users INT NULL,
     CONSTRAINT FK_Movement_User FOREIGN KEY (ID_Users) REFERENCES Users(ID_Users) ON DELETE CASCADE
