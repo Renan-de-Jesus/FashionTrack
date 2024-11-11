@@ -674,11 +674,33 @@ namespace FashionTrack
 
         }
 
-        private void idCustomerTxt_TextChanged(object sender, TextChangedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //
+            ItemListWindow stock = new ItemListWindow();
+            stock.Show();
         }
 
-      
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            //Ir para a lista de Usuários
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            CustomerListWindow customer = new CustomerListWindow();
+            customer.Show();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            MovementList movementList = new MovementList();
+            movementList.Show();
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            SellList sell = new SellList();
+            sell.Show();
+        }
     }
 }

@@ -216,7 +216,8 @@
                     FontFamily="Merriweather Sans"
                     FontSize="16"
                     Text="Admin"
-                    TextWrapping="Wrap" />
+                    TextWrapping="Wrap"
+                    Visibility="Hidden" />
                 <ToggleButton
                     x:Name="toggleAdmin"
                     Width="60"
@@ -224,7 +225,8 @@
                     Margin="0,0,0,30"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    TabIndex="4">
+                    TabIndex="4"
+                    Visibility="Hidden">
                     <ToggleButton.Template>
                         <ControlTemplate TargetType="ToggleButton">
                             <Border

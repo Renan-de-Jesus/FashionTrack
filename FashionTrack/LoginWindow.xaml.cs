@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using Microsoft.Data.SqlClient;
 using System.Configuration;
 using System.Data;
+using System.Security.Cryptography;
 
 namespace FashionTrack
 {
@@ -75,36 +76,37 @@ namespace FashionTrack
             string username = lblUser.Text;
             string password = passwordText.Password;
 
+            byte[] passwordHash;
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                passwordHash = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+            }
+
             string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-
                 try
                 {
                     connection.Open();
-                    string query = "SELECT ID_Users FROM Users WHERE Username = @username AND Password = HASHBYTES('SHA2_256', @password)";
+                    string query = "SELECT ID_Users FROM Users WHERE Username = @username AND Password = @passwordHash";
 
                     SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@Username", username);
-                    command.Parameters.AddWithValue("@Password", password);
+                    command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@passwordHash", passwordHash);
 
                     var userIdResult = command.ExecuteScalar();
 
-                    if (userIdResult != null)
+                    if (userIdResult != null && userIdResult != DBNull.Value)
                     {
                         LoggedInUserId = Convert.ToInt32(userIdResult);
-
-                        int movementId = 0;
-                        StockMovement stock = new StockMovement();
-                        stock.Show();
-                        //HomePage homePage = new HomePage();
-                       // homePage.Show();
+                        SellScreen home = new SellScreen();
+                        home.Show();
                         Close();
                     }
                     else
                     {
-                        MessageBox.Show("Usuário ou senha incorretos. Por favor, tente novamente!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Usuário ou senha incorretos. Por favor, tente novamente!", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                         lblUser.Text = "Usuário";
                         passwordPlaceholder.Text = "Senha";
                         passwordText.Password = String.Empty;

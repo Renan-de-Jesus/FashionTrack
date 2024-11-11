@@ -330,7 +330,11 @@ namespace FashionTrack
 
                             if (rowsAffected > 0)
                             {
-                                MessageBox.Show("Fornecedor cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                                MessageBoxResult resuldt = MessageBox.Show("Fornecedor cadastrado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                                if (resuldt == MessageBoxResult.OK)
+                                {
+                                    this.Close();
+                                }
                             }
                             else
                             {
