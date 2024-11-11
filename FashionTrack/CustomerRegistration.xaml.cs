@@ -73,15 +73,15 @@ namespace FashionTrack
                 {
                     connection.Open();
                     string query = @"
-                    SELECT 
+                        SELECT 
                         C.Name, 
                         C.Surname, 
                         C.CPF, 
                         C.Cellphone, 
                         C.Address, 
                         C.ID_City 
-                    FROM Customer AS C
-                    WHERE ID_Customer = @ID_Customer";
+                        FROM Customer AS C
+                        WHERE ID_Customer = @ID_Customer";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -96,7 +96,7 @@ namespace FashionTrack
                                 cpfTxtBox.Text = reader["CPF"].ToString();
                                 phoneTxt.Text = reader["Cellphone"].ToString();
                                 addressTxtBox.Text = reader["Address"].ToString();
-                                cityCbx.SelectedValue = reader["ID_City"];
+                                cityCbx.ItemsSource = reader["ID_City"].ToString();
                             }
                         }
                     }
@@ -104,7 +104,7 @@ namespace FashionTrack
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao carregar os dados do cliente: " + ex.Message);
+                MessageBox.Show("Erro ao carregar os dados do cliente: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

@@ -489,7 +489,6 @@
                     Margin="10,10,10,60"
                     BorderBrush="Transparent"
                     IsSynchronizedWithCurrentItem="True"
-                    MouseDoubleClick="MovementDataGrid_MouseDoubleClick"
                     SelectionMode="Single">
                     <ListView.ItemTemplate>
                         <DataTemplate>

@@ -32,12 +32,56 @@ namespace FashionTrack
         public SupplierRegister(int supplierId) : this()
         {
             this.supplierId = supplierId;
-            this.Loaded += SupplierRegister_Loaded;
+            //this.Loaded += SupplierRegister_Loaded;
+
+            if (supplierId > 0)
+            {
+                LoadSupplierData(supplierId);
+            }
         }
 
-        private void SupplierRegister_Loaded(object sender, RoutedEventArgs e)
+        private void LoadSupplierData(int supplierId)
         {
-            LoadSupplierData(supplierId);
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = @"
+                    SELECT 
+                        CorporateName, 
+                        CNPJ, 
+                        Address, 
+                        Telephone, 
+                        Representative, 
+                        ID_City
+                        FROM Supplier 
+                        WHERE ID_Supplier = @ID_Supplier";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@ID_Supplier", supplierId);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                representativeTxtBox.Text = reader["Representative"].ToString();
+                                corporateReasonTxtBox.Text = reader["CorporateName"].ToString();
+                                addressTxtBox.Text = reader["Address"].ToString();
+                                cnpjTxtBox.Text = reader["CNPJ"].ToString();
+                                phoneTxt.Text = reader["Telephone"].ToString();
+                                cityCbx.ItemsSource = reader["ID_City"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar os dados do fornecedor: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void fillComboBox()
@@ -64,36 +108,6 @@ namespace FashionTrack
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
-                }
-            }
-        }
-
-        private void LoadSupplierData(int supplierId)
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-                    string query = "SELECT CorporateName, CNPJ, Address, Telephone, ID_City, Representative FROM Supplier WHERE ID_Supplier = @ID_Supplier";
-                    SqlCommand command = new SqlCommand(query, connection);
-                    command.Parameters.AddWithValue("@ID_Supplier", supplierId);
-
-                    SqlDataReader reader = command.ExecuteReader();
-                    if (reader.Read())
-                    {
-                        corporateReasonTxtBox.Text = reader["CorporateName"].ToString();
-                        cnpjTxtBox.Text = reader["CNPJ"].ToString();
-                        addressTxtBox.Text = reader["Address"].ToString();
-                        phoneTxt.Text = reader["Telephone"].ToString();
-                        representativeTxtBox.Text = reader["Representative"].ToString();
-                        cityCbx.SelectedValue = reader["ID_City"];
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Erro ao carregar os dados do fornecedor: " + ex.Message);
                 }
             }
         }
@@ -236,9 +250,59 @@ namespace FashionTrack
             return input;
         }
 
+        private void updateSupplier()
+        {
+            string corporateReason = corporateReasonTxtBox.Text;
+            string cnpj = cnpjTxtBox.Text;
+            string representative = representativeTxtBox.Text;
+            string phone = phoneTxt.Text;
+            string address = addressTxtBox.Text;
+            int selectCityId = (int)cityCbx.SelectedValue;
+
+            cnpj = cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
+            phone = phone.Replace("(", "").Replace(")", "").Replace("-", "");
+
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string updateSupplier = "UPDATE Supplier SET CorporateName = @corporateName, Address = @address, " +
+                        "Telephone = @phone, Representative = @representative, ID_City = @cityId " +
+                        " WHERE ID_Supplier = @supplierId";
+                    SqlCommand update = new SqlCommand(updateSupplier, connection);
+
+                    update.Parameters.AddWithValue("@corporateName", corporateReason);
+                    update.Parameters.AddWithValue("@CNPJ", cnpj);
+                    update.Parameters.AddWithValue("@address", address);
+                    update.Parameters.AddWithValue("@phone", phone);
+                    update.Parameters.AddWithValue("@representative", representative);
+                    update.Parameters.AddWithValue("@cityId", selectCityId);
+                    update.Parameters.AddWithValue("@supplierId", supplierId);
+
+                    update.ExecuteNonQuery();
+                }
+               MessageBoxResult result = MessageBox.Show("Dados do cliente atualizados com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (result == MessageBoxResult.OK)
+                {
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao atualizar os dados do cliente: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+        }
+
 
         private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
+            if(supplierId > 0)
+            {
+                updateSupplier();
+                return;
+            }
             try
             {
                 string corporateReason = corporateReasonTxtBox.Text;
