@@ -1,9 +1,13 @@
 ﻿using Microsoft.Data.SqlClient;
+using MigraDoc.DocumentObjectModel;
+using MigraDoc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.DirectoryServices;
 using System.Windows;
+using Microsoft.Win32;
 
 namespace FashionTrack
 {
@@ -29,22 +33,12 @@ namespace FashionTrack
                 {
                     conn.Open();
                     string query = @"
-                SELECT 
-                    SM.ID_StockMovement,
-                    SM.MDescription,
-                    SM.Document,
-                    SM.MovementType,
-                    SM.Operation,
-                    SM.MovementDate,
-                    IM.ID_Product,
-                    P.Description AS ProductDescription,
-                    IM.Qty_Mov
-                FROM 
-                    StockMovement SM
-                INNER JOIN 
-                    ITEM_MOV IM ON SM.ID_StockMovement = IM.ID_StockMovement
-                INNER JOIN 
-                    Product P ON IM.ID_Product = P.ID_Product";
+                        SELECT SM.ID_StockMovement, SM.MDescription, SM.Document, SM.MovementType,
+                        SM.Operation, SM.MovementDate, U.Username, IM.ID_Product, IM.Qty_Mov, P.Description
+                        FROM StockMovement AS SM
+                        INNER JOIN ITEM_MOV AS IM ON SM.ID_StockMovement = IM.ID_StockMovement
+                        INNER JOIN Product AS P ON IM.ID_Product = P.ID_Product
+                        INNER JOIN Users AS U ON SM.ID_Users = U.ID_Users";
 
                     using (SqlDataAdapter adapter = new SqlDataAdapter(query, conn))
                     {
@@ -139,6 +133,122 @@ namespace FashionTrack
                 StockMovement movementRegister = new StockMovement();
                 movementRegister.Closed += (s, args) => LoadMovement();
                 movementRegister.ShowDialog();
+            }
+        }
+
+        private void ReportButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = @"
+                        SELECT SM.ID_StockMovement, SM.MDescription, SM.Document, SM.MovementType, 
+                        SM.Operation, SM.MovementDate, U.Username, 
+                        IM.ID_Product, IM.Qty_Mov, P.Description
+                        FROM StockMovement AS SM
+                        INNER JOIN ITEM_MOV AS IM ON SM.ID_StockMovement = IM.ID_StockMovement
+                        INNER JOIN Product AS P ON IM.ID_Product = P.ID_Product
+                        INNER JOIN Users AS U ON SM.ID_Users = U.ID_Users";
+
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(query, conn))
+                    {
+                        adapter.Fill(dataTable);
+                    }
+                }
+
+                if (dataTable.Rows.Count > 0)
+                {
+                    MigraDoc.DocumentObjectModel.Document document = new MigraDoc.DocumentObjectModel.Document();
+                    MigraDoc.DocumentObjectModel.Section section = document.AddSection();
+
+                    // Set page size to A4
+                    section.PageSetup.PageFormat = PageFormat.A4;
+                    section.PageSetup.LeftMargin = "1.7cm";
+                    section.PageSetup.RightMargin = "1cm";
+                    section.PageSetup.TopMargin = "2cm";
+                    section.PageSetup.BottomMargin = "2cm";
+
+                    // Add title
+                    MigraDoc.DocumentObjectModel.Paragraph title = section.AddParagraph("Relatório de Movimentações de Estoque");
+                    title.Format.Font.Size = 14;
+                    title.Format.Font.Bold = true;
+                    title.Format.SpaceAfter = 10;
+                    title.Format.Alignment = ParagraphAlignment.Center;
+
+                    // Add table
+                    MigraDoc.DocumentObjectModel.Tables.Table table = section.AddTable();
+                    table.Borders.Width = 0.75;
+
+                    // Define columns
+                    MigraDoc.DocumentObjectModel.Tables.Column dateColumn = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(3));
+                    MigraDoc.DocumentObjectModel.Tables.Column productColumn = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(5));
+                    MigraDoc.DocumentObjectModel.Tables.Column documentColumn = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(4));
+                    MigraDoc.DocumentObjectModel.Tables.Column qtyColumn = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(3));
+                    MigraDoc.DocumentObjectModel.Tables.Column movementTypeColumn = table.AddColumn(MigraDoc.DocumentObjectModel.Unit.FromCentimeter(3));
+
+                    // Add header row
+                    MigraDoc.DocumentObjectModel.Tables.Row headerRow = table.AddRow();
+                    headerRow.Cells[0].AddParagraph("Data").Format.Alignment = ParagraphAlignment.Center;
+                    headerRow.Cells[1].AddParagraph("Produto").Format.Alignment = ParagraphAlignment.Center;
+                    headerRow.Cells[2].AddParagraph("Documento").Format.Alignment = ParagraphAlignment.Center;
+                    headerRow.Cells[3].AddParagraph("Quantidade").Format.Alignment = ParagraphAlignment.Center;
+                    headerRow.Cells[4].AddParagraph("Tipo de Movimento").Format.Alignment = ParagraphAlignment.Center;
+
+                    // Add data rows
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        MigraDoc.DocumentObjectModel.Tables.Row dataRow = table.AddRow();
+
+                        MigraDoc.DocumentObjectModel.Paragraph dateParagraph = dataRow.Cells[0].AddParagraph(Convert.ToDateTime(row["MovementDate"]).ToString("dd/MM/yyyy"));
+                        dateParagraph.Format.Alignment = ParagraphAlignment.Center;
+
+                        MigraDoc.DocumentObjectModel.Paragraph productParagraph = dataRow.Cells[1].AddParagraph(row["Description"].ToString());
+                        productParagraph.Format.Alignment = ParagraphAlignment.Center;
+
+                        MigraDoc.DocumentObjectModel.Paragraph documentParagraph = dataRow.Cells[2].AddParagraph(row["Document"].ToString());
+                        documentParagraph.Format.Alignment = ParagraphAlignment.Center;
+
+                        MigraDoc.DocumentObjectModel.Paragraph qtyParagraph = dataRow.Cells[3].AddParagraph(row["Qty_Mov"].ToString());
+                        qtyParagraph.Format.Alignment = ParagraphAlignment.Center;
+
+                        MigraDoc.DocumentObjectModel.Paragraph movementTypeParagraph = dataRow.Cells[4].AddParagraph(row["MovementType"].ToString());
+                        movementTypeParagraph.Format.Alignment = ParagraphAlignment.Center;
+                    }
+
+                    // Render PDF
+                    PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true);
+                    pdfRenderer.Document = document;
+                    pdfRenderer.RenderDocument();
+
+                    // Save PDF
+                    SaveFileDialog saveFileDialog = new SaveFileDialog
+                    {
+                        Filter = "PDF Files|*.pdf",
+                        Title = "Save Movement Report"
+                    };
+
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string fileName = saveFileDialog.FileName;
+                        pdfRenderer.PdfDocument.Save(fileName);
+                        MessageBox.Show("Report generated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        // Open the PDF file
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(fileName) { UseShellExecute = true });
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No movement data found.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error generating report: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

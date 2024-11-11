@@ -368,6 +368,7 @@
             VerticalContentAlignment="Center"
             Background="White"
             BorderBrush="White"
+            Click="ReportButton_Click"
             FontSize="16"
             Foreground="White"
             IsEnabled="{Binding IsModified}"
@@ -549,7 +550,7 @@
                                         Width="50"
                                         Margin="20,10,0,0"
                                         FontSize="14"
-                                        Text="{Binding Qty}" />
+                                        Text="{Binding Qty_Mov}" />
                                 </Border>
                                 <Border BorderBrush="Gray" BorderThickness="0,0,1,1">
                                     <TextBlock

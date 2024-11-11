@@ -434,7 +434,7 @@ namespace FashionTrack
 
                             stockMovementCommand2.Parameters.AddWithValue("@ID_StockMovement", idMovement);
                             stockMovementCommand2.Parameters.AddWithValue("@ID_Product", selectedProduct.Id);
-                            stockMovementCommand2.Parameters.AddWithValue("@Qty_Mov", selectedProduct.Quantity);
+                            stockMovementCommand2.Parameters.AddWithValue("@Qty", selectedProduct.Quantity);
 
                             stockMovementCommand2.ExecuteNonQuery();
 
