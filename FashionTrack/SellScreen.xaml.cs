@@ -682,7 +682,8 @@ namespace FashionTrack
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            //Ir para a lista de Usuários
+            UserList users = new UserList();
+            users.Show();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -701,6 +702,17 @@ namespace FashionTrack
         {
             SellList sell = new SellList();
             sell.Show();
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Em desenvolvimento", "Cuidado", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            SupplierListWindow supplier = new SupplierListWindow();
+            supplier.Show();
         }
     }
 }

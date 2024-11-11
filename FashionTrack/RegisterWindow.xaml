@@ -88,7 +88,6 @@
                 VerticalContentAlignment="Center"
                 Panel.ZIndex="1"
                 FontSize="16"
-                Opacity=".6"
                 TabIndex="0"
                 Text="">
                 <TextBox.Template>
@@ -124,7 +123,6 @@
                 VerticalContentAlignment="Center"
                 FontSize="16"
                 IsEnabled="True"
-                Opacity=".6"
                 TabIndex="1"
                 Text=""
                 UndoLimit="50">

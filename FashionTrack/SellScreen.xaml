@@ -528,11 +528,10 @@
                     Margin="0,0,0,10"
                     VerticalAlignment="Center"
                     Background="#EBECF2"
-                    Click="btnLogin_Click"
                     FontSize="16"
                     Foreground="White"
                     RenderTransformOrigin="0.5,0.5"
-                    Style="{StaticResource HomeHoverButtonStyle}">
+                    Style="{StaticResource HomeHoverButtonStyle}" Click="Button_Click_6">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border
@@ -568,11 +567,10 @@
                     Margin="0,0,0,10"
                     VerticalAlignment="Center"
                     Background="#EBECF2"
-                    Click="btnLogin_Click"
                     FontSize="16"
                     Foreground="White"
                     RenderTransformOrigin="0.5,0.5"
-                    Style="{StaticResource HomeHoverButtonStyle}">
+                    Style="{StaticResource HomeHoverButtonStyle}" Click="Button_Click_5">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border
@@ -645,7 +643,6 @@
                         LostFocus="AddText"
                         Opacity=".6"
                         Text="Id"
-                        TextChanged="idCustomerTxt_TextChanged"
                         TextWrapping="Wrap">
                         <TextBox.Style>
                             <Style TargetType="{x:Type TextBox}">
