@@ -61,12 +61,12 @@
             Margin="50,0,50,0"
             VerticalAlignment="Top">
             <TextBlock
-                Width="192"
+                Width="104"
                 Height="45"
                 Margin="5,30,5,20"
                 HorizontalAlignment="Center"
                 FontSize="30"
-                Text="Novo Usuário"
+                Text="Usuário"
                 TextWrapping="Wrap" />
 
             <TextBlock

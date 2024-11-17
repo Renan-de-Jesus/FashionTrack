@@ -910,13 +910,13 @@
                 IsEnabled="False"
                 SelectionChanged="OperationComboBox_SelectionChanged"
                 Style="{StaticResource CustomComboBoxStyle}">
-                <ComboBoxItem Content="Entrada de Estoque" />
-                <ComboBoxItem Content="Saída de Estoque" />
-                <ComboBoxItem Content="Transferência" />
                 <ComboBoxItem Content="Ajuste de Estoque" />
-                <ComboBoxItem Content="Perda" />
-                <ComboBoxItem Content="Roubo" />
+                <ComboBoxItem Content="Compra" />
                 <ComboBoxItem Content="Devolução" />
+                <ComboBoxItem Content="Perda" />
+                <ComboBoxItem Content="Redução de Estoque" />
+                <ComboBoxItem Content="Roubo" />
+                <ComboBoxItem Content="Transferência" />
             </ComboBox>
             <RadioButton
                 x:Name="prohibitedRdBt"

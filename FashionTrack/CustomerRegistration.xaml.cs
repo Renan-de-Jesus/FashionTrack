@@ -248,7 +248,7 @@ namespace FashionTrack
                 try
                 {
                     connection.Open();
-                    string cityQuery = "SELECT ID_City, Description FROM City";
+                    string cityQuery = "SELECT ID_City, Description FROM City ORDER BY Description ASC";
                     SqlCommand cityCommand = new SqlCommand(cityQuery, connection);
                     DataTable dt = new DataTable();
                     SqlDataAdapter adapter = new SqlDataAdapter(cityCommand);
@@ -256,6 +256,10 @@ namespace FashionTrack
                     cityCbx.ItemsSource = dt.DefaultView;
                     cityCbx.DisplayMemberPath = "Description";
                     cityCbx.SelectedValuePath = "ID_City";
+                    if (dt.Rows.Count > 0)
+                    {
+                        cityCbx.SelectedIndex = 0;
+                    }
                 }
                 catch (Exception ex)
                 {

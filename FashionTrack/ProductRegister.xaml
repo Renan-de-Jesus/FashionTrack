@@ -194,12 +194,12 @@
             VerticalAlignment="Top">
             <TextBlock
                 x:Name="NameRegister"
-                Width="160"
+                Width="93"
                 Height="29"
                 Margin="5,20,5,20"
                 HorizontalAlignment="Center"
                 FontSize="25"
-                Text="Novo Produto"
+                Text="Produto"
                 TextWrapping="Wrap" />
 
             <TextBlock

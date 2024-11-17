@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
 using System.Configuration;
+using System.Data;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -113,18 +114,25 @@ namespace FashionTrack
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                string query = $"SELECT * FROM {tableName}";
+                string query = $"SELECT * FROM {tableName} ORDER BY {displayMember} ASC";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    while (reader.Read())
+                    DataTable dt = new DataTable();
+                    dt.Load(reader);
+
+                    foreach (DataRow row in dt.Rows)
                     {
                         ComboBoxItem item = new ComboBoxItem
                         {
-                            Content = reader[displayMember].ToString(),
-                            Tag = reader[valueMember]
+                            Content = row[displayMember].ToString(),
+                            Tag = row[valueMember]
                         };
                         comboBox.Items.Add(item);
+                    }
+                    if (dt.Rows.Count > 0)
+                    {
+                        comboBox.SelectedIndex = 0;
                     }
                 }
             }

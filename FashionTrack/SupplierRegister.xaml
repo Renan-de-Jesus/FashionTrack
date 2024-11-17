@@ -195,12 +195,12 @@
             Margin="50,-8,50,0"
             VerticalAlignment="Top">
             <TextBlock
-                Width="194"
+                Width="133"
                 Height="29"
                 Margin="5,10,5,5"
                 HorizontalAlignment="Center"
                 FontSize="25"
-                Text="Novo Fornecedor"
+                Text="Fornecedor"
                 TextWrapping="Wrap" />
             <TextBlock
                 Margin="20,0,0,0"

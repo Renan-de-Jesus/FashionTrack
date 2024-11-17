@@ -92,7 +92,7 @@ namespace FashionTrack
                 try
                 {
                     connection.Open();
-                    string cityQuery = "SELECT ID_City, Description FROM City";
+                    string cityQuery = "SELECT ID_City, Description FROM City ORDER BY Description ASC";
                     SqlCommand cityCommand = new SqlCommand(cityQuery, connection);
                     DataTable dt = new DataTable();
                     SqlDataAdapter adapter = new SqlDataAdapter(cityCommand);
