@@ -1,51 +1,108 @@
 # FashionTrack
 
-## Descrição
+## 1. Introdução
+
+### Descrição do Sistema
 FashionTrack é um sistema de gerenciamento de estoque e vendas para uma loja de roupas. O sistema possui funcionalidades tanto para administradores quanto para membros da equipe, permitindo um controle eficiente do estoque, vendas e relatórios.
 
-## Funcionalidades
+### Principais Funcionalidades
+- **Controle de Estoque**: Gerenciamento de entradas e saídas de produtos.
+- **Vendas**: Registro e acompanhamento de vendas realizadas.
+- **Relatórios**: Geração de relatórios detalhados sobre vendas, estoque e cadastros.
+- **Gestão de Usuários**: Cadastro e controle de acesso da equipe.
+- **Histórico**: Registro de todas as vendas.
 
-### Banco de Dados
-- **Localização do Banco de Dados:** O banco de dados deve ser armazenado em um servidor SQL Server seguro, acessível apenas por usuários autorizados.
-- **Tipo de Tabela das Roupas/Produtos:** A tabela de produtos deve incluir campos atômicos (simples) para garantir a normalização e eficiência nas consultas.
-- **Campos Atômicos:** Nome do produto, descrição, preço, quantidade em estoque, categoria, fornecedor, data de entrada, etc.
+## 2. Requisitos
 
-### Front End
+### Requisitos Funcionais
+- Gerenciamento de estoque (entradas e saídas de produtos).
+- Cadastro de produtos, clientes e fornecedores.
+- Registro de vendas e geração de relatórios.
+- Suporte a múltiplos métodos de pagamento.
 
-#### Fluxo Admin
-- **Tela de Controle de Estoque:** Permite a visualização e atualização do estoque.
-- **Membros em Organização:** Gerenciamento de membros da equipe.
-- **Tela de Vendas:** Interface para registrar e acompanhar vendas.
-- **Logs de Vendas:** Histórico detalhado de todas as vendas realizadas.
-- **Tela de Relatórios:** Geração de relatórios de vendas, estoque e desempenho.
+### Requisitos Não Funcionais
+- Sistema seguro, com banco de dados acessível apenas por usuários autorizados.
+- Performance otimizada para consultas rápidas.
+- Senhas criptografadas com uso de HASH.
 
-#### Fluxo Membro
-- **Tela de Estoque:** Visualização do estoque disponível.
-- **Tela de Vendas:** Interface simplificada para registrar vendas.
-- **Configurações:** Opções de configuração para o usuário.
+## 3. Arquitetura do Sistema
+
+### Tecnologias Utilizadas
+- **C#**
+- **WPF (Windows Presentation Foundation)**
+- **SQL Server**
+
+### Diagrama de Arquitetura
+[Inclua aqui o diagrama de arquitetura, se disponível]
+
+## 4. Banco de Dados
+
+### Localização do Banco de Dados
+O banco de dados deve ser armazenado em um servidor SQL Server seguro, acessível apenas por usuários autorizados.
+
+### Tabelas Principais
+A tabela de **produtos** inclui os seguintes campos atômicos:
+- Descrição do produto
+- Preço
+- Marca
+- Código de marca
+- Tamanho
+- Cor
+
+Tabela de **Movimentação de Estoque**:
+- Descrição da movimentação
+- N° de documento (para controle interno)
+- Tipo do movimento (entrada/saída)
+- Operação (ajuste, roubo, transferência, ...)
+- Data do movimento
+- Usuário que realizou a movimentação
+
+Tabela de **Estoque**:
+- Produto
+- Quantidade
+
+Tabela auxiliar de **Movimentação do Item** (registra a movimentação de cada produto na tabela estoque):
+- Identificador da movimentação de estoque
+- Produto
+- Quantidade movimentada
+
+## 5. Front-End e Interfaces
+
+### Tela de Controle de Estoque
+Permite a visualização e atualização do estoque de produtos.
+
+### Tela de Vendas
+Interface para registrar e acompanhar vendas. Disponível para todos os usuários.
+
+### Relatórios
+Geração de relatórios sobre vendas, estoque e cadastros.
+
+## 6. Funcionalidades Avançadas
 
 ### Controle nas Vendas
-- **Dados dos Clientes:** Campos para adicionar informações dos clientes.
-- **Métodos de Pagamento:** Suporte para múltiplos métodos de pagamento.
-- **Vendas Online e Físicas:** Separação e gerenciamento de vendas online e físicas.
-- **Descontos e Alterações no Valor do Produto:** Opções para aplicar descontos e ajustar preços.
+- **Dados dos Clientes**: Cadastro de clientes permite adicionar vários dados que integram com a venda.
+- **Métodos de Pagamento**: Opções de múltiplos métodos de pagamento.
+- **Alterações no Valor do Produto**: Opções para aplicar descontos e ajustar preços.
 
-### Tela de Logs
-- **Histórico de Preços:** Registro de alterações nos preços dos produtos.
-- **Cobranças Adicionais:** Possibilidade de adicionar cobranças extras.
+## 7. Guia de Uso
 
-### Observações
-- **Pendências dos Clientes:** Visualização de pendências e débitos dos clientes.
-- **Formas de Pagamento:** Suporte para várias formas de pagamento.
-- **Opções de Desconto e Taxas:** Aplicação de descontos e taxas fixas.
-- **Custos Genéricos:** Registro de custos adicionais como embalagem, gasolina, etc.
+### Como Configurar o Banco de Dados
+[Instruções sobre como configurar o SQL Server](https://www.youtube.com/watch?v=LxtLqS-9KYo&ab_channel=B%C3%B3sonTreinamentos)
+- O vídeo a cima explica como instalar o SSMS que usamos para configurar o banco.
+- Pode usar o SQL que deixamos pronto como base para seu banco, ficando a vontade para adicionar informações, etc.
 
-## Tecnologias Utilizadas
-- C#
-- WPF (Windows Presentation Foundation)
-- SQL Server
+### Primeiros Passos
+1. Com a parte do banco instalada, usando o Visual Studio 2022(ou superior) clone seu repositório.
+2. Inicie o código.
+3. Com o programa aberto faça login com as credenciais que configurou no SQL do banco de dados.
+4. Começe a registrar novos produtos, clientes, fornecedores, movimentações de estoque e testar o programa ao seu modo.
 
-## Como Executar
-1. Clone o repositório:
-   ```sh
-   git clone https://github.com/seu-usuario/FashionTrack.git
+## 8. Contribuindo
+
+Se você quiser contribuir para o desenvolvimento deste projeto, siga as instruções abaixo:
+1. Faça um fork deste repositório.
+2. Crie uma branch para suas alterações (`git checkout -b feature/novos-recursos`).
+3. Commit suas alterações (`git commit -am 'Adicionando novos recursos'`).
+4. Envie para o repositório remoto (`git push origin feature/novos-recursos`).
+5. Crie uma pull request.
+
