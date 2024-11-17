@@ -32,9 +32,6 @@ FashionTrack é um sistema de gerenciamento de estoque e vendas para uma loja de
 - **WPF (Windows Presentation Foundation)**
 - **SQL Server**
 
-### Diagrama de Arquitetura
-[Inclua aqui o diagrama de arquitetura, se disponível]
-
 ## 4. Banco de Dados
 
 ### Localização do Banco de Dados
