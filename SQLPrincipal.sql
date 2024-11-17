@@ -35,7 +35,7 @@ CREATE TABLE Customer (
     Address VARCHAR(150) NOT NULL,
     ID_City INT NOT NULL,
     CONSTRAINT PK_Customer PRIMARY KEY (ID_Customer),
-    CONSTRAINT FK_Customer_Cidade FOREIGN KEY (ID_City) REFERENCES City(ID_City) ON DELETE CASCADE
+    CONSTRAINT FK_Customer_Cidade FOREIGN KEY (ID_City) REFERENCES City(ID_City)
 );
 
 INSERT INTO Customer (Name, Surname, CPF, Cellphone, Address, ID_City) 
@@ -50,7 +50,7 @@ CREATE TABLE Supplier (
     Representative NVARCHAR(150) NULL,
     ID_City INT NOT NULL,
     CONSTRAINT PK_Supplier PRIMARY KEY (ID_Supplier),
-    CONSTRAINT FK_Supplier_City FOREIGN KEY (ID_City) REFERENCES City(ID_City) ON DELETE CASCADE
+    CONSTRAINT FK_Supplier_City FOREIGN KEY (ID_City) REFERENCES City(ID_City)
 );
 
 INSERT INTO Supplier (CorporateName, CNPJ, Address, Telephone, Representative, ID_City) 
@@ -118,7 +118,7 @@ CREATE TABLE Sell (
     TotalPrice DECIMAL(10, 2) NOT NULL,
     PaymentMethod VARCHAR(50) NOT NULL,
     CONSTRAINT PK_Sell PRIMARY KEY (ID_Sell),
-    CONSTRAINT FK_Sell_Customer FOREIGN KEY (ID_Customer) REFERENCES Customer(ID_Customer) ON DELETE CASCADE
+    CONSTRAINT FK_Sell_Customer FOREIGN KEY (ID_Customer) REFERENCES Customer(ID_Customer)
 );
 
 INSERT INTO Sell (ID_Customer, Sell_Document, SellDate, PaymentMethod, TotalPrice) 
@@ -131,8 +131,8 @@ CREATE TABLE ItemSell (
     Qty INT NOT NULL, 
     PartialPrice DECIMAL(10, 2) NOT NULL,
     CONSTRAINT PK_ITEMVENDAS PRIMARY KEY (ID_ItemSell),
-    CONSTRAINT FK_ITEMVENDAS_PRODUTOS FOREIGN KEY (ID_Product) REFERENCES Product(ID_Product) ON DELETE CASCADE,
-    CONSTRAINT FK_ITEMVENDAS_VENDAS FOREIGN KEY (ID_Sell) REFERENCES Sell(ID_Sell) ON DELETE CASCADE
+    CONSTRAINT FK_ITEMVENDAS_PRODUTOS FOREIGN KEY (ID_Product) REFERENCES Product(ID_Product),
+    CONSTRAINT FK_ITEMVENDAS_VENDAS FOREIGN KEY (ID_Sell) REFERENCES Sell(ID_Sell)
 );
 
 INSERT INTO ItemSell (ID_Sell, ID_Product, Qty, PartialPrice) 
@@ -146,7 +146,7 @@ CREATE TABLE StockMovement (
     Operation NVARCHAR(2) NOT NULL, CHECK (Operation IN ('E', 'S', 'T', 'A', 'P', 'R', 'D')),
     MovementDate DATETIME NOT NULL DEFAULT GETDATE(),
     ID_Users INT NULL,
-    CONSTRAINT FK_Movement_User FOREIGN KEY (ID_Users) REFERENCES Users(ID_Users) ON DELETE CASCADE
+    CONSTRAINT FK_Movement_User FOREIGN KEY (ID_Users) REFERENCES Users(ID_Users)
 );
 
 INSERT INTO StockMovement (MDescription, Document, MovementType, Operation, ID_Users) 
@@ -156,7 +156,7 @@ CREATE TABLE Stock (
     ID_Stock INT IDENTITY(1,1) PRIMARY KEY,
     ID_Product INT NOT NULL,
     Qty INT NOT NULL,
-    CONSTRAINT FK_Stock_Product FOREIGN KEY (ID_Product) REFERENCES Product(ID_Product) ON DELETE CASCADE
+    CONSTRAINT FK_Stock_Product FOREIGN KEY (ID_Product) REFERENCES Product(ID_Product)
 );
 
 INSERT INTO Stock (ID_Product, Qty) 
