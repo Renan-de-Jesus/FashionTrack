@@ -67,7 +67,7 @@ namespace FashionTrack
         public class SelectedProduct : INotifyPropertyChanged
         {
             private int quantity;
-            private decimal price;
+            public decimal price { get; set;}
 
             public int Id { get; set; }
             public string Description { get; set; }
@@ -148,6 +148,7 @@ namespace FashionTrack
             SearchResults.ItemsSource = Products;
             selectedProductsDgv.ItemsSource = SelectedProducts;
             CustomerResults.ItemsSource = Customers;
+            ViewProducts.ItemsSource = SelectedProducts;
             SelectedProducts.CollectionChanged += SelectedProducts_CollectionChanged;
 
             SelectedProducts.CollectionChanged += (s, e) =>
@@ -309,7 +310,7 @@ namespace FashionTrack
                 try
                 {
                     connection.Open();
-                    string query = "SELECT P.ID_Product, P.Description, B.BrandName, C.ColorName, S.SizeDescription, P.Gender, ST.Qty " +
+                    string query = "SELECT P.ID_Product, P.Description, P.Price ,B.BrandName, C.ColorName, S.SizeDescription, P.Gender, ST.Qty " +
                         "FROM Product AS P " +
                         "INNER JOIN Brand AS B ON P.BrandId = B.BrandId " +
                         "INNER JOIN Color AS C ON P.ColorId = C.ColorId " +
@@ -330,7 +331,8 @@ namespace FashionTrack
                             Brand = reader["BrandName"].ToString(),
                             Size = reader["SizeDescription"].ToString(),
                             Gender = reader["Gender"].ToString(),
-                            Qty = reader.GetInt32(reader.GetOrdinal("Qty"))
+                            Qty = reader.GetInt32(reader.GetOrdinal("Qty")),
+                            price = reader.IsDBNull(reader.GetOrdinal("Price")) ? 0 : reader.GetDecimal(reader.GetOrdinal("Price"))
                         };
                         Products.Add(product);
                         SearchResults.SelectedValuePath = "idProduct";
@@ -348,14 +350,14 @@ namespace FashionTrack
         {
             if (SearchResults.SelectedItem is Product selectedProduct)
             {
-                AddSelectedProduct(selectedProduct.Id, selectedProduct.Description, selectedProduct.Color, selectedProduct.Brand, selectedProduct.Size, selectedProduct.Gender, 0, selectedProduct.Qty);
+                AddSelectedProduct(selectedProduct.Id, selectedProduct.Description, selectedProduct.Color, selectedProduct.Brand, selectedProduct.Size, selectedProduct.Gender, selectedProduct.price, selectedProduct.Qty);
                 Products.Clear();
             }
         }
 
         private void AddSelectedProduct(int id, string description, string color, string brand, string size, string gender, decimal price, int stockQuantity)
         {
-            if (!SelectedProducts.Any(p => p.Id == id && p.Description == description && p.Color == color && p.Brand == brand && p.Size == size && p.Gender == gender))
+            if (!SelectedProducts.Any(p => p.Id == id && p.Description == description && p.Color == color && p.Brand == brand && p.Size == size && p.Gender == gender && p.Price == price))
             {
                 SelectedProducts.Add(new SelectedProduct
                 {
@@ -597,7 +599,8 @@ namespace FashionTrack
                                             Brand = reader["BrandName"].ToString(),
                                             Size = reader["SizeDescription"].ToString(),
                                             Gender = reader["Gender"].ToString(),
-                                            Qty = reader.GetInt32(reader.GetOrdinal("Qty"))
+                                            Qty = reader.GetInt32(reader.GetOrdinal("Qty")),
+                                            price = reader.GetDecimal(reader.GetOrdinal("Price"))
                                         };
                                         Products.Add(product);
                                         SearchResults.SelectedValuePath = "idProduct";
