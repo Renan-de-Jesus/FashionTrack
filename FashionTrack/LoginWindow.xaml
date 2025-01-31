@@ -94,7 +94,7 @@
                 GotFocus="RemoveText"
                 LostFocus="AddText"
                 Text="Usuário"
-                TextWrapping="Wrap">
+                TextWrapping="Wrap" KeyDown="lblUser_KeyDown">
                 <TextBox.Template>
                     <ControlTemplate TargetType="{x:Type TextBox}">
                         <Border

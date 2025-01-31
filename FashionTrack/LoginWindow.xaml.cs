@@ -128,6 +128,14 @@ namespace FashionTrack
             }
         }
 
+        private void lblUser_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                passwordPlaceholder.Focus();
+            }
+        }
+
         public int GetUserId()
         {
             return LoggedInUserId;
