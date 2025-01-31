@@ -317,11 +317,11 @@ namespace FashionTrack
             {
                 switch (selectedOperation)
                 {
-                    case "Entrada de Estoque":
+                    case "Compra":
                         operation = "E";
                         break;
 
-                    case "Saída de Estoque":
+                    case "Redução de Estoque":
                         operation = "S";
                         break;
 
