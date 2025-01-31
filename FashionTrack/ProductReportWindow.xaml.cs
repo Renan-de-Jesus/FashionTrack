@@ -14,6 +14,8 @@ namespace FashionTrack
 {
     public partial class ProductReportWindow : Window
     {
+        public static DateTime Now { get; }
+        DateTime dt = DateTime.Now;
         public ProductReportWindow()
         {
             InitializeComponent();
@@ -66,7 +68,7 @@ namespace FashionTrack
                 SaveFileDialog saveFileDialog = new SaveFileDialog
                 {
                     Filter = "PDF file (*.pdf)|*.pdf",
-                    FileName = ".pdf"
+                    FileName = "Relatorio de Produtos - " + dt.ToString("D") + ".pdf"
                 };
 
                 if (saveFileDialog.ShowDialog() == true)
