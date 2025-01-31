@@ -374,12 +374,6 @@
                 Orientation="Horizontal">
 
                 <TextBlock
-                    Width="130"
-                    Margin="0,5,5,0"
-                    FontSize="16"
-                    Text="Id Cliente"
-                    TextAlignment="Center" />
-                <TextBlock
                     Width="120"
                     Margin="0,5,5,0"
                     FontSize="16"
@@ -437,13 +431,6 @@
                                 </Border>
                                 <Border BorderBrush="Gray" BorderThickness="0,0,1,0">
                                     <TextBlock
-                                        Width="180"
-                                        Margin="10"
-                                        FontSize="14"
-                                        Text="{Binding ID_Customer}" />
-                                </Border>
-                                <Border BorderBrush="Gray" BorderThickness="0,0,1,0">
-                                    <TextBlock
                                         Width="130"
                                         Margin="10"
                                         FontSize="14"
@@ -482,6 +469,42 @@
             Margin="0,0,35,35"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Orientation="Horizontal"/>
+            Orientation="Horizontal">
+            <Button
+                Width="100"
+                Height="50"
+                Margin="50,10,800,20"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#2888E3"
+                Click="RegisterButton_Click"
+                FontSize="16"
+                Foreground="White"
+                IsEnabled="{Binding IsModified}"
+                RenderTransformOrigin="0.511,0.535"
+                Style="{StaticResource HoverButtonStyle}">
+                <Path
+                    Width="20"
+                    Height="20"
+                    Data="{StaticResource AddIconGeometry}"
+                    Fill="White"
+                    Stretch="Uniform" />
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border
+                            Padding="5"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness=".5"
+                            CornerRadius="08">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+
     </Grid>
 </Window>
