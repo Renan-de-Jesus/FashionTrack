@@ -139,59 +139,43 @@ namespace FashionTrack
             }
         }
 
-        private void updateProduct(){
+        private void UpdateProduct()
+        {
             string brandCode = BrandCodeTextBox.Text;
             decimal price = decimal.Parse(PriceTextBox.Text);
             string description = DescriptionTextBox.Text;
             int brandId = (int)(BrandComboBox.SelectedItem as ComboBoxItem)?.Tag;
             int sizeId = (int)(SizeComboBox.SelectedItem as ComboBoxItem)?.Tag;
             int colorId = (int)(ColorComboBox.SelectedItem as ComboBoxItem)?.Tag;
-            //int supplierId = (int)(SupplierComboBox.SelectedItem as ComboBoxItem)?.Tag;
             string gender = GenderComboBox.Text;
-            int supplierId = currentProductID;
 
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string connectionString = ConfigurationManager.ConnectionStrings["Connection"].ConnectionString;
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                conn.Open();
+                try
                 {
-                    connection.Open();
-                    string updateProduct = "UPDATE Product SET BrandCode = @brandCode, BrandId = @brand, " +
-                        "ColorId = @color, Description = @description, SizeID = @size, Gender = @gender, Price = @price, " +
-                        " WHERE ID_Product = @ID_Product";
-                    SqlCommand update = new SqlCommand(updateProduct, connection);
-
-                    update.Parameters.AddWithValue("@brandCode", brandCode);
-                    update.Parameters.AddWithValue("@brand", brandId);
-                    update.Parameters.AddWithValue("@color", colorId);
-                    update.Parameters.AddWithValue("@description", description);
-                    update.Parameters.AddWithValue("@size", sizeId);
-                    update.Parameters.AddWithValue("@gender", gender);
-                    update.Parameters.AddWithValue("@price", price);
-                    update.Parameters.AddWithValue("@ID_Product", productId);
-
-                    update.ExecuteNonQuery();
-                   /* try
+                    using (SqlCommand cmd = new SqlCommand("UpdateProduct", conn))
                     {
-                        connection.Open();
-                        string updateProduct2 = "UPDATE ProductSupplier SET ID_Supplier = @supplierId "+
-                            " WHERE ID_Product = @ID_Product";
-                        SqlCommand update2 = new SqlCommand(updateProduct2, connection);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@ProductId", productId);
+                        cmd.Parameters.AddWithValue("@Description", description);
+                        cmd.Parameters.AddWithValue("@Price", price);
+                        cmd.Parameters.AddWithValue("@BrandCode", brandCode);
+                        cmd.Parameters.AddWithValue("@Gender", gender);
+                        cmd.Parameters.AddWithValue("@BrandId", brandId);
+                        cmd.Parameters.AddWithValue("@ColorId", colorId);
+                        cmd.Parameters.AddWithValue("@SizeId", sizeId);
+
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Produto atualizado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                        this.Close();
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Erro ao atualizar o fornecedor do produto: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                    }*/
                 }
-                MessageBoxResult result = MessageBox.Show("Dados do produto atualizados com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-                if (result == MessageBoxResult.OK)
+                catch (Exception ex)
                 {
-                    this.Close();
+                    MessageBox.Show($"Erro ao atualizar produto: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro ao atualizar os dados do produto: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
 
@@ -219,9 +203,9 @@ namespace FashionTrack
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if(productId > 0)
+            if (productId > 0)
             {
-                updateProduct();
+                UpdateProduct();
                 return;
             }
 
@@ -247,7 +231,6 @@ namespace FashionTrack
             int brandId = GetSelectedItemId(BrandComboBox);
             int colorId = GetSelectedItemId(ColorComboBox);
             int sizeId = GetSelectedItemId(SizeComboBox);
-            //int supliierId = GetSelectedItemId(SupplierComboBox);
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -255,9 +238,11 @@ namespace FashionTrack
                 SqlTransaction transaction = conn.BeginTransaction();
                 try
                 {
-                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Product (Description, Price, BrandCode, Gender, BrandId, ColorId, SizeId) OUTPUT INSERTED.ID_Product " +
-                                                           "VALUES (@Description, @Price, @BrandCode, @Gender, @BrandId, @ColorId, @SizeId)", conn, transaction))
+                    using (SqlCommand cmd = new SqlCommand("InsertProduct", conn, transaction))
                     {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Passar os parâmetros
                         cmd.Parameters.AddWithValue("@Description", description);
                         cmd.Parameters.AddWithValue("@Price", price);
                         cmd.Parameters.AddWithValue("@BrandCode", brandCode);
@@ -266,45 +251,19 @@ namespace FashionTrack
                         cmd.Parameters.AddWithValue("@ColorId", colorId);
                         cmd.Parameters.AddWithValue("@SizeId", sizeId);
 
-                        int newProductId = (int)cmd.ExecuteScalar();
-                        /*try
-                        {
-                            using (SqlCommand productSupplierCmd = new SqlCommand("INSERT INTO ProductSuplier (ID_Supplier, ID_Product) VALUES (@supliierId ,@ID_Product)", conn, transaction))
-                            {
-                                productSupplierCmd.Parameters.AddWithValue("@supliierId", supplierId);
-                                productSupplierCmd.Parameters.AddWithValue("@ID_Product", newProductId);
-                                productSupplierCmd.ExecuteNonQuery();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Erro ao relacionar o produto ao fornecedor! " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }*/
-                        try
-                        {
-                            using (SqlCommand stockCmd = new SqlCommand("INSERT INTO Stock (ID_Product, Qty) VALUES (@ID_Product, 0)", conn, transaction))
-                            {
-                                stockCmd.Parameters.AddWithValue("@ID_Product", newProductId);
-                                stockCmd.ExecuteNonQuery();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Erro ao adicionar o produto ao estoque! " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
+                        // Executar a procedure
+                        cmd.ExecuteNonQuery();
+
+                        // Commit da transação
+                        transaction.Commit();
                     }
 
-                    transaction.Commit();
-                    MessageBoxResult result = MessageBox.Show("Produto salvo com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-                    if(result == MessageBoxResult.OK)
-                    {
-                        this.Close();
-                    }
+                    MessageBox.Show("Produto salvo com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"Erro: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -325,8 +284,6 @@ namespace FashionTrack
                 errorMessage = "Nenhuma Cor Selecionada.";
             else if (GetSelectedItemId(SizeComboBox) == -1)
                 errorMessage = "Nenhum Tamanho Selecionado.";
-            /*else if (GetSelectedItemId(SupplierComboBox) == -1)
-                errorMessage = "Nenhum Formecedor Selecionado.";*/
 
             return string.IsNullOrEmpty(errorMessage);
         }
@@ -356,13 +313,6 @@ namespace FashionTrack
             sizeRegister.ShowDialog();
             LoadComboBox(SizeComboBox, "Size", "SizeDescription", "SizeId");
         }
-
-        /*private void OpenSupplierRegisterButton_Click(object sender, RoutedEventArgs e)
-        {
-            SupplierRegister supplierRegister = new SupplierRegister();
-            supplierRegister.ShowDialog();
-            LoadComboBox(SupplierComboBox, "Supplier", "CorporateName", "ID_Supplier");
-        }*/
 
     }
 }
