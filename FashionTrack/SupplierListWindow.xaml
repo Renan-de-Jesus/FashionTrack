@@ -404,7 +404,7 @@
                     Text="Representante"
                     TextAlignment="Center" />
                 <TextBlock
-                    Width="130"
+                    Width="144"
                     Margin="5,5,0,0"
                     FontSize="16"
                     Text="Cidade"
@@ -475,13 +475,8 @@
                                         Width="130"
                                         Margin="10"
                                         FontSize="14"
-                                        Text="{Binding City}" />
+                                        Text="{Binding Cidade}" />
                                 </Border>
-                                <TextBlock
-                                    Width="70"
-                                    Margin="10"
-                                    FontSize="14"
-                                    Text="{Binding UF}" />
                             </StackPanel>
                         </Border>
                     </DataTemplate>

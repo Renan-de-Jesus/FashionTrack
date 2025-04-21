@@ -26,18 +26,7 @@ namespace FashionTrack
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = @"
-                        SELECT 
-                            s.ID_Supplier, 
-                            s.CorporateName, 
-                            s.CNPJ, 
-                            s.Telephone, 
-                            s.Representative, 
-                            s.ID_City,
-                            c.Description AS City,
-                            c.UF
-                        FROM Supplier s
-                        LEFT JOIN City c ON s.ID_City = c.ID_City";
+                    string query = "SELECT * FROM vw_SupplierList";
 
                     using (SqlDataAdapter adapter = new SqlDataAdapter(query, conn))
                     {
