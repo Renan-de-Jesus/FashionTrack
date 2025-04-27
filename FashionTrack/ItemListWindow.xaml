@@ -415,7 +415,7 @@
             IsEnabled="{Binding IsModified}"
             RenderTransformOrigin="0.511,0.535"
             Style="{StaticResource Download}">
-                <Image Source="/copy.png" Height="25" Width="25" />
+                <Image Source="/images/copy.png" Height="25" Width="25" />
                 <Button.Template>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border
