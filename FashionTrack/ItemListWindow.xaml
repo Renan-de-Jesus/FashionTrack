@@ -400,35 +400,6 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Button
-            Width="70"
-            Height=""
-            Margin="0,20,0,0"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Center"
-            VerticalContentAlignment="Center"
-            Background="White"
-            BorderBrush="White"
-            Click="GenerateReportButton_Click"
-            FontSize="16"
-            Foreground="White"
-            IsEnabled="{Binding IsModified}"
-            RenderTransformOrigin="0.511,0.535"
-            Style="{StaticResource Download}">
-                <Image Source="/copy.png" Height="25" Width="25" />
-                <Button.Template>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border
-                        Padding="5"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="1"
-                        CornerRadius="5">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
         </StackPanel>
         <StackPanel>
             <TextBlock

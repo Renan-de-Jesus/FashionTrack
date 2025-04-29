@@ -173,3 +173,150 @@ CREATE TABLE ITEM_MOV (
 );
 
 INSERT INTO ITEM_MOV (ID_StockMovement, ID_Product, Qty_Mov) VALUES (1, 1, 50);
+
+--Procedure para INSERT dos produtos
+CREATE PROCEDURE InsertProduct
+	@Description NVARCHAR(255),
+	@Price DECIMAL(18, 2),
+	@BrandCode NVARCHAR(50),
+	@Gender NVARCHAR(10),
+	@BrandId INT,
+	@ColorId INT,
+	@SizeId INT
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION;
+
+		INSERT INTO Product (Description, Price, BrandCode, Gender, BrandId, ColorId, SizeId)
+		VALUES (@Description, @Price, @BrandCode, @Gender, @BrandId, @ColorId, @SizeId);
+
+		COMMIT TRANSACTION;
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION;
+		THROW;
+	END CATCH
+END;
+
+--Procedure para UPDATE dos produtos cadastrados
+CREATE PROCEDURE UpdateProduct
+    @ProductId INT,
+    @Description NVARCHAR(255),
+    @Price DECIMAL(10, 2),
+    @BrandCode VARCHAR(50),
+    @Gender VARCHAR(10),
+    @BrandId INT,
+    @ColorId INT,
+    @SizeId INT
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION
+
+        UPDATE Product
+        SET 
+            Description = @Description,
+            Price = @Price,
+            BrandCode = @BrandCode,
+            Gender = @Gender,
+            BrandId = @BrandId,
+            ColorId = @ColorId,
+            SizeId = @SizeId
+        WHERE ID_Product = @ProductId;
+
+        COMMIT TRANSACTION
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
+END
+GO
+
+--Trigger para controlar o After Insert do PRODUTO
+CREATE TRIGGER trg_AfterInsertProduct
+ON Product
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Para cada produto recém-inserido, cria o estoque com quantidade 0
+    INSERT INTO Stock (ID_Product, Qty)
+    SELECT ID_Product, 0
+    FROM INSERTED;
+END;
+
+--Tabela para auditoria de mudança de nomes na tela de Produtos
+CREATE TABLE ProductAudit (
+	AuditId INT PRIMARY KEY IDENTITY,
+	ProductId INT,
+	OldDesc NVARCHAR (255),
+	NewDesc NVARCHAR (255),
+	OldPrice DECIMAL(10,2),
+	NewPrice DECIMAL(10,2),
+	ChangeDate DATETIME DEFAULT GETDATE()
+);
+
+--Trigger para registrar logs na tabela de ProductAudit
+CREATE TRIGGER trg_AfterUpdateProduct
+ON Product
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO ProductAudit (ProductId, OldDesc, NewDesc, OldPrice, NewPrice)
+    SELECT 
+        i.ID_Product,
+        d.Description,
+        i.Description,
+        d.Price,
+        i.Price
+    FROM INSERTED i
+    INNER JOIN DELETED d ON i.ID_Product = d.ID_Product
+    WHERE 
+        i.Description <> d.Description
+        OR i.Price <> d.Price;
+END;
+
+--View que faz a busca dos logs para que possamos ver eles na tela do sistema
+CREATE VIEW vw_ProductAudit AS
+SELECT 
+    A.AuditId,
+    A.ProductId,
+    P.Description AS CurrentDescription,
+    A.OldDesc,
+    A.NewDesc,
+    A.OldPrice,
+    A.NewPrice,
+    A.ChangeDate
+FROM ProductAudit A
+LEFT JOIN Product P ON A.ProductId = P.ID_Product;
+
+--Função para que a consulta do fornecedor traga Cidade-UF juntos
+CREATE FUNCTION dbo.fn_NomeCidadeComUF (@ID INT)
+RETURNS NVARCHAR(100)
+AS
+BEGIN
+    DECLARE @Retorno NVARCHAR(100)
+
+    SELECT @Retorno = Description + ' - ' + UF
+    FROM City
+    WHERE ID_City = @ID
+
+    RETURN @Retorno
+END
+
+--View para facilitar o uso da função
+CREATE VIEW vw_SupplierList AS
+SELECT 
+    s.ID_Supplier, 
+    s.CorporateName, 
+    s.CNPJ, 
+    s.Telephone, 
+    s.Representative, 
+    dbo.fn_NomeCidadeComUF(s.ID_City) AS Cidade
+FROM Supplier s;
+

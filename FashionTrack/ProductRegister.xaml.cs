@@ -146,7 +146,6 @@ namespace FashionTrack
             int brandId = (int)(BrandComboBox.SelectedItem as ComboBoxItem)?.Tag;
             int sizeId = (int)(SizeComboBox.SelectedItem as ComboBoxItem)?.Tag;
             int colorId = (int)(ColorComboBox.SelectedItem as ComboBoxItem)?.Tag;
-            //int supplierId = (int)(SupplierComboBox.SelectedItem as ComboBoxItem)?.Tag;
             string gender = GenderComboBox.Text;
             int supplierId = currentProductID;
 
@@ -157,8 +156,8 @@ namespace FashionTrack
                 {
                     connection.Open();
                     string updateProduct = "UPDATE Product SET BrandCode = @brandCode, BrandId = @brand, " +
-                        "ColorId = @color, Description = @description, SizeID = @size, Gender = @gender, Price = @price, " +
-                        " WHERE ID_Product = @ID_Product";
+                        "ColorId = @color, Description = @description, SizeID = @size, Gender = @gender, Price = @price " +
+                        "WHERE ID_Product = @ID_Product";
                     SqlCommand update = new SqlCommand(updateProduct, connection);
 
                     update.Parameters.AddWithValue("@brandCode", brandCode);
@@ -171,17 +170,7 @@ namespace FashionTrack
                     update.Parameters.AddWithValue("@ID_Product", productId);
 
                     update.ExecuteNonQuery();
-                   /* try
-                    {
-                        connection.Open();
-                        string updateProduct2 = "UPDATE ProductSupplier SET ID_Supplier = @supplierId "+
-                            " WHERE ID_Product = @ID_Product";
-                        SqlCommand update2 = new SqlCommand(updateProduct2, connection);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Erro ao atualizar o fornecedor do produto: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                    }*/
+
                 }
                 MessageBoxResult result = MessageBox.Show("Dados do produto atualizados com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
                 if (result == MessageBoxResult.OK)
@@ -247,7 +236,6 @@ namespace FashionTrack
             int brandId = GetSelectedItemId(BrandComboBox);
             int colorId = GetSelectedItemId(ColorComboBox);
             int sizeId = GetSelectedItemId(SizeComboBox);
-            //int supliierId = GetSelectedItemId(SupplierComboBox);
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -267,19 +255,6 @@ namespace FashionTrack
                         cmd.Parameters.AddWithValue("@SizeId", sizeId);
 
                         int newProductId = (int)cmd.ExecuteScalar();
-                        /*try
-                        {
-                            using (SqlCommand productSupplierCmd = new SqlCommand("INSERT INTO ProductSuplier (ID_Supplier, ID_Product) VALUES (@supliierId ,@ID_Product)", conn, transaction))
-                            {
-                                productSupplierCmd.Parameters.AddWithValue("@supliierId", supplierId);
-                                productSupplierCmd.Parameters.AddWithValue("@ID_Product", newProductId);
-                                productSupplierCmd.ExecuteNonQuery();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Erro ao relacionar o produto ao fornecedor! " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }*/
                         try
                         {
                             using (SqlCommand stockCmd = new SqlCommand("INSERT INTO Stock (ID_Product, Qty) VALUES (@ID_Product, 0)", conn, transaction))
@@ -325,8 +300,6 @@ namespace FashionTrack
                 errorMessage = "Nenhuma Cor Selecionada.";
             else if (GetSelectedItemId(SizeComboBox) == -1)
                 errorMessage = "Nenhum Tamanho Selecionado.";
-            /*else if (GetSelectedItemId(SupplierComboBox) == -1)
-                errorMessage = "Nenhum Formecedor Selecionado.";*/
 
             return string.IsNullOrEmpty(errorMessage);
         }
@@ -357,12 +330,6 @@ namespace FashionTrack
             LoadComboBox(SizeComboBox, "Size", "SizeDescription", "SizeId");
         }
 
-        /*private void OpenSupplierRegisterButton_Click(object sender, RoutedEventArgs e)
-        {
-            SupplierRegister supplierRegister = new SupplierRegister();
-            supplierRegister.ShowDialog();
-            LoadComboBox(SupplierComboBox, "Supplier", "CorporateName", "ID_Supplier");
-        }*/
 
     }
 }
